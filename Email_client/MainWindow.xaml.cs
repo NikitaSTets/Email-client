@@ -1,7 +1,7 @@
 ﻿
 using System.Windows;
 using System.Windows.Controls;
-using Email_client.Map;
+using Email_client.Model;
 
 
 
@@ -19,9 +19,15 @@ namespace Email_client
         {
             
             InitializeComponent();
-            MainFrame = mainFrame;          
+           // MainFrame = mainFrame;          
             //MainFrame.Content = new LoginPage();        
             IMapService.Initialize();
+          
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
