@@ -1,0 +1,15 @@
+﻿<Window x:Class="Email_client.View.Email"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Email_client.View"
+        mc:Ignorable="d"
+        Title="Email" Height="334.884" Width="438.372">
+    <Grid>
+        <Grid HorizontalAlignment="Left" Height="305" VerticalAlignment="Top" Width="430">
+            <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="311" VerticalAlignment="Top" Width="437" Margin="0,0,-145,-41"/>
+        </Grid>
+
+    </Grid>
+</Window>

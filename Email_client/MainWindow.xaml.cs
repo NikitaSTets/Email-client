@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Net;
 using System.Net.Mail;
-
+using Email_client.View;
 using Microsoft.Win32;
 
 namespace Email_client
@@ -74,6 +74,12 @@ namespace Email_client
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void GetEmailsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Email emails = new Email();
+            emails.Show();
         }
     }
 }
