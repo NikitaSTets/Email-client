@@ -65,5 +65,6 @@
         <Button x:Name="sendButton" Content="Send" HorizontalAlignment="Left" Margin="397,399,0,0" VerticalAlignment="Top" Width="121" Height="56" Click="sendButton_Click"/>
         <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="580,399,0,0" VerticalAlignment="Top" Width="120" Height="56"/>
         <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="539,466,0,0" VerticalAlignment="Top" Width="75" Click="GetEmailsButton_Click"/>
+        <ToolBar x:Name="toolBar" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Grid>
 </Window>

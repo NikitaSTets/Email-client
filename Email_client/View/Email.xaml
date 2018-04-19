@@ -7,8 +7,33 @@
         mc:Ignorable="d"
         Title="Email" Height="334.884" Width="438.372">
     <Grid>
-        <Grid HorizontalAlignment="Left" Height="305" VerticalAlignment="Top" Width="430">
-            <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="311" VerticalAlignment="Top" Width="437" Margin="0,0,-145,-41"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Column="0" ItemsSource="{Binding Messages}" IsSynchronizedWithCurrentItem="True">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Author}"/>
+                        <TextBlock Text="{Binding DateTime}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" Margin="5,0">
+                <TextBlock Text="{Binding Messages/Author}"/>
+                <TextBlock Text="{Binding Messages/DateTime}" Margin="5,0,0,0"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="1" Text="{Binding Messages/Text}"/>
         </Grid>
 
     </Grid>

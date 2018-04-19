@@ -4,7 +4,9 @@ using System.Windows.Controls;
 using System.Net;
 using System.Net.Mail;
 using Email_client.View;
+using Email_client.Model;
 using Microsoft.Win32;
+using System.Collections.ObjectModel;
 
 namespace Email_client
 { 
@@ -12,10 +14,12 @@ namespace Email_client
     {
         OpenFileDialog ofAttachment;
         string fileName;
- 
+
+       
         public MainWindow()
         {
-            InitializeComponent();        
+            InitializeComponent();
+           
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
