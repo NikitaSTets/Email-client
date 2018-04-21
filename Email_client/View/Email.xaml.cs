@@ -33,7 +33,7 @@ namespace Email_client.View
                 // Connect to mail server
                 imap.Connect();
 
-                imap.Authenticate("nikitstets@gmail.com", "StackCorporation");
+                imap.Authenticate("login", "password");
                 imap.SelectInbox();
                 IList<ImapMessageInfo> a=imap.ListMessages();
 
