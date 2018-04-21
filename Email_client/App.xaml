@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Email_client"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+       
     </Application.Resources>
 </Application>
