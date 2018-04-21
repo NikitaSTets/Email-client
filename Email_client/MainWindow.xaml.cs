@@ -14,12 +14,13 @@ namespace Email_client
     {
         OpenFileDialog ofAttachment;
         string fileName;
+        Email emails;
 
-       
+
         public MainWindow()
         {
             InitializeComponent();
-           
+          emails = new Email();
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
@@ -82,7 +83,7 @@ namespace Email_client
 
         private void GetEmailsButton_Click(object sender, RoutedEventArgs e)
         {
-            Email emails = new Email();
+            
             emails.Show();
         }
     }

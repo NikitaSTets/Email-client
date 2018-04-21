@@ -43,6 +43,22 @@
       <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EO.Base, Version=18.1.41.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
+      <HintPath>..\packages\EO.WebBrowser.18.1.41\lib\EO.Base.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EO.WebBrowser, Version=18.1.41.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
+      <HintPath>..\packages\EO.WebBrowser.18.1.41\lib\EO.WebBrowser.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EO.WebBrowser.Wpf, Version=18.1.41.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
+      <HintPath>..\packages\EO.WebBrowser.Wpf.18.1.41\lib\EO.WebBrowser.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EO.WebEngine, Version=18.1.41.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
+      <HintPath>..\packages\EO.WebBrowser.18.1.41\lib\EO.WebEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GemBox.Email, Version=13.0.35.1003, Culture=neutral, PublicKeyToken=b1b72c69714d4847, processorArchitecture=MSIL">
       <HintPath>..\packages\GemBox.Email.13.0.0.1003\lib\net35\GemBox.Email.dll</HintPath>
       <Private>True</Private>
@@ -59,6 +75,10 @@
       <HintPath>..\packages\MailKit.2.0.3\lib\net45\MailKit.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MimeKit, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
       <HintPath>..\packages\MimeKit.2.0.3\lib\net45\MimeKit.dll</HintPath>
       <Private>True</Private>
@@ -67,6 +87,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -86,6 +110,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\EmailClientFactory.cs" />
+    <Compile Include="Model\HighlightingHyperlinksTextBlockBehavior.cs" />
     <Compile Include="Model\IEMail.cs" />
     <Compile Include="Model\IEmailClient.cs" />
     <Compile Include="Model\MessageModel.cs" />
@@ -97,6 +122,8 @@
     <Compile Include="View\Email.xaml.cs">
       <DependentUpon>Email.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\WebBrowserExtentions.cs" />
+    <Compile Include="View\HighlightingHyperlinksTextBlockBehavior.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -149,6 +176,10 @@
   <ItemGroup>
     <Resource Include="Resources\Images\flag%28blue%29.png" />
     <Resource Include="Resources\Images\flag%28white%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\flag%28blue%29 %281%29.png" />
+    <Resource Include="Resources\Images\flag%28white%29 %281%29.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

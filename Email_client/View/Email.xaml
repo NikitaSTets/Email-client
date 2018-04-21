@@ -1,12 +1,13 @@
-﻿<Window x:Class="Email_client.View.Email"
+﻿<Window x:Class="Email_client.View.Email"       
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:c="clr-namespace:Email_client.Model"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Email_client.View"
         mc:Ignorable="d"
-        Title="Email" Height="334.884" Width="438.372">
-    <Grid>
+        Title="Email" Height="526.684" Width="720.326">
+    <Grid Name="Grid1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="2*"/>
@@ -14,16 +15,16 @@
         <ListBox Grid.Column="0" ItemsSource="{Binding Messages}" IsSynchronizedWithCurrentItem="True">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Grid Name="Grid2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0" >
+                        <StackPanel Name="MyStack" Grid.Column="0" >
                             <CheckBox Margin="2" ></CheckBox>
-                            <RadioButton Margin="2"></RadioButton>
-                            <TextBlock Name="flagTextBlock" Loaded="flagTextBlock_Loaded"></TextBlock>
+                            <RadioButton  Margin="2"></RadioButton>
+
                         </StackPanel>
                         <StackPanel Grid.Column="1">
                             <TextBlock Text="{Binding Author}" FontWeight="Bold" FontSize="13"/>
@@ -44,8 +45,13 @@
                 <TextBlock Text="{Binding Messages/Author}"/>
                 <TextBlock Text="{Binding Messages/DateTime}" Margin="5,0,0,0"/>
             </StackPanel>
-
-            <TextBlock Grid.Row="1" Text="{Binding Messages/Text}"/>
+            <WebBrowser Name="WebBroserForShowMessage"  local:WebBrowserExtentions.Document="{Binding Messages/Text}"  HorizontalAlignment="Left" Height="457" VerticalAlignment="Top" Width="475" Grid.Row="1"/>
+            <!--<TextBlock  Grid.Row="1" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
+                <i:Interaction.Behaviors>
+                    <local:HighlightingHyperlinksTextBlockBehavior Text="{Binding Messages/Text}"/>
+                </i:Interaction.Behaviors>      
+            </TextBlock>-->
+            <!--<TextBlock  Grid.Row="1" Text="{Binding Messages/Text}"/>-->
         </Grid>
 
     </Grid>
