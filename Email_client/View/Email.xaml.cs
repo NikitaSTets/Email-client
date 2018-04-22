@@ -19,46 +19,38 @@ namespace Email_client.View
         public Email()
         {
             InitializeComponent();
-            //string Encoding = "ISO-8859-1";
-            //WebBroserForShowMessage.Document.Encoding = Encoding;
-           
-
-            Messages.Add(new MessageModel("User 1", DateTime.Now, "Hello world"));
-            Messages.Add(new MessageModel("User 2", DateTime.Now, "I want to eat"));
             DataContext = this;
-
             ComponentInfo.SetLicense("FREE-LIMITED-KEY");
             using (ImapClient imap = new ImapClient("imap.gmail.com"))
             {
                 // Connect to mail server
                 imap.Connect();
 
-                imap.Authenticate("nikitstets@gmail.com", "StackCorporation");
+                imap.Authenticate("login", "password");
                 imap.SelectInbox();
-                IList<ImapMessageInfo> a=imap.ListMessages();
+                
+                IList<ImapMessageInfo> messageInfoCollection=imap.ListMessages();
 
                 MailMessage currentMessage;
-               
-                Encoding utf8 = Encoding.GetEncoding("UTF-8");
-                Encoding win1251 = Encoding.GetEncoding("Windows-1251");
-                byte[] utf8Bytes;
-                byte[] win1251Bytes;
-                for (int i = 0; i < a.Count; i++)
+ 
+                string head = "<head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head>";
+                string text;
+                for (int i = 0; i < messageInfoCollection.Count; i++)
                 {
-                    currentMessage=imap.GetMessage(a[i].Uid);
-
-
-
+                    currentMessage=imap.GetMessage(messageInfoCollection[i].Uid);
+                    text = currentMessage.BodyHtml;
+                    if (text == null)
+                    {
+                        text = currentMessage.BodyText;
+                    }
+                    currentMessage.BodyHtml = head+text;
                     if (currentMessage.BodyHtml != null)
-                    { 
-                        
-                        Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date,currentMessage.BodyHtml));
+                    {
+                        Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyHtml));
                     }
                     else
                     {
-                        utf8Bytes = win1251.GetBytes(currentMessage.BodyText);
-                        win1251Bytes = Encoding.Convert(win1251, utf8, utf8Bytes);
-                        Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, /*currentMessage.BodyText*/utf8.GetString(win1251Bytes)));
+                        Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyText));
                     }
                 }
               
@@ -67,7 +59,7 @@ namespace Email_client.View
             
         }
 
-
+     
         private void flagTextBlock_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -76,6 +68,32 @@ namespace Email_client.View
         private void WebBrowser_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
 
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            using (ImapClient imap = new ImapClient("imap.gmail.com"))
+            {
+                // Connect to mail server
+                imap.Connect();
+
+                imap.Authenticate("login", "password");
+                imap.SelectInbox();
+                IList<ImapMessageInfo> messagesInfo = imap.ListMessages();
+                var selectedMessages = listBoxOfMessages.SelectedItems;
+                
+                foreach (MessageModel message in selectedMessages)
+                {
+                    for (int i = 0; i < Messages.Count; i++)
+                    {
+                        if (Messages[i] == message)
+                        {
+                            //imap.DeleteMessage(messagesInfo[i].Uid, true);
+                            //Messages.RemoveAt(i);
+                        }
+                    }
+                }
+            }
         }
     }
 }

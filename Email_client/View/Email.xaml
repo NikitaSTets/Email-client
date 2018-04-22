@@ -44,13 +44,13 @@
             </Setter>
         </Style>
     </Window.Resources>
-    
-        <Grid Name="Grid1">
+
+    <Grid Name="Grid1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" ItemsSource="{Binding Messages}" IsSynchronizedWithCurrentItem="True">
+        <ListBox x:Name="listBoxOfMessages" Grid.Column="0" ItemsSource="{Binding Messages}" IsSynchronizedWithCurrentItem="True" Margin="0,0,15,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Name="Grid2">
@@ -73,17 +73,21 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.ColumnSpan="2" Margin="227,0,10,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" Margin="5,0" >
+            <StackPanel Orientation="Horizontal" >
                 <TextBlock Text="{Binding Messages/Author}"/>
                 <TextBlock Text="{Binding Messages/DateTime}" Margin="5,0,0,0"/>
             </StackPanel>
-            <WebBrowser Name="WebBroserForShowMessage"  local:WebBrowserExtentions.Document="{Binding Messages/Text}"  HorizontalAlignment="Left" Height="457" VerticalAlignment="Top" Width="475" Grid.Row="1"/>
+            <WebBrowser Language="" Name="WebBroserForShowMessage"  local:WebBrowserExtentions.Document="{Binding Messages/Text}"  HorizontalAlignment="Left" Height="435" VerticalAlignment="Top" Width="475" Grid.Row="1" Margin="0,22,0,0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="22" Grid.Row="1" VerticalAlignment="Top" Width="475">
+                <Button x:Name="Delete" Content="Delete" Width="81" Click="Delete_Click"/>
+            </StackPanel>
+
             <!--<TextBlock  Grid.Row="1" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
                 <i:Interaction.Behaviors>
                     <local:HighlightingHyperlinksTextBlockBehavior Text="{Binding Messages/Text}"/>
