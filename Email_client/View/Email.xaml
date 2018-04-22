@@ -7,7 +7,45 @@
         xmlns:local="clr-namespace:Email_client.View"
         mc:Ignorable="d"
         Title="Email" Height="526.684" Width="720.326">
-    <Grid Name="Grid1">
+    <Window.Resources>
+        <Style x:Key="styleCustomCheckBox" TargetType="{x:Type CheckBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image x:Name="imageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\flag(blue) (1).png" Width="15" Height="15" Margin="2" />
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="imageCheckBox" Property="Source" Value="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\flag(white) (1).png" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="styleCustomCheckBox2" TargetType="{x:Type CheckBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image x:Name="imageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\check-mark.png" Width="15" Height="15" Margin="2" />
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="imageCheckBox" Property="Source" Value="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\circle-shape-outline.png" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+        <Grid Name="Grid1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="2*"/>
@@ -22,9 +60,9 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Name="MyStack" Grid.Column="0" >
-                            <CheckBox Margin="2" ></CheckBox>
-                            <RadioButton  Margin="2"></RadioButton>
-
+                            <CheckBox Margin="2"/>
+                            <CheckBox Style="{StaticResource styleCustomCheckBox2}"/>
+                            <CheckBox  Style="{StaticResource styleCustomCheckBox}"  />
                         </StackPanel>
                         <StackPanel Grid.Column="1">
                             <TextBlock Text="{Binding Author}" FontWeight="Bold" FontSize="13"/>

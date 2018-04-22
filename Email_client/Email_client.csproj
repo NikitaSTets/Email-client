@@ -167,6 +167,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -174,12 +175,12 @@
     <Resource Include="flag%28white%29.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\flag%28blue%29.png" />
-    <Resource Include="Resources\Images\flag%28white%29.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Images\flag%28blue%29 %281%29.png" />
     <Resource Include="Resources\Images\flag%28white%29 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\check-mark.png" />
+    <Resource Include="Resources\Images\circle-shape-outline.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
