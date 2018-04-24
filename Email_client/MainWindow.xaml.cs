@@ -42,6 +42,7 @@ namespace Email_client
                 throw;
             }
         }
+        //Do you want to send empty message?
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {

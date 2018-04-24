@@ -45,12 +45,12 @@
         </Style>
     </Window.Resources>
 
-    <Grid Name="Grid1">
+    <Grid x:Name="Grid1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="listBoxOfMessages" Grid.Column="0" ItemsSource="{Binding Messages}" IsSynchronizedWithCurrentItem="True" Margin="0,0,15,0">
+        <ListBox x:Name="listBoxOfMessages" SelectionMode="Extended" Grid.Column="0" ItemsSource="{Binding Messages}" IsSynchronizedWithCurrentItem="True" Margin="0,0,15,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Name="Grid2">

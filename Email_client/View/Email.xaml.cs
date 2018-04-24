@@ -13,50 +13,50 @@ namespace Email_client.View
 
     public partial class Email : Window
     {
-
+      ImapClient imap;
       public  ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
-     
+      private void ConnectToServer(string userName,string password)
+        {
+            ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+            imap = new ImapClient("imap.gmail.com");
+            
+                // Connect to mail server
+                imap.Connect();
+                imap.Authenticate(userName,password);
+                imap.SelectInbox();           
+        }
+        private void UpdateListOfMessages()
+        {
+            Messages.Clear();
+            IList<ImapMessageInfo> messageInfoCollection = imap.ListMessages();
+            MailMessage currentMessage;
+            string head = "<head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head>";
+            string text;
+            for (int i = 0; i < messageInfoCollection.Count; i++)
+            {
+                currentMessage = imap.GetMessage(messageInfoCollection[i].Uid);
+                text = currentMessage.BodyHtml;
+                if (text == null)
+                {
+                    text = currentMessage.BodyText;
+                }
+                currentMessage.BodyHtml = head + text;
+                if (currentMessage.BodyHtml != null)
+                {
+                    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyHtml));
+                }
+                else
+                {
+                    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyText));
+                }
+            }
+        }
         public Email()
         {
             InitializeComponent();
             DataContext = this;
-            ComponentInfo.SetLicense("FREE-LIMITED-KEY");
-            using (ImapClient imap = new ImapClient("imap.gmail.com"))
-            {
-                // Connect to mail server
-                imap.Connect();
-
-                imap.Authenticate("login", "password");
-                imap.SelectInbox();
-                
-                IList<ImapMessageInfo> messageInfoCollection=imap.ListMessages();
-
-                MailMessage currentMessage;
- 
-                string head = "<head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head>";
-                string text;
-                for (int i = 0; i < messageInfoCollection.Count; i++)
-                {
-                    currentMessage=imap.GetMessage(messageInfoCollection[i].Uid);
-                    text = currentMessage.BodyHtml;
-                    if (text == null)
-                    {
-                        text = currentMessage.BodyText;
-                    }
-                    currentMessage.BodyHtml = head+text;
-                    if (currentMessage.BodyHtml != null)
-                    {
-                        Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyHtml));
-                    }
-                    else
-                    {
-                        Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyText));
-                    }
-                }
-              
-
-            }
-            
+            ConnectToServer("user", "password");
+            UpdateListOfMessages();          
         }
 
      
@@ -71,29 +71,24 @@ namespace Email_client.View
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
-        {
-            using (ImapClient imap = new ImapClient("imap.gmail.com"))
-            {
-                // Connect to mail server
-                imap.Connect();
-
-                imap.Authenticate("login", "password");
-                imap.SelectInbox();
+        {           
                 IList<ImapMessageInfo> messagesInfo = imap.ListMessages();
                 var selectedMessages = listBoxOfMessages.SelectedItems;
-                
+                var arrayMessageForDelete = new List<int>();
                 foreach (MessageModel message in selectedMessages)
                 {
                     for (int i = 0; i < Messages.Count; i++)
                     {
-                        if (Messages[i] == message)
+                        if (Messages[i].Author == message.Author && Messages[i].DateTime == message.DateTime && Messages[i].Text == message.Text)
                         {
-                            //imap.DeleteMessage(messagesInfo[i].Uid, true);
-                            //Messages.RemoveAt(i);
+                            imap.DeleteMessage(messagesInfo[i].Uid, true);
+                            arrayMessageForDelete.Add(i);
                         }
                     }
                 }
+            UpdateListOfMessages();
             }
         }
-    }
+    
+    
 }
