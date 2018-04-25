@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Email" Height="526.684" Width="720.326">
     <Window.Resources>
-        <Style x:Key="styleCustomCheckBox" TargetType="{x:Type CheckBox}">
+        <Style x:Key="styleCustomCheckBoxFlag" TargetType="{x:Type CheckBox}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -26,16 +26,16 @@
             </Setter>
         </Style>
 
-        <Style x:Key="styleCustomCheckBox2" TargetType="{x:Type CheckBox}">
+        <Style x:Key="styleCustomCheckBoxCircle" TargetType="{x:Type CheckBox}">
             <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                <Setter.Value >
+                    <ControlTemplate TargetType="{x:Type CheckBox}" >
                         <StackPanel Orientation="Horizontal">
-                            <Image x:Name="imageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\check-mark.png" Width="15" Height="15" Margin="2" />
+                            <Image  x:Name="imageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\check-mark.png" Width="15" Height="15" Margin="2" />
                             <ContentPresenter VerticalAlignment="Center" />
                         </StackPanel>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="False">
+                            <Trigger  Property="IsChecked" Value="False">
                                 <Setter TargetName="imageCheckBox" Property="Source" Value="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\circle-shape-outline.png" />
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -50,22 +50,32 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="listBoxOfMessages" SelectionMode="Extended" Grid.Column="0" ItemsSource="{Binding Messages}" IsSynchronizedWithCurrentItem="True" Margin="0,0,15,0">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Name="Grid2">
+        <ListBox x:Name="listBoxOfMessages" HorizontalContentAlignment="Stretch"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 SelectionMode="Extended" Grid.Column="0" ItemsSource="{Binding Messages}" 
+                 IsSynchronizedWithCurrentItem="True" Margin="0,0,15,0"
+                 PreviewMouseDown="PlaceholdersListBox_OnPreviewMouseDown">
+            
+             <!--<ListBox.ItemContainerStyle>
+        <Style TargetType="{x:Type ListBoxItem}">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="listBoxOfMessages_MouseLeftButtonDown" />
+        </Style>
+    </ListBox.ItemContainerStyle>-->
+            <ListBox.ItemTemplate > 
+                <DataTemplate  >
+                    <Grid Name="Grid2" > 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition  />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Name="MyStack" Grid.Column="0" >
-                            <CheckBox Margin="2"/>
-                            <CheckBox Style="{StaticResource styleCustomCheckBox2}"/>
-                            <CheckBox  Style="{StaticResource styleCustomCheckBox}"  />
+                        <StackPanel Name="MyStack" Grid.Column="0"  >
+                            <CheckBox Margin="2" Name="SelectMessage" Click="SelectMessage_Click" Content="{Binding DateTime}"/>
+                            <CheckBox Name="CircleCheckBox" Click="CircleCheckBox_Click" Style="{StaticResource styleCustomCheckBoxCircle}"/>
+                            <CheckBox Name="FlagCheckBox" Click="FlagCheckBox_Click"  Style="{StaticResource styleCustomCheckBoxFlag}"  />
                         </StackPanel>
-                        <StackPanel Grid.Column="1">
-                            <TextBlock Text="{Binding Author}" FontWeight="Bold" FontSize="13"/>
+                        <StackPanel Grid.Column="1"  >
+                            <TextBlock Text="{Binding Author}"  FontWeight="Bold" FontSize="13"/>
                             <TextBlock Text="{Binding DateTime}" FontSize="11"/>
                         </StackPanel>
                     </Grid>
@@ -79,8 +89,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" >
-                <TextBlock Text="{Binding Messages/Author}"/>
+            <StackPanel Name="SenderInfoStackPanel" Orientation="Horizontal" >
+                <TextBlock Name="AuthorTextBlockInfo" Text="{Binding Messages/Author}"/>
                 <TextBlock Text="{Binding Messages/DateTime}" Margin="5,0,0,0"/>
             </StackPanel>
             <WebBrowser Language="" Name="WebBroserForShowMessage"  local:WebBrowserExtentions.Document="{Binding Messages/Text}"  HorizontalAlignment="Left" Height="435" VerticalAlignment="Top" Width="475" Grid.Row="1" Margin="0,22,0,0"/>

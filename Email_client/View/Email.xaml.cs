@@ -8,6 +8,11 @@ using Email_client.Model;
 using System.Text;
 using System.IO;
 using System.Windows.Interactivity;
+using MailBee.ImapMail;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Input;
+
 namespace Email_client.View
 {
 
@@ -23,7 +28,40 @@ namespace Email_client.View
                 // Connect to mail server
                 imap.Connect();
                 imap.Authenticate(userName,password);
-                imap.SelectInbox();           
+                imap.SelectInbox();
+            PrintToGreyNewMessages();          
+        }
+        private void PrintToGreyNewMessages()
+        {
+
+            IList<ImapMessageInfo> messagesInfo = imap.ListMessages();
+            bool isUnread;
+            IList<string> listOfUidUnreadMessages = new List<string>();
+            foreach (var item in messagesInfo)
+            {
+                isUnread = true;
+                foreach (var item1 in item.Flags)
+                {
+                    if (item1 == "\\Seen")
+                    {
+                        isUnread = false;
+                    }
+                }
+                if (!isUnread)
+                {
+                    listOfUidUnreadMessages.Add(item.Uid);
+                }
+              
+            }
+            foreach (var message in Messages)
+            {
+                foreach (var unreadMessage in  listOfUidUnreadMessages)
+                {
+                    //if ()
+                    //{ }
+                }
+            } 
+
         }
         private void UpdateListOfMessages()
         {
@@ -56,7 +94,8 @@ namespace Email_client.View
             InitializeComponent();
             DataContext = this;
             ConnectToServer("user", "password");
-            UpdateListOfMessages();          
+            UpdateListOfMessages();  
+                    
         }
 
      
@@ -88,7 +127,56 @@ namespace Email_client.View
                 }
             UpdateListOfMessages();
             }
+
+  
+
+        private void CircleCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
+
+        private void FlagCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void SelectMessage_Click(object sender, RoutedEventArgs e)
+        {
+            AuthorTextBlockInfo.Text = listBoxOfMessages.SelectedItems.Count.ToString();
+            var checkBox = (CheckBox)sender;
+            var container = FindParentOfType<ListBoxItem>(checkBox);
+            if(container!=null)
+            container.IsSelected = checkBox.IsChecked.Value;
+        }
+        static private T FindParentOfType<T>(FrameworkElement element) where T : FrameworkElement
+        {
+            while (element != null)
+            {
+
+                if (element is T)
+                {
+                    return (T)element;
+                }
+                element = (FrameworkElement)VisualTreeHelper.GetParent(element);
+            }
+            return null;
+        }
+
+   
+
+   
+        private void PlaceholdersListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = ItemsControl.ContainerFromElement(sender as ListBox, e.OriginalSource as DependencyObject) as ListBoxItem;
+            if (item != null)
+            {
+
+                
+                // ListBox item clicked - do some cool things here
+            }
+        }
+      
+    }
     
     
 }
