@@ -54,9 +54,10 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  SelectionMode="Extended" Grid.Column="0" ItemsSource="{Binding Messages}" 
                  IsSynchronizedWithCurrentItem="True" Margin="0,0,15,0"
-                 PreviewMouseDown="PlaceholdersListBox_OnPreviewMouseDown">
+                 PreviewMouseDown="PlaceholdersListBox_OnPreviewMouseDown"
+                >
             
-             <!--<ListBox.ItemContainerStyle>
+            <!--<ListBox.ItemContainerStyle>
         <Style TargetType="{x:Type ListBoxItem}">
                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="listBoxOfMessages_MouseLeftButtonDown" />
         </Style>
@@ -93,9 +94,11 @@
                 <TextBlock Name="AuthorTextBlockInfo" Text="{Binding Messages/Author}"/>
                 <TextBlock Text="{Binding Messages/DateTime}" Margin="5,0,0,0"/>
             </StackPanel>
-            <WebBrowser Language="" Name="WebBroserForShowMessage"  local:WebBrowserExtentions.Document="{Binding Messages/Text}"  HorizontalAlignment="Left" Height="435" VerticalAlignment="Top" Width="475" Grid.Row="1" Margin="0,22,0,0"/>
+            <WebBrowser  Language="" Name="WebBroserForShowMessage"  local:WebBrowserExtentions.Document="{Binding Messages/Text}"  HorizontalAlignment="Left" Height="435" VerticalAlignment="Top" Width="475" Grid.Row="1" Margin="0,22,0,0"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="22" Grid.Row="1" VerticalAlignment="Top" Width="475">
                 <Button x:Name="Delete" Content="Delete" Width="81" Click="Delete_Click"/>
+                <Button x:Name="button" Content="All select" Width="75"/>
+                <Button x:Name="button1" Content="Seen" Width="75"/>
             </StackPanel>
 
             <!--<TextBlock  Grid.Row="1" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">

@@ -5,10 +5,6 @@ using GemBox.Email;
 using GemBox.Email.Imap;
 using System.Collections.ObjectModel;
 using Email_client.Model;
-using System.Text;
-using System.IO;
-using System.Windows.Interactivity;
-using MailBee.ImapMail;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Input;
@@ -18,9 +14,10 @@ namespace Email_client.View
 
     public partial class Email : Window
     {
-      ImapClient imap;
-      public  ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
-      private void ConnectToServer(string userName,string password)
+        ImapClient imap;
+        IList<CheckBox> checkBoxs = new List<CheckBox>();
+        public  ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
+        private void ConnectToServer(string userName,string password)
         {
             ComponentInfo.SetLicense("FREE-LIMITED-KEY");
             imap = new ImapClient("imap.gmail.com");
@@ -50,6 +47,8 @@ namespace Email_client.View
                 if (!isUnread)
                 {
                     listOfUidUnreadMessages.Add(item.Uid);
+
+                 //   imap.AddMessageFlags(item.Uid, ImapMessageFlags.);
                 }
               
             }
@@ -57,7 +56,7 @@ namespace Email_client.View
             {
                 foreach (var unreadMessage in  listOfUidUnreadMessages)
                 {
-                    //if ()
+                    //if (messag==)
                     //{ }
                 }
             } 
@@ -93,25 +92,21 @@ namespace Email_client.View
         {
             InitializeComponent();
             DataContext = this;
-            ConnectToServer("user", "password");
-            UpdateListOfMessages();  
-                    
-        }
-
-     
+            ConnectToServer("nikitstets@gmail.com", "StackCorporation");
+            UpdateListOfMessages();
+        }     
         private void flagTextBlock_Loaded(object sender, RoutedEventArgs e)
         {
 
-        }
-
+        }      
         private void WebBrowser_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
 
         }
-
         private void Delete_Click(object sender, RoutedEventArgs e)
-        {           
-                IList<ImapMessageInfo> messagesInfo = imap.ListMessages();
+        {
+              
+                IList<ImapMessageInfo> messagesInfo = imap.ListMessages();                           
                 var selectedMessages = listBoxOfMessages.SelectedItems;
                 var arrayMessageForDelete = new List<int>();
                 foreach (MessageModel message in selectedMessages)
@@ -126,23 +121,28 @@ namespace Email_client.View
                     }
                 }
             UpdateListOfMessages();
-            }
-
-  
-
+            }  
+         //unread
         private void CircleCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            
-        }
+            var checkBox = (CheckBox)sender;
+            var container = FindParentOfType<ListBoxItem>(checkBox);
+            if (container != null)
+                container.IsSelected = checkBox.IsChecked.Value;
+            var listMessages = imap.ListMessages();//make more global
 
+            for (int i = 0; i < listMessages.Count; i++)//Не все!!!!
+            {
+                imap.AddMessageFlags(listMessages[i].Uid, ImapMessageFlags.Seen);
+            }
+        }
         private void FlagCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            
+            var checkBox = (CheckBox)sender;
+            //v 
         }
-
         private void SelectMessage_Click(object sender, RoutedEventArgs e)
-        {
-            AuthorTextBlockInfo.Text = listBoxOfMessages.SelectedItems.Count.ToString();
+        {       
             var checkBox = (CheckBox)sender;
             var container = FindParentOfType<ListBoxItem>(checkBox);
             if(container!=null)
@@ -161,21 +161,54 @@ namespace Email_client.View
             }
             return null;
         }
+        static private T FindChildOfType<T>(FrameworkElement element) where T : FrameworkElement
+        {
+            
+            while (element != null)
+            {
 
-   
+                if (element is T)
+                {
+                    return (T)element;
+                }
+                element = (FrameworkElement)VisualTreeHelper.GetChild(element,0);
+            }
+            return null;
+        }
+        static public void EnumVisual(Visual myVisual)
+        {
+            
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(myVisual); i++)
+            {
+                // Retrieve child visual at specified index value.
+                Visual childVisual = (Visual)VisualTreeHelper.GetChild(myVisual, i);
 
-   
+                if (childVisual is CheckBox)
+                {
+                    ((CheckBox)childVisual).IsChecked = false;
+                }
+                // Do processing of the child visual object.
+
+                // Enumerate children of the child visual object.
+                EnumVisual(childVisual);
+            }
+            
+        }
         private void PlaceholdersListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+           
             var item = ItemsControl.ContainerFromElement(sender as ListBox, e.OriginalSource as DependencyObject) as ListBoxItem;
             if (item != null)
             {
 
-                
                 // ListBox item clicked - do some cool things here
+               
+             //  EnumVisual(item);
+                
+                
+               // VisualTreeHelper.GetChild(sender);
             }
-        }
-      
+        }    
     }
     
     

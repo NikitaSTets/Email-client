@@ -7,6 +7,8 @@ using Email_client.View;
 using Email_client.Model;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using System.Threading;
+using Email_client.ViewModel;
 
 namespace Email_client
 { 
@@ -20,8 +22,10 @@ namespace Email_client
         public MainWindow()
         {
             InitializeComponent();
-          emails = new Email();
+            emails = new Email();
+            //Closing += viewModel.OnWindowClosing;
         }
+
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
@@ -83,9 +87,8 @@ namespace Email_client
         }
 
         private void GetEmailsButton_Click(object sender, RoutedEventArgs e)
-        {
-            
-            emails.Show();
+        {            
+            emails.Show();          
         }
     }
 }

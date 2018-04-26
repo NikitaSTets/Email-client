@@ -6,20 +6,47 @@
         xmlns:local="clr-namespace:Email_client"
         mc:Ignorable="d"
         Title="Email client" Height="526.684" Width="720.326">
+    <Window.Resources>
+        <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <Border Background="White" BorderBrush="#FF7D8683" BorderThickness="1"/>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,0,0,0" VerticalAlignment="Center" />
+                            <Label Margin="5,0,0,0" x:Name="WaterMarkLabel" Content="{TemplateBinding Tag}" VerticalAlignment="Center"
+                               Visibility="Collapsed" Foreground="Gray" FontFamily="Italic"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Text" Value=""/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="WaterMarkLabel" Value="Visible"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="DimGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid Background="#335a75" Margin="0,0,2,0">
         <GroupBox x:Name="fromGroupBox" Foreground="White" Header="From" HorizontalAlignment="Left" Margin="44,10,0,0" VerticalAlignment="Top" Height="115" Width="313">
             <Grid HorizontalAlignment="Left" Height="97" VerticalAlignment="Top" Width="303" Margin="0,0,-2,-4">
-                <TextBox x:Name="fromEmailTextBox" HorizontalAlignment="Left" Height="23"  VerticalAlignment="Top" Width="145" Margin="148,7,0,0" />
+                <TextBox Style="{StaticResource MyWaterMarkStyle}" Tag="Input email"  x:Name="fromEmailTextBox" HorizontalAlignment="Left" Height="23"  VerticalAlignment="Top" Width="145" Margin="148,7,0,0" />
                 <Label Foreground="White" x:Name="fromEmailLabel" Content="E-mail:" HorizontalAlignment="Left" Margin="37,7,0,0" VerticalAlignment="Top" Width="55"/>
                 <Label Foreground="White" x:Name="fromPasswordLabel" Content="Password:" HorizontalAlignment="Left" Margin="36,35,0,0" VerticalAlignment="Top" Width="107"/>
                 <CheckBox Foreground="White" x:Name="saveLoginAndPasswordCheckBox" Content="Save login and password" HorizontalAlignment="Left" Margin="37,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.191,-0.604" />
-                <PasswordBox  x:Name="fromPasswordTextBox" HorizontalAlignment="Left" Margin="148,41,0,0" VerticalAlignment="Top" Width="145"/>
+                <PasswordBox x:Name="fromPasswordTextBox"  HorizontalAlignment="Left" Margin="148,41,0,0" VerticalAlignment="Top" Width="145"/>
             </Grid>
         </GroupBox>
         <GroupBox x:Name="toGroupBox" Header="To" Foreground="White" HorizontalAlignment="Left" Margin="44,148,0,0" VerticalAlignment="Top" Height="84" Width="313">
             <Grid HorizontalAlignment="Left" Height="66" Margin="0,0,-2,-4" VerticalAlignment="Top" Width="303">
                 <Label Foreground="White" x:Name="toEmailLabel" Content="E-mail:" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top"/>
-                <TextBox x:Name="toEmailTextBox" HorizontalAlignment="Left" Height="23" Margin="87,19,-49,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206"/>
+                <TextBox x:Name="toEmailTextBox" Style="{StaticResource MyWaterMarkStyle}" Tag="Input email" HorizontalAlignment="Left" Height="23" Margin="87,19,-49,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206"/>
             </Grid>
         </GroupBox>
         <GroupBox x:Name="clientParametrsGroupBox" Foreground="White" Header="Client parametrs" HorizontalAlignment="Left" Margin="44,277,0,0" VerticalAlignment="Top" Height="178" Width="313" RenderTransformOrigin="0.492,0.918">
@@ -27,11 +54,11 @@
                 <Label  x:Name="clientParametrsPortLabel"  Foreground="White" Content="Port" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.079,0.308"/>
                 <CheckBox x:Name="clientParametrsProtocolSSICheckBox" Foreground="White"  Content="Enable SSl" HorizontalAlignment="Left" Margin="144,79,0,0" VerticalAlignment="Top" />
                 <ComboBox x:Name="clientParametrsNetworkProtocolComboBox" Foreground="White" HorizontalAlignment="Left" Margin="144,105,0,0" VerticalAlignment="Top" Width="149"/>
-                <TextBox x:Name="clientParametrsPortTextBox" HorizontalAlignment="Left" Height="23" Margin="144,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="149" />
+                <TextBox x:Name="clientParametrsPortTextBox" Style="{StaticResource MyWaterMarkStyle}" Tag="Input port" HorizontalAlignment="Left" Height="23" Margin="144,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="149" />
                 <Label x:Name="clientParametrsProtocolSSIlabel" Foreground="White" Content="Protocol SSl" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="clientParametrsNetworkingProtocolSSIlabel" Foreground="White" Content="Networking protocol" HorizontalAlignment="Left" Margin="10,105,0,-8" VerticalAlignment="Top"/>
                 <Label x:Name="clientParametrsSmtpServerLabel" Foreground="White" Content="Smtp server" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top"/>
-                <TextBox x:Name="clientParametrsSmtpServerTextBox" HorizontalAlignment="Left" Height="23" Margin="144,48,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="149"/>
+                <TextBox x:Name="clientParametrsSmtpServerTextBox" Style="{StaticResource MyWaterMarkStyle}" Tag="Input smtp server" HorizontalAlignment="Left" Height="23" Margin="144,48,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="149"/>
             </Grid>
         </GroupBox>
         <StackPanel HorizontalAlignment="Left" Height="377" Margin="411,21,0,0" VerticalAlignment="Top" Width="280" RenderTransformOrigin="0.5,0.5">
@@ -44,7 +71,7 @@
                 </TransformGroup>
             </StackPanel.RenderTransform>
             <Label x:Name="topicLabel" Foreground="White" Content="Topic" Height="29"/>
-            <TextBox x:Name="topicTextBox" Height="23" TextWrapping="Wrap" />
+            <TextBox x:Name="topicTextBox" Style="{StaticResource MyWaterMarkStyle}" Tag="Input topic" Height="23" TextWrapping="Wrap" />
             <Label x:Name="contentOfMessgeLabel" Foreground="White" Content="Content of message"/>
             <TextBox x:Name="contentOfMessageSubHeaderText" 
                    Height="150" 
@@ -64,7 +91,6 @@
         </StackPanel>
         <Button x:Name="sendButton" Content="Send" HorizontalAlignment="Left" Margin="397,399,0,0" VerticalAlignment="Top" Width="121" Height="56" Click="sendButton_Click"/>
         <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="580,399,0,0" VerticalAlignment="Top" Width="120" Height="56"/>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="539,466,0,0" VerticalAlignment="Top" Width="75" Click="GetEmailsButton_Click"/>
-        <ToolBar x:Name="toolBar" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button x:Name="button" Content="Shom email" HorizontalAlignment="Left" VerticalAlignment="Top" Width="84" Click="GetEmailsButton_Click" Height="22" Margin="626,0,0,0"/>
     </Grid>
 </Window>
