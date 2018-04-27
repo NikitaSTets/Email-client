@@ -35,7 +35,7 @@ namespace Email_client
                 ofAttachment = new OpenFileDialog();
                 ofAttachment.Filter = "Images(.jpg,.png)|*.png;*.jpg;|Pdf Files|*.pdf";
                 Nullable<bool> result = ofAttachment.ShowDialog();
-                if (result==true)
+                if (result == true)
                 {
                     fileName = ofAttachment.FileName;
                 }
@@ -57,7 +57,7 @@ namespace Email_client
                 SmtpClient clientDetails = new SmtpClient();
                 clientDetails.Port = Convert.ToInt32(clientParametrsPortTextBox.Text.Trim());
                 clientDetails.Host = clientParametrsSmtpServerTextBox.Text.Trim();
-                Nullable<bool> result = clientParametrsProtocolSSICheckBox.IsChecked;
+                bool? result = clientParametrsProtocolSSICheckBox.IsChecked;
                 clientDetails.EnableSsl = result.Value;//?????
                 clientDetails.DeliveryMethod = SmtpDeliveryMethod.Network;
                 clientDetails.UseDefaultCredentials = false;

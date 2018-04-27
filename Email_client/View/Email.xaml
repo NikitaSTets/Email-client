@@ -71,7 +71,7 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Name="MyStack" Grid.Column="0"  >
-                            <CheckBox Margin="2" Name="SelectMessage" Click="SelectMessage_Click" Content="{Binding DateTime}"/>
+                            <CheckBox Margin="2" Name="SelectMessage" Click="SelectMessage_Click" />
                             <CheckBox Name="CircleCheckBox" Click="CircleCheckBox_Click" Style="{StaticResource styleCustomCheckBoxCircle}"/>
                             <CheckBox Name="FlagCheckBox" Click="FlagCheckBox_Click"  Style="{StaticResource styleCustomCheckBoxFlag}"  />
                         </StackPanel>

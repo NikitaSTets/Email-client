@@ -25,7 +25,6 @@ C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_c
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\MailBee.NET.xml
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\MailKit.xml
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\MimeKit.xml
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.csprojResolveAssemblyReference.cache
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\EO.Base.dll
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\EO.WebBrowser.dll
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\EO.WebBrowser.Wpf.dll
@@ -39,3 +38,4 @@ C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_c
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\Microsoft.Expression.Interactions.xml
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\System.Windows.Interactivity.xml
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.csprojResolveAssemblyReference.cache

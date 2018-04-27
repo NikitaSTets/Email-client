@@ -24,15 +24,14 @@ namespace Email_client.View
             
                 // Connect to mail server
                 imap.Connect();
-                imap.Authenticate(userName,password);
+                imap.Authenticate(userName, password);
                 imap.SelectInbox();
-            PrintToGreyNewMessages();          
         }
-        private void PrintToGreyNewMessages()
+        private void SetGreyColor()
         {
-
             IList<ImapMessageInfo> messagesInfo = imap.ListMessages();
             bool isUnread;
+            int i = 0;
             IList<string> listOfUidUnreadMessages = new List<string>();
             foreach (var item in messagesInfo)
             {
@@ -42,24 +41,17 @@ namespace Email_client.View
                     if (item1 == "\\Seen")
                     {
                         isUnread = false;
+                        break;
                     }
                 }
-                if (!isUnread)
+                if (isUnread)
                 {
-                    listOfUidUnreadMessages.Add(item.Uid);
-
+                    // listOfUidUnreadMessages.Add(item.Uid);
+                    Messages[i].Color = "Aqua";
                  //   imap.AddMessageFlags(item.Uid, ImapMessageFlags.);
                 }
-              
+                i++;
             }
-            foreach (var message in Messages)
-            {
-                foreach (var unreadMessage in  listOfUidUnreadMessages)
-                {
-                    //if (messag==)
-                    //{ }
-                }
-            } 
 
         }
         private void UpdateListOfMessages()
@@ -80,20 +72,22 @@ namespace Email_client.View
                 currentMessage.BodyHtml = head + text;
                 if (currentMessage.BodyHtml != null)
                 {
-                    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyHtml));
+                    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyHtml,messageInfoCollection[i].Uid));
                 }
                 else
                 {
-                    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyText));
+                    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyText, messageInfoCollection[i].Uid));
                 }
             }
         }
         public Email()
         {
+
             InitializeComponent();
             DataContext = this;
-            ConnectToServer("nikitstets@gmail.com", "StackCorporation");
+            ConnectToServer("userName", "password");
             UpdateListOfMessages();
+            SetGreyColor();
         }     
         private void flagTextBlock_Loaded(object sender, RoutedEventArgs e)
         {
@@ -104,8 +98,7 @@ namespace Email_client.View
 
         }
         private void Delete_Click(object sender, RoutedEventArgs e)
-        {
-              
+        {             
                 IList<ImapMessageInfo> messagesInfo = imap.ListMessages();                           
                 var selectedMessages = listBoxOfMessages.SelectedItems;
                 var arrayMessageForDelete = new List<int>();
@@ -127,14 +120,25 @@ namespace Email_client.View
         {
             var checkBox = (CheckBox)sender;
             var container = FindParentOfType<ListBoxItem>(checkBox);
-            if (container != null)
-                container.IsSelected = checkBox.IsChecked.Value;
-            var listMessages = imap.ListMessages();//make more global
+            //if (container != null)
+            //    container.IsSelected = checkBox.IsChecked.Value;
 
-            for (int i = 0; i < listMessages.Count; i++)//Не все!!!!
+            var messages=listBoxOfMessages.SelectedItems;
+            if (container != null)
             {
-                imap.AddMessageFlags(listMessages[i].Uid, ImapMessageFlags.Seen);
+                int i = 0;
+                while (i<messages.Count)
+                {
+                    imap.RemoveMessageFlags(((MessageModel)messages[i]).Uid, ImapMessageFlags.Seen);
+                    i++;
+                }
             }
+            //var listMessages = imap.ListMessages();//make more global
+
+            //for (int i = 0; i < listMessages.Count; i++)//Не все!!!!
+            //{
+            //    imap.AddMessageFlags(listMessages[i].Uid, ImapMessageFlags.Seen);
+            //}
         }
         private void FlagCheckBox_Click(object sender, RoutedEventArgs e)
         {
@@ -201,12 +205,6 @@ namespace Email_client.View
             if (item != null)
             {
 
-                // ListBox item clicked - do some cool things here
-               
-             //  EnumVisual(item);
-                
-                
-               // VisualTreeHelper.GetChild(sender);
             }
         }    
     }
