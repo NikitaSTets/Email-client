@@ -12,17 +12,17 @@ using Email_client.ViewModel;
 
 namespace Email_client
 { 
-    public partial class MainWindow : Window
+    public partial class SMTPWindow : Window
     {
         OpenFileDialog ofAttachment;
         string fileName;
         Email emails;
 
 
-        public MainWindow()
+        public SMTPWindow()
         {
             InitializeComponent();
-            emails = new Email();
+            //emails = new Email();
             //Closing += viewModel.OnWindowClosing;
         }
 

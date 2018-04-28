@@ -72,11 +72,11 @@ namespace Email_client.View
                 currentMessage.BodyHtml = head + text;
                 if (currentMessage.BodyHtml != null)
                 {
-                    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyHtml,messageInfoCollection[i].Uid));
+                    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyHtml,currentMessage.BodyText,messageInfoCollection[i].Uid));
                 }
                 else
                 {
-                    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyText, messageInfoCollection[i].Uid));
+                    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyText, currentMessage.BodyText, messageInfoCollection[i].Uid));
                 }
             }
         }
