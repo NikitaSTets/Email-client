@@ -43,6 +43,14 @@
       <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EO.Base, Version=18.1.41.0, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
       <HintPath>..\packages\EO.WebBrowser.18.1.41\lib\EO.Base.dll</HintPath>
       <Private>True</Private>
@@ -85,8 +93,10 @@
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
@@ -110,7 +120,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Main.xaml.cs">
+    <Compile Include="Migrations\201805011231308_InitialCreate.cs" />
+    <Compile Include="Migrations\201805011231308_InitialCreate.Designer.cs">
+      <DependentUpon>201805011231308_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805011349088_add typename for Login.cs" />
+    <Compile Include="Migrations\201805011349088_add typename for Login.Designer.cs">
+      <DependentUpon>201805011349088_add typename for Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\IRepository.cs" />
+    <Compile Include="Model\UnitOfWork.cs" />
+    <Compile Include="Model\UsersContext.cs" />
+    <Compile Include="Model\UsersInfo.cs" />
+    <Compile Include="Model\UsersInfoRepository.cs" />
+    <Compile Include="View\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\MessageModel.cs" />
@@ -120,11 +144,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ViewModel.cs" />
+    <Compile Include="Authentication.xaml.cs">
+      <DependentUpon>Authentication.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Email.xaml.cs">
       <DependentUpon>Email.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\WebBrowserExtentions.cs" />
-    <Page Include="Main.xaml">
+    <Page Include="View\Main.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Authentication.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -168,6 +198,12 @@
     <Resource Include="Resources\Images\Logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201805011231308_InitialCreate.resx">
+      <DependentUpon>201805011231308_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805011349088_add typename for Login.resx">
+      <DependentUpon>201805011349088_add typename for Login.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -188,6 +224,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\update.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\login.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

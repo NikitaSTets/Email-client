@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\App.xaml
-31307599595
+433973588
 
-10941785868
-29-740183492
-Main.xaml;View\SMTPWindow.xaml;View\Email.xaml;
+20-1597257684
+33-1226206696
+View\Main.xaml;Authentication.xaml;View\SMTPWindow.xaml;View\Email.xaml;
 
 False
 

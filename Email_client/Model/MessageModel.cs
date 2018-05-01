@@ -11,15 +11,15 @@ namespace Email_client.Model
         public DateTime DateTime { get; set; }
         public string Text { get; set; }
         public string TextHTML { get; set; }
-        public string Color { get; set; }
+       // public string Color { get; set; }
         public string Uid { get; }
-        //public string Color
-        //{
-        //    get { return (string)GetValue(ColorProperty); }
-        //    set { SetValue(ColorProperty, value); }
-        //}
-        //public static readonly DependencyProperty ColorProperty =
-        //    DependencyProperty.Register("Color", typeof(string), typeof(MessageModel), new UIPropertyMetadata("White"));
+        public string Color
+        {
+            get { return (string)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("Color", typeof(string), typeof(MessageModel), new UIPropertyMetadata(""));
         public bool Select
         {
             get { return (bool)GetValue(SelectProperty); }
@@ -35,7 +35,7 @@ namespace Email_client.Model
             TextHTML = textHTML;
             Text = text;
             this.Uid = Uid;
-            Color = "Red";
+            Color = "White";
             Select = false;
         }
     }

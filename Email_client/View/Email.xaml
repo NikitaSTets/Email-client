@@ -94,7 +94,8 @@
                 <TextBlock Name="AuthorTextBlockInfo" Text="{Binding Messages/Author}"/>
                 <TextBlock Text="{Binding Messages/DateTime}" Margin="5,0,0,0"/>
             </StackPanel>
-            <WebBrowser  Language="" Name="WebBroserForShowMessage"   local:WebBrowserExtentions.Document="{Binding Messages/Text}"  HorizontalAlignment="Left" Height="435" VerticalAlignment="Top" Width="475" Grid.Row="1" Margin="0,22,0,0"/>
+            <WebBrowser  Language="" Name="WebBroserForShowMessage"     HorizontalAlignment="Left" Height="435" VerticalAlignment="Top" Width="475" Grid.Row="1" Margin="0,22,0,0"/>
+            <!--local:WebBrowserExtentions.Document="{Binding Messages/Text}"-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="22" Grid.Row="1" VerticalAlignment="Top" Width="475">
                 <Button x:Name="Delete" Content="Delete" Width="81" Click="Delete_Click"/>
                 <Button x:Name="button" Content="All select" Width="75"/>

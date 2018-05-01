@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/images/gmail_logo_png3%20(1).png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("model/usersdb.tt")]
 
 
