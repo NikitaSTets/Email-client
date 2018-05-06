@@ -4,3 +4,6 @@ c:\users\никита\documents\visual studio 2015\Projects\MySMTP\MySMTP\bin\De
 c:\users\никита\documents\visual studio 2015\Projects\MySMTP\MySMTP\obj\Debug\MySMTP.csprojResolveAssemblyReference.cache
 c:\users\никита\documents\visual studio 2015\Projects\MySMTP\MySMTP\obj\Debug\MySMTP.exe
 c:\users\никита\documents\visual studio 2015\Projects\MySMTP\MySMTP\obj\Debug\MySMTP.pdb
+C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\MySMTP\MySMTP\bin\Debug\MySMTP.exe.config
+C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\MySMTP\MySMTP\obj\Debug\MySMTP.exe
+C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\MySMTP\MySMTP\obj\Debug\MySMTP.pdb
