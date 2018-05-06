@@ -120,12 +120,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SMTP\Constants.cs" />
-    <Compile Include="SMTP\ControlStreamReader.cs" />
-    <Compile Include="SMTP\DefaultTlsProvider.cs" />
-    <Compile Include="SMTP\EmailFormatter.cs" />
-    <Compile Include="SMTP\ITlsProvider.cs" />
-    <Compile Include="SMTP\Mechanism.cs" />
     <Compile Include="Migrations\201805011231308_InitialCreate.cs" />
     <Compile Include="Migrations\201805011231308_InitialCreate.Designer.cs">
       <DependentUpon>201805011231308_InitialCreate.cs</DependentUpon>
@@ -140,14 +134,6 @@
     <Compile Include="Model\UsersContext.cs" />
     <Compile Include="Model\UsersInfo.cs" />
     <Compile Include="Model\UsersInfoRepository.cs" />
-    <Compile Include="SMTP\PlainMechanism.cs" />
-    <Compile Include="SMTP\ProxyBase.cs" />
-    <Compile Include="SMTP\SmtpCommands.cs" />
-    <Compile Include="SMTP\SmtpConnection.cs" />
-    <Compile Include="SMTP\SmtpControlStreamReader.cs" />
-    <Compile Include="SMTP\SmtpException.cs" />
-    <Compile Include="SMTP\SmtpReplyCode.cs" />
-    <Compile Include="SMTP\SmtpServerReply.cs" />
     <Compile Include="View\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
