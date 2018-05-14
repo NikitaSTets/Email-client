@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using GemBox.Email;
-using GemBox.Email.Imap;
+//using GemBox.Email;
+//using GemBox.Email.Imap;
 using System.Collections.ObjectModel;
 using Email_client.Model;
 using System.Windows.Controls;
@@ -10,23 +10,34 @@ using System.Windows.Input;
 using Email_client.ViewModel;
 using Email_client.View;
 using System;
+using IMAP;
 
 namespace Email_client
 {
 
     public partial class Main : Window
     {
-        ImapClient imap;
+        ImapControl imap;
         SMTPWindow smtpWindow;
         public ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
         public ObservableCollection<MessageModel> MessagesTemp { get; set; } = new ObservableCollection<MessageModel>();
-        public Main()
+
+        public void CreateSMTPWIndowAndConnectToServer(string userName,string password)
         {
-            InitializeComponent();
             smtpWindow = new SMTPWindow();
             ViewModel.ViewModel.ConnectToServer(ref imap, "nikitstets@gmail.com", "StackCorporation");
             ViewModel.ViewModel.UpdateListOfMessages(Messages, imap);
             ShowMessagesDataGrid.ItemsSource = Messages;
+        }
+
+        public Main()
+        {
+            InitializeComponent();
+            CreateSMTPWIndowAndConnectToServer("das","dsa");//after test will kick
+           // smtpWindow = new SMTPWindow();
+            //ViewModel.ViewModel.ConnectToServer(ref imap, "nikitstets@gmail.com", "StackCorporation");
+            //ViewModel.ViewModel.UpdateListOfMessages(Messages, imap);
+            //ShowMessagesDataGrid.ItemsSource = Messages;
         }
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

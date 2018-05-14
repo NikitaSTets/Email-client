@@ -1,7 +1,6 @@
 c:\users\никита\documents\visual studio 2015\Projects\Email_client\Email_client\bin\Debug\Email_client.exe.config
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\Email_client.exe
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\Email_client.pdb
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\ImapX.dll
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\App.g.cs
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client_MarkupCompile.cache
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client_MarkupCompile.lref
@@ -12,17 +11,6 @@ C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_c
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.pdb
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Email.g.cs
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Email.baml
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\GemBox.Email.dll
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\GemBox.Email.xml
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\AE.Net.Mail.dll
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\BouncyCastle.Crypto.dll
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\MailBee.NET.dll
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\MailKit.dll
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\MimeKit.dll
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\AE.Net.Mail.pdb
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\MailBee.NET.xml
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\MailKit.xml
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\MimeKit.xml
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\EO.Base.dll
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\EO.WebBrowser.dll
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\EO.WebBrowser.Wpf.dll
@@ -38,8 +26,6 @@ C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_c
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.csprojResolveAssemblyReference.cache
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\SMTPWindow.g.cs
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\SMTPWindow.baml
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Authentication.g.cs
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Authentication.baml
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Main.g.cs
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Main.baml
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\EntityFramework.dll
@@ -48,3 +34,5 @@ C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_c
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.Migrations.InitialCreate.resources
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.Migrations.addtypenameforLogin.resources
+C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Authentication.g.cs
+C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Authentication.baml

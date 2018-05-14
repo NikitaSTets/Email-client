@@ -5,8 +5,8 @@ namespace Email_client.Model
 {
     public class MessageModel:DependencyObject
     {
-       
-
+        
+        public string Subject { get; set; }       
         public string Author { get; set; }
         public DateTime DateTime { get; set; }
         public string Text { get; set; }
