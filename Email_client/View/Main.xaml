@@ -8,32 +8,32 @@
         mc:Ignorable="d"
         Title="Main"  Height="526.684" Width="720.326">
     <Window.Resources>
-            <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type TextBox}">
-                            <Grid>
-                                <Border Background="White" BorderBrush="#FF7D8683" BorderThickness="1"/>
-                                <ScrollViewer x:Name="PART_ContentHost" Margin="5,0,0,0" VerticalAlignment="Center" />
-                                <Label Margin="5,0,0,0" x:Name="WaterMarkLabel" Content="{TemplateBinding Tag}" VerticalAlignment="Center"
+        <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <Border Background="White" BorderBrush="#FF7D8683" BorderThickness="1"/>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,0,0,0" VerticalAlignment="Center" />
+                            <Label Margin="5,0,0,0" x:Name="WaterMarkLabel" Content="{TemplateBinding Tag}" VerticalAlignment="Center"
                                Visibility="Collapsed" Foreground="Gray" FontFamily="Italic"/>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <MultiTrigger>
-                                    <MultiTrigger.Conditions>
-                                        <Condition Property="Text" Value=""/>
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="Visibility" TargetName="WaterMarkLabel" Value="Visible"/>
-                                </MultiTrigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Foreground" Value="DimGray"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Text" Value=""/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="WaterMarkLabel" Value="Visible"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="DimGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="styleCustomCheckBoxFlag" TargetType="{x:Type CheckBox}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -414,10 +414,10 @@
         <Image x:Name="imageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\Logo.png" Margin="23,5,41,10" />
         <Button x:Name="ButtonForSendMessage" Content="Написать" HorizontalAlignment="Left" Margin="23,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" Height="31" Click="ButtonForSendMessage_Click"/>
         <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="114" Margin="23,60,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120">
-            <Label x:Name="Incoming" Content="Входящие" Width="110"/>
-            <Label x:Name="Starred" Content="Помеченные" Width="110"/>
-            <Label x:Name="Sent" Content="Отправленные" Width="110"/>
-            <Label x:Name="Drafts" Content="Черновики" Width="110"/>
+            <Label x:Name="Incoming" Content="Входящие" MouseDown="Incoming_OnMouseDown" Width="110"/>
+            <Label x:Name="Starred" Content="Помеченные" MouseDown="FlaggedMessageLabel_OnMouseDown" Width="110"/>
+            <Label x:Name="SentedMessagesLabel" Content="Отправленные" MouseDown="SentedMessagesLabel_OnMouseDown" Width="110"/>
+            <Label x:Name="DraftsMessagesLabel" Content="Черновики" MouseDown="DraftsMessagesLabel_OnMouseDown"  Width="110"/>
         </ListBox>
         <StackPanel  Grid.Column="1" Margin="30,0,0,0" Orientation="Horizontal"  Height="68" VerticalAlignment="Top" Grid.RowSpan="2">
 
@@ -425,13 +425,14 @@
                 <Label MouseDown="AllLabel_MouseDown" Name="AllLabel"  Content="Все" Width="110"/>
                 <Label Name="NoOneLabel"  MouseDown="NoOneLabel_MouseDown" Content="Ни одного" Width="110"/>
                 <Label Name="ReadMessageLabel" MouseDown="ReadMessageLabel_MouseDown" Content="Прочитанные" Width="110"/>
-                <Label Name="UnreadMessageLabel" MouseDown="UnreadMessageLabel_MouseDown" Content="Непрчитанные" Width="110"/>
-                <Label  Content="Помеченные" Width="110"/>
-                <Label  Content="Без меток" Width="110"/>
+                <Label Name="UnreadMessageLabel" MouseDown="UnreadMessageLabel_MouseDown" Content="Непрочитанные" Width="110"/>
+                <Label Name="FlaggedMessageLabel" MouseDown="FlaggedMessageLabel_OnMouseDown" Content="Помеченные" Width="110"/>
+                <Label Name="UnFlaggedMessageLabel" MouseDown="UnFlaggedMessageLabel_OnMouseDown"  Content="Без меток" Width="110"/>
             </ComboBox>
             <Button x:Name="Update" Content="Button" Width="95" Margin="30,10,30,10" Style="{DynamicResource ButtonStyle1}" Click="Update_Click" />
             <ComboBox x:Name="comboBox"  Width="95"  Margin="30,10,0,10" Style="{DynamicResource ComboBoxStyle2}">
                 <Label Name="UnreadMessagesLabel"  Content="Отметить как непрочитанные" Width="173" MouseDown="UnreadMessagesLabel_MouseDown" />
+                <Label Name="DeleteMessagesLabel"  Content="Удалить отмеченные" Width="173" MouseDown= "DeleteMessagesLabel_OnMouseDown" />
             </ComboBox>
 
         </StackPanel>

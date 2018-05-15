@@ -1,11 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace Email_client.Model
 {
     public class MessageModel:DependencyObject
     {
-        
+        public List<string> Flags { get; set;}
+
+        public bool AddFlag(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+                return false;
+            if (Flags == null)
+                Flags = new List<string>();
+            Flags.Add(flag);
+            return true;
+        }
         public string Subject { get; set; }       
         public string Author { get; set; }
         public DateTime DateTime { get; set; }
@@ -28,7 +39,7 @@ namespace Email_client.Model
         public static readonly DependencyProperty SelectProperty =
             DependencyProperty.Register("Select", typeof(bool), typeof(MessageModel), new UIPropertyMetadata(false));
         // public bool Select { get; set; }
-        public MessageModel(string author,DateTime date,string textHTML,string text,string Uid)
+        public MessageModel(string author,DateTime date,string textHTML,string text,string Uid,List<string> flags)
         {
             Author = author;
             DateTime = date;
@@ -37,6 +48,7 @@ namespace Email_client.Model
             this.Uid = Uid;
             Color = "White";
             Select = false;
+            Flags = flags;
         }
     }
 }

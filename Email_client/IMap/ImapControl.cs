@@ -26,27 +26,61 @@ namespace IMAP
         private byte[] _buffer;
         private StringBuilder _sb;
         private byte[] _dummy;
+        private List<string> uids;
+        private List<EmailTemplate> emails;
 
         public ImapControl(int port)
-        {
-
+        {         
             this._port = port;
+        }
+
+        public List<EmailTemplate> UpdateListMessages()
+        {
+            emails.Clear();
+            uids = GetUids();
+            foreach (var uid in uids)
+            {
+                string body = ReceiveResponse("$ FETCH " + uid + " body.peek[header]\r\n").Replace("\0", "");
+                string header = body;
+                if (body == "$ OK Success\r\n" || body == string.Format(" * {0} FETCH(BODY[TEXT] ", uid))
+                {
+                    body = ReceiveResponse("$ FETCH " + uid + " (BODY[])\r\n").Replace("\0", "");
+                    header = body;
+                }
+                EmailTemplate email = new EmailTemplate();
+                email = GetEmailTemplate(body);
+                email.Body = GetBody2(uid);
+                email.Flags = GetMessageFlags(uid);
+                emails.Add(email);
+
+            }
+
+            return emails;
         }
 
         public List<EmailTemplate> ListMessages()
         {
-            List<EmailTemplate>emails=new List<EmailTemplate>();
-            var uids = GetUids();
+            if (emails != null)
+                return emails;
+            emails = new List<EmailTemplate>();
+           // uids = GetUids();
+            int i = 0;
             foreach (var uid in uids)
             {
-                EmailTemplate email=new EmailTemplate();
-                //email=GetEmailTemplate()
+                string body = ReceiveResponse("$ FETCH " + uid + " body.peek[header]\r\n").Replace("\0", "");
+                string header = body;
+                if (body == "$ OK Success\r\n" || body == string.Format(" * {0} FETCH(BODY[TEXT] ", uid))
+                {
+                    body = ReceiveResponse("$ FETCH " + uid + " (BODY[])\r\n").Replace("\0", "");
+                    header = body;
+                }
+                EmailTemplate email = new EmailTemplate();
+                email = GetEmailTemplate(body);
                 email.Body = GetBody2(uid);
-                email.Flags = GetMessageFlags(uid);             
+                email.Flags =GetMessageFlags(uid);
                 emails.Add(email);
-                
+
             }
-            //  return SelectFolder("INBOX");
             return emails;
         }
 
@@ -56,37 +90,19 @@ namespace IMAP
         {
             try
             {
-                Console.WriteLine("Connecting...");
                 _tcpClient = new TcpClient(user.ImapAddress, _port);
                 _ssl = new SslStream(_tcpClient.GetStream());
                 _ssl.AuthenticateAsClient(user.ImapAddress);
-
-                //sr = new StreamReader(tcpClient.GetStream());
-                //sw = new StreamWriter(tcpClient.GetStream());
-
-                ReceiveResponse("");
                 string login = ReceiveResponse("$ LOGIN " + user.Username + " " + user.Password + "  \r\n");
-                //ReceiveResponse("");
-
+            
                 if (!login.ToLower().Contains("ok"))
                 {
                     return false;
                 }
                 ReceiveResponse("$ SELECT INBOX\r\n");
                 ReceiveResponse("$ STATUS Inbox (MESSAGES)\r\n");
-                //string folders = ReceiveResponse("$ LIST " + "\"\"" + "\"*\"" + "\r\n");
-
-
-                //ReceiveResponse("$ SELECT Inbox" + "\r\n");
-                //ReceiveResponse("$ STATUS Inbox (MESSAGES)\r\n");
-
-                //ReceiveResponse("$ FETCH " + 2 + " body[header]\r\n");
-                //string res=ReceiveResponse("$ FETCH " + 5 + " body.peek[text]\r\n").Replace("\0", "");
-                //res.Replace("0", "");
-
-                //Console.WriteLine(res);
-                //Console.WriteLine("------------------------------------------------------------------------------------");
-                //Console.WriteLine(DecodeBody(res, "quoted-printable", "base64"));
+                uids=GetUids();
+                emails=ListMessages();
                 if (_tcpClient.Connected)
                     return true;
                 else
@@ -96,10 +112,20 @@ namespace IMAP
             {
                 Console.WriteLine(ex.StackTrace);
                 return false;
-            };
-        }
+            }
 
+        }
         internal EmailTemplate GetMessage(string uid)
+        {
+            foreach (var email in emails)
+            {
+                if (email.Uid == uid)
+                    return email;
+            }
+
+            return null;
+        }
+        internal EmailTemplate GetMessageFromServer(string uid)
         {
             string text = GetBody2(uid);//у существующего на компе сообщения
             EmailTemplate email = GetEmailTemplate(text);
@@ -108,48 +134,7 @@ namespace IMAP
             return email;
         }
 
-        public string GetBody(string uid)
-        {
-            ImapControl imap = new ImapControl(993);
-            string header = imap.ReceiveResponse($"$ UID FETCH {uid} BODY[HEADER]");
-            string body = imap.ReceiveResponse($"$ UID FETCH {uid} BODY[TEXT]");
-
-            Regex regexEncoding = new Regex(@"(?<=\r\nContent-Transfer-Encoding: )([\s\S]*?)(?=(\r\n))");
-            Regex regexType = new Regex(@"(?<=\r\nContent-Type: )(.*?)(?=(;))");
-
-            var typeMatch = regexType.Match(header).Value;
-
-            string encoding = string.Empty;
-
-            if (typeMatch == "text/html" || typeMatch == "text/plain")
-            {
-                var div = body.Split(new string[] { "\r\n" }, StringSplitOptions.None)
-                    .Where(n => !n.StartsWith("* ") && !n.StartsWith("$ ") && !(n == ")"));
-
-                body = string.Empty;
-                foreach (var item in div)
-                {
-                    body += item + "\r\n";
-                }
-
-                encoding = regexEncoding.Match(header).Value;
-                return DecodeBody(body, encoding, "utf-8");
-            }
-
-            int index = body.IndexOf("Content-Type: text/html");
-            if (index == -1)
-            {
-                index = body.IndexOf("Content-Type: text/plain");
-            }
-
-            int startIndex = body.IndexOf("\r\n", index);
-            int endIndex = body.IndexOf("\r\n--", startIndex);
-            var sbstr = body.Substring(startIndex, endIndex - startIndex);
-            encoding = regexEncoding.Match(sbstr).Value;
-            sbstr = sbstr.Substring(sbstr.IndexOf("\r\n", 2));
-            body = sbstr.Substring(sbstr.IndexOf("\r\n") + "\r\n".Length);
-            return DecodeBody(body, encoding, "utf-8");
-        }
+       
         public List<string> GetMessageFlags(string Uid)
         {
             List<string> answer = new List<string>();
@@ -181,8 +166,7 @@ namespace IMAP
             }
             ReceiveResponse("$ EXPUNGE" + "\r\n");
         }
-
-
+ 
         public string GetBody2(string uid)
         {
             string body = ReceiveResponse("$ FETCH " + uid + " body.peek[text]\r\n").Replace("\0", "");
@@ -301,30 +285,48 @@ namespace IMAP
 
         public List<string> GetUids()
         {
+            uids = new List<string>();
             var uidswithSearch = ReceiveResponse("$ uid search all\r\n");
-            //string uids = uidswithSearch.Split(' ');
-            Regex regex = new Regex(@"( SEARCH )((\d*) )*(\d*)");//$ uid fetch uid bodystructure body[text]
-            string uids = regex.Match(uidswithSearch).Value;
-            string[] lines = uids.Split(' ');
-            Regex regexNum = new Regex(@"\d+");
-
-            var res = new List<string>();
-            int i = 0;
-            foreach (var uid in lines)
+            Regex regex1 =new Regex(@"(MESSAGES \d*)");
+            var  str = regex1.Match(uidswithSearch);
+            if (str != null)
             {
-                var match = regexNum.Match(uid);
-                if (match.Value != "" && match.Value != "SEARCH")
+                int length = Convert.ToInt32(str.Value.Split(' ')[1]);
+                for (int j = 1; j <length+1; j++)
                 {
-                    i++;
-                    res.Add(i.ToString());
-                }
+                   
 
+                    this.uids.Add(j.ToString());
+                }
+        
+                    ReceiveResponse("");
+                return uids;
             }
 
-            return res;
+            if (string.IsNullOrEmpty(str.Value))
+            {
+
+
+                Regex regex = new Regex(@"( SEARCH )((\d*) )*(\d*)"); //$ uid fetch uid bodystructure body[text]
+                string uids = regex.Match(uidswithSearch).Value;
+                string[] lines = uids.Split(' ');
+                Regex regexNum = new Regex(@"\d+");
+
+                var res = new List<string>();
+                int i = 0;
+                foreach (var uid in lines)
+                {
+                    var match = regexNum.Match(uid);
+                    if (match.Value != "" && match.Value != "SEARCH")
+                    {
+                        i++;
+                        res.Add(i.ToString());
+                    }
+                }
+            }
+
+            return uids;
         }
-
-
 
         public List<EmailTemplate> SelectFolder(string folderName)
         {
@@ -352,16 +354,29 @@ namespace IMAP
 
         }
 
-        private EmailTemplate GetEmailTemplate(string text)
+        public EmailTemplate GetEmailTemplate(string text)
         {
             string[] lines = text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             //Console.WriteLine(text);
+            Regex regex = new Regex(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");
             EmailTemplate email = new EmailTemplate();
+            if (lines.Length > 5)
+                email.From = lines[4];
             foreach (var line in lines)
             {
                 if (line.StartsWith("From"))
                 {
-                    email.From = line.Replace("From: ", string.Empty);
+
+
+                    var Senders = regex.Matches(line);
+
+                    if (Senders.Count > 0)
+                    {
+                        foreach (Match Sender in Senders)
+                            email.From = Sender.Value;
+                        //Console.WriteLine(flag.Value);
+                    }
+
                 }
                 if (line.StartsWith("To"))
                 {
@@ -378,20 +393,7 @@ namespace IMAP
             return email;
         }
 
-        public string GetEmailBody(string uid)
-        {
-            string text = ReceiveResponse("$ UID FETCH " + uid + " BODY[TEXT]" + "\r\n");
-
-            var x = text.IndexOf("quoted-printable") + "quoted-printable".Length;
-            text.Replace("\0", "");
-            text = text.Substring(x);
-
-            var txt = DecodeQuotedPrintable(text, "utf-8");
-
-
-            return txt;
-        }
-
+      
         public string GetMailCount(string folderName)
         {
             string selectInfo = ReceiveResponse("$ SELECT " + folderName + "\r\n");
@@ -416,7 +418,7 @@ namespace IMAP
         }
 
 
-        private string ReceiveResponse(string command)
+        public string ReceiveResponse(string command)
         {
             _sb = new StringBuilder();
             try
@@ -433,34 +435,26 @@ namespace IMAP
                         throw new ApplicationException("TCP CONNECTION DISCONNECTED");
                     }
                 }
-                _ssl.Flush();
+                // _ssl.Flush();
 
                 _buffer = new byte[2048];
-                _tcpClient.ReceiveTimeout = 20000;
+                _tcpClient.ReceiveTimeout = 2000000;
 
                 Encoding iso = Encoding.GetEncoding("ISO-8859-1");
 
-                do
+                while (true)
                 {
-                    try
+                    byte[] buffer = new byte[2048];
+                    int bytesRead = _ssl.Read(buffer, 0, 2048);
+                    if (bytesRead == 0)
                     {
-                        bytes = _ssl.Read(_buffer, 0, 2048);
-
-                        //byte[] converted = Encoding.Convert(Encoding.GetEncoding("iso-8859-1"),
-                        //Encoding.UTF8, buffer);
-                        //Encoding.
-
-                        var msg = Encoding.UTF8.GetString(_buffer);
-
-                        _sb.Append(msg);
-                        Thread.Sleep(3);
+                        throw new EndOfStreamException("Error while reading");
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.ToString());
-                    }
-                } while (_tcpClient.Available > 0);
-
+                    string str = Encoding.UTF8.GetString(buffer).Replace("\0", string.Empty);
+                    _sb.Append(str);
+                    if (SearchEndOfMessage(str))
+                        break;
+                }
                 string text = _sb.ToString().Replace("\0", string.Empty);
                 //Console.WriteLine(text);
 
@@ -473,6 +467,14 @@ namespace IMAP
                 //  throw new ApplicationException(ex.Message);
                 return "WAS ERROR";
             }
+        }
+        private bool SearchEndOfMessage(string str)
+        {
+            return str.Contains("$ OK")
+                   || str.Contains("$ NO")
+                   || str.Contains("$ BAD")
+                   || str.Contains("Gimap")
+                   || str.Contains("* BAD");
         }
 
 

@@ -8,12 +8,14 @@ namespace IMAP
 {
    public class EmailTemplate
     {
-        public IList<string> Flags;
+        public List<string> Flags;
 
         public bool AddFlag(string flag)
         {
             if (string.IsNullOrEmpty(flag))
                 return false;
+            if(Flags==null)
+                Flags=new List<string>();
             Flags.Add(flag);
             return true;
         }

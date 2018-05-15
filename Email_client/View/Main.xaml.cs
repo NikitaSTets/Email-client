@@ -1,15 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-//using GemBox.Email;
-//using GemBox.Email.Imap;
+﻿using System.Windows;
 using System.Collections.ObjectModel;
 using Email_client.Model;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Input;
-using Email_client.ViewModel;
 using Email_client.View;
 using System;
+using System.Runtime.Remoting.Messaging;
 using IMAP;
 
 namespace Email_client
@@ -22,10 +18,26 @@ namespace Email_client
         public ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
         public ObservableCollection<MessageModel> MessagesTemp { get; set; } = new ObservableCollection<MessageModel>();
 
-        public void CreateSMTPWIndowAndConnectToServer(string userName,string password)
+        public void CreateSMTPWIndowAndConnectToServer(string userName, string password)
         {
             smtpWindow = new SMTPWindow();
-            ViewModel.ViewModel.ConnectToServer(ref imap, "nikitstets@gmail.com", "StackCorporation");
+            LoginInfo user = new LoginInfo();
+            user.ImapAddress = "imap.gmail.com";
+            user.Username = userName;
+            user.Password = password;
+            imap = new ImapControl(993);
+            try
+            {
+                imap.Connect(user);
+
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error.Connect to server");
+            }
+
+            //Messages = imap.ListMessages();
+            //ViewModel.ViewModel.ConnectToServer(ref imap, "nikitstets@gmail.com", "StackCorporation");
             ViewModel.ViewModel.UpdateListOfMessages(Messages, imap);
             ShowMessagesDataGrid.ItemsSource = Messages;
         }
@@ -33,11 +45,11 @@ namespace Email_client
         public Main()
         {
             InitializeComponent();
-            CreateSMTPWIndowAndConnectToServer("das","dsa");//after test will kick
-           // smtpWindow = new SMTPWindow();
-            //ViewModel.ViewModel.ConnectToServer(ref imap, "nikitstets@gmail.com", "StackCorporation");
-            //ViewModel.ViewModel.UpdateListOfMessages(Messages, imap);
-            //ShowMessagesDataGrid.ItemsSource = Messages;
+            CreateSMTPWIndowAndConnectToServer("nikit.stets@gmail.com", "Minsk1.1.ru");//after test will kick
+                                                                                       // smtpWindow = new SMTPWindow();
+                                                                                       //ViewModel.ViewModel.ConnectToServer(ref imap, "nikitstets@gmail.com", "StackCorporation");
+                                                                                       //ViewModel.ViewModel.UpdateListOfMessages(Messages, imap);
+                                                                                       //ShowMessagesDataGrid.ItemsSource = Messages;
         }
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -54,7 +66,14 @@ namespace Email_client
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.ViewModel.UpdateListOfMessages(Messages, imap);
+            //ViewModel.ViewModel.UpdateListOfMessages(Messages, imap);
+            imap.GetUids();
+            Messages.Clear();
+            foreach (var email in imap.UpdateListMessages())
+            {
+                Messages.Add(new MessageModel(email.From,DateTime.Now,email.Body,email.Body,email.Uid,email.Flags));
+            }
+
         }
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -73,10 +92,10 @@ namespace Email_client
         private void AllLabel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             ShowMessagesDataGrid.ItemsSource = Messages;
-            //foreach (var item in Messages)
-            //{
-            //    item.Select = true;
-            //}
+            foreach (var item in Messages)
+            {
+                item.Select = true;
+            }
         }
         private void checkBoxInColumnCircle_Click(object sender, RoutedEventArgs e)
         {
@@ -98,7 +117,7 @@ namespace Email_client
             {
                 currentItem.Select = ((CheckBox)sender).IsChecked.Value;
             }
-          
+
         }
 
         private void checkBoxInColumnCircle_Unchecked(object sender, RoutedEventArgs e)
@@ -133,11 +152,11 @@ namespace Email_client
         private void ReadMessageLabel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             MessagesTemp.Clear();
-            bool isRead; 
+            bool isRead;
             foreach (var message in Messages)
             {
                 isRead = false;
-                foreach (var flag in imap.GetMessageFlags(message.Uid))
+                foreach (var flag in message.Flags)
                 {
                     if (flag == "\\Seen")
                     {
@@ -160,7 +179,7 @@ namespace Email_client
             foreach (var message in Messages)
             {
                 isRead = false;
-                foreach (var flag in imap.GetMessageFlags(message.Uid))
+                foreach (var flag in message.Flags)
                 {
                     if (flag == "\\Seen")
                     {
@@ -168,6 +187,88 @@ namespace Email_client
                     }
                 }
                 if (!isRead)
+                {
+                    MessagesTemp.Add(message);
+                }
+            }
+            ShowMessagesDataGrid.ItemsSource = MessagesTemp;
+        }
+
+        private void FlaggedMessageLabel_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessagesTemp.Clear();
+            bool isFlagged;
+            foreach (var message in Messages)
+            {
+                isFlagged = false;
+                foreach (var flag in message.Flags)
+                {
+                    if (flag == "\\Flagged")
+                    {
+                        isFlagged = true;
+                    }
+                }
+                if (isFlagged)
+                {
+                    MessagesTemp.Add(message);
+                }
+            }
+            ShowMessagesDataGrid.ItemsSource = MessagesTemp;
+        }
+
+        private void UnFlaggedMessageLabel_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessagesTemp.Clear();
+            bool isFlagged;
+            foreach (var message in Messages)
+            {
+                isFlagged = false;
+                foreach (var flag in message.Flags)
+                {
+                    if (flag == "\\Flagged")
+                    {
+                        isFlagged = true;
+                    }
+                }
+                if (!isFlagged)
+                {
+                    MessagesTemp.Add(message);
+                }
+            }
+            ShowMessagesDataGrid.ItemsSource = MessagesTemp;
+        }
+
+        private void Incoming_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ShowMessagesDataGrid.ItemsSource = Messages;
+        }
+
+        private void DeleteMessagesLabel_OnMouseDown(object sender, MouseButtonEventArgs e)//добавить флаг,что удалено,а потом отправлять запросы на сервер,что удалено и не отображать сообщения с флагом deleted
+        {
+
+        }
+
+        private void SentedMessagesLabel_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            ShowMessagesDataGrid.ItemsSource = null;
+        }
+
+        private void DraftsMessagesLabel_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessagesTemp.Clear();
+            bool isFlagged;
+            foreach (var message in Messages)
+            {
+                isFlagged = false;
+                foreach (var flag in message.Flags)
+                {
+                    if (flag == "\\Drafted")
+                    {
+                        isFlagged = true;
+                    }
+                }
+                if (!isFlagged)
                 {
                     MessagesTemp.Add(message);
                 }

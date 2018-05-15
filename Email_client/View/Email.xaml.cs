@@ -20,19 +20,12 @@ namespace Email_client.View
         IList<CheckBox> checkBoxs = new List<CheckBox>();
         public  ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
         private void ConnectToServer(string userName,string password)
-        {          
-            imap = new ImapControl(993);
+        {
             user.ImapAddress = "imap.gmail.com";
             user.Username = "nikit.stets@gmail.com";//=userName;
             user.Password = "StackCorporation";//=password;
-
-            //ComponentInfo.SetLicense("FREE-LIMITED-KEY");
-           //imap = new ImapControl("imap.gmail.com");
-            
-                // Connect to mail server
+            imap = new ImapControl(993);
             imap.Connect(user);
-               // imap.Authenticate(userName, password);
-               // imap.SelectInbox();
         }
         private void SetGreyColor()
         {
@@ -53,9 +46,7 @@ namespace Email_client.View
                 }
                 if (isUnread)
                 {
-                    // listOfUidUnreadMessages.Add(item.Uid);
-                    Messages[i].Color = "Aqua";
-                 //   imap.AddMessageFlags(item.Uid, ImapMessageFlags.);
+                    Messages[i].Color = "Aqua";               
                 }
                 i++;
             }
@@ -67,28 +58,12 @@ namespace Email_client.View
             Messages.Clear();
             IList<EmailTemplate> messageInfoCollection = imap.ListMessages();
             EmailTemplate currentMessage;
-          //  IList<I> messageInfoCollection = imap.ListMessages();
-          //  MailMessage currentMessage;
-           // string head = "<head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head>";
             string text;
             for (int i = 0; i < messageInfoCollection.Count; i++)
             {
                 currentMessage = messageInfoCollection[i];
                 text = currentMessage.Body;
-                Messages.Add(new MessageModel(currentMessage.From,DateTime.Now,text,text,currentMessage.Uid));
-                //if (text == null)
-                //{
-                //    text = currentMessage.BodyText;
-                //}
-                //currentMessage.BodyHtml = head + text;
-                //if (currentMessage.BodyHtml != null)
-                //{
-                //    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyHtml,currentMessage.BodyText,messageInfoCollection[i].Uid));
-                //}
-                //else
-                //{
-                //    Messages.Add(new MessageModel(currentMessage.From[0].User, currentMessage.Date, currentMessage.BodyText, currentMessage.BodyText, messageInfoCollection[i].Uid));
-                //}
+                Messages.Add(new MessageModel(currentMessage.From,DateTime.Now,text,text,currentMessage.Uid,currentMessage.Flags));
             }
         }
         public Email()
@@ -126,13 +101,11 @@ namespace Email_client.View
                 }
             UpdateListOfMessages();
             }  
-         //unread
         private void CircleCheckBox_Click(object sender, RoutedEventArgs e)
         {
             var checkBox = (CheckBox)sender;
             var container = FindParentOfType<ListBoxItem>(checkBox);
-            //if (container != null)
-            //    container.IsSelected = checkBox.IsChecked.Value;
+
 
             var messages=listBoxOfMessages.SelectedItems;
             if (container != null)
@@ -144,12 +117,6 @@ namespace Email_client.View
                     i++;
                 }
             }
-            //var listMessages = imap.ListMessages();//make more global
-
-            //for (int i = 0; i < listMessages.Count; i++)//Не все!!!!
-            //{
-            //    imap.AddMessageFlags(listMessages[i].Uid, ImapMessageFlags.Seen);
-            //}
         }
         private void FlagCheckBox_Click(object sender, RoutedEventArgs e)
         {
