@@ -4,7 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Email_client"
-        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" x:Class="Email_client.Main"
+    
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+        xmlns:model="clr-namespace:Email_client.Model"
+        x:Class="Email_client.Main"
         mc:Ignorable="d"
         Title="Main"  Height="526.684" Width="720.326">
     <Window.Resources>
@@ -436,7 +439,7 @@
             </ComboBox>
 
         </StackPanel>
-        <DataGrid x:Name="ShowMessagesDataGrid"  IsReadOnly="False" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
+        <DataGrid  x:Name="ShowMessagesDataGrid"  IsReadOnly="False" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
  Margin="1,0,8,5" RenderTransformOrigin="0.5,0.5" Height="419" VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1">
             <DataGrid.RenderTransform>
                 <TransformGroup>
@@ -453,7 +456,7 @@
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate >
                         <DataTemplate>
-                            <CheckBox Name="checkBoxInColumn"  Click="checkBoxInColumn_Click" IsChecked="{Binding Select}"/>
+                            <CheckBox Name="checkBoxInColumn"  Click="checkBoxInColumn_Click"  IsChecked="{Binding Select}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -467,7 +470,7 @@
                 <DataGridTemplateColumn Header="Текст" Width="300*" >
                     <DataGridTemplateColumn.CellTemplate >
                         <DataTemplate>
-                            <Label Background="{Binding Color}" Content="{Binding Text}" >
+                            <Label Name="DataGridLabelShowCurrentMessageMessage"  Background="{Binding Color}" MouseDown="DataGridLabelShowCurrentMessageMessage_OnMouseDown" Content="{Binding Text}" >
                             </Label>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -477,5 +480,7 @@
             </DataGrid.Columns>
 
         </DataGrid>
+        <WebBrowser HorizontalAlignment="Left" Name="WebBrowserForShowingCurrentMessage" Height="252" Margin="10,172,0,0"   Grid.Row="1"
+                    Grid.Column="0" VerticalAlignment="Top" Width="144"/>
     </Grid>
 </Window>

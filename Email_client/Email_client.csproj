@@ -96,6 +96,7 @@
     <Compile Include="IMap\ImapControl.cs" />
     <Compile Include="IMap\LoginInfo.cs" />
     <Compile Include="IMap\MessageDecode.cs" />
+    <Compile Include="Model\BrowserBehavior.cs" />
     <Compile Include="SMTP\Constants.cs" />
     <Compile Include="SMTP\ControlStreamReader.cs" />
     <Compile Include="SMTP\DefaultTlsProvider.cs" />
@@ -149,6 +150,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\MessageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\SMTPWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -156,6 +161,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View\MessageWindow.xaml.cs">
+      <DependentUpon>MessageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SMTPWindow.xaml.cs">
       <DependentUpon>SMTPWindow.xaml</DependentUpon>

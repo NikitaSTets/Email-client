@@ -5,7 +5,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Email_client.View;
 using System;
+using System.IO;
 using System.Runtime.Remoting.Messaging;
+using EO.Internal;
 using IMAP;
 
 namespace Email_client
@@ -40,14 +42,16 @@ namespace Email_client
             //ViewModel.ViewModel.ConnectToServer(ref imap, "nikitstets@gmail.com", "StackCorporation");
             ViewModel.ViewModel.UpdateListOfMessages(Messages, imap);
             ShowMessagesDataGrid.ItemsSource = Messages;
+           BrowserBehavior.SetBody(WebBrowserForShowingCurrentMessage,Messages[0].TextHTML);;
+           // WebBrowserForShowingCurrentMessage.NavigateToString("HTML"); 
         }
 
         public Main()
         {
             InitializeComponent();
-            CreateSMTPWIndowAndConnectToServer("nikit.stets@gmail.com", "Minsk1.1.ru");//after test will kick
+            CreateSMTPWIndowAndConnectToServer("login", "password");//after test will kick
                                                                                        // smtpWindow = new SMTPWindow();
-                                                                                       //ViewModel.ViewModel.ConnectToServer(ref imap, "nikitstets@gmail.com", "StackCorporation");
+                                                                                       //ViewModel.ViewModel.ConnectToServer(ref imap, "login", "password");
                                                                                        //ViewModel.ViewModel.UpdateListOfMessages(Messages, imap);
                                                                                        //ShowMessagesDataGrid.ItemsSource = Messages;
         }
@@ -71,7 +75,9 @@ namespace Email_client
             Messages.Clear();
             foreach (var email in imap.UpdateListMessages())
             {
-                Messages.Add(new MessageModel(email.From,DateTime.Now,email.Body,email.Body,email.Uid,email.Flags));
+                
+                email.TextHTML="< meta http - equiv = 'Content-Type' content = 'text/html;charset=UTF-8'>"+email.TextHTML;
+                     Messages.Add(new MessageModel(email.From,DateTime.Now,email.TextHTML,email.Body,email.Uid,email.Flags));
             }
 
         }
@@ -274,6 +280,25 @@ namespace Email_client
                 }
             }
             ShowMessagesDataGrid.ItemsSource = MessagesTemp;
+        }
+
+        private void DataGridLabelShowCurrentMessageMessage_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var content = ((Label) sender).Content;
+            foreach (var message in Messages)
+            {
+                if (content == message.Text)
+                {
+                    BrowserBehavior.SetBody(WebBrowserForShowingCurrentMessage, message.TextHTML);
+                    //MessageWindow msg=new MessageWindow();
+                    //msg.SetHTML( message.TextHTML);
+                    //msg.Show();
+                    break;
+                }
+
+            }
+
+           // BrowserBehavior.SetBody(WebBrowserForShowingCurrentMessage,
         }
     }
 }

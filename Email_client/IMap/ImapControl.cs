@@ -76,6 +76,7 @@ namespace IMAP
                 }
                 EmailTemplate email = new EmailTemplate();
                 email = GetEmailTemplate(body);
+                email.TextHTML = GetBodyHTML(uid);
                 email.Body = GetBody2(uid);
                 email.Flags =GetMessageFlags(uid);
                 emails.Add(email);
@@ -84,6 +85,56 @@ namespace IMAP
             return emails;
         }
 
+        public string GetBodyHTML(string uid)
+        {
+            string body = ReceiveResponse("$ FETCH " + uid + " body.peek[text]\r\n").Replace("\0", "");
+            string header = body;
+            if (body == "$ OK Success\r\n")
+            {
+                body = ReceiveResponse("$ FETCH " + uid + " (BODY[])\r\n").Replace("\0", "");
+                header = body;
+            }
+
+
+            Regex regexEncoding = new Regex(@"(?<=\r\nContent-Transfer-Encoding: )([\s\S]*?)(?=(\r\n))");
+            Regex regexType = new Regex(@"(?<=\r\nContent-Type: )(.*?)(?=(;))");
+
+            var typeMatch = regexType.Match(header).Value;
+
+            string encoding = "utf-8";
+
+            if (typeMatch == "text/html" || typeMatch == "text/plain")
+            {
+                var div = body.Split(new string[] { "\r\n" }, StringSplitOptions.None)
+                    .Where(n => !n.StartsWith("* ") && !n.StartsWith("$ ") && !(n == ")"));
+
+
+                encoding = regexEncoding.Match(header).Value;
+            }
+
+            int index = body.IndexOf("Content-Type: text/html");
+            if (index == -1)
+            {
+                index = body.IndexOf("Content-Type: text/plain");
+            }
+
+            int startIndex;
+            try
+            {
+                startIndex = body.IndexOf("\r\n", index);
+            }
+            catch (Exception e)
+            {
+                return "empty";
+            }
+            //int startIndex = body.IndexOf("\r\n", index);
+            int endIndex = body.IndexOf("\r\n--", startIndex);
+            var sbstr = body.Substring(startIndex, endIndex - startIndex);
+            encoding = regexEncoding.Match(sbstr).Value;
+            sbstr = sbstr.Substring(sbstr.IndexOf("\r\n", 2));
+            body = sbstr.Substring(sbstr.IndexOf("\r\n") + "\r\n".Length);
+            return DecodeBody(body, encoding, "utf-8");
+        }
 
 
         public bool Connect(LoginInfo user)

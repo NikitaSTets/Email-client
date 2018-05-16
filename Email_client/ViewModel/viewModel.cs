@@ -43,7 +43,8 @@ namespace Email_client.ViewModel
             for (int i = 0; i < messageInfoCollection.Count; i++)
             {
                 currentMessage = messageInfoCollection[i];//imap.GetMessage(messageInfoCollection[i].Uid);
-                Messages.Add(new MessageModel(currentMessage.From,DateTime.Now,currentMessage.Body,currentMessage.Body,currentMessage.Uid,currentMessage.Flags));
+                currentMessage.TextHTML = "<!DOCTYPE HTML><html><head><meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'></head><body>" + currentMessage.TextHTML+"</body></html>";
+                     Messages.Add(new MessageModel(currentMessage.From,DateTime.Now,currentMessage.TextHTML,currentMessage.Body,currentMessage.Uid,currentMessage.Flags));
             }
         }
     }

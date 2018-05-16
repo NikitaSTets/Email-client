@@ -19,6 +19,8 @@ namespace IMAP
             Flags.Add(flag);
             return true;
         }
+
+        public string TextHTML { get; set; }
         public string Mailbox { get; set; }
         public string Uid { get; set; }
         public string From { get; set; }
