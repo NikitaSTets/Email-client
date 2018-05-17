@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Email" Height="526.684" Width="720.326">
     <Window.Resources>
-        <Style x:Key="styleCustomCheckBoxFlag" TargetType="{x:Type CheckBox}">
+        <Style x:Key="StyleCustomCheckBoxFlag" TargetType="{x:Type CheckBox}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -26,7 +26,7 @@
             </Setter>
         </Style>
 
-        <Style x:Key="styleCustomCheckBoxCircle" TargetType="{x:Type CheckBox}">
+        <Style x:Key="StyleCustomCheckBoxCircle" TargetType="{x:Type CheckBox}">
             <Setter Property="Template">
                 <Setter.Value >
                     <ControlTemplate TargetType="{x:Type CheckBox}" >
@@ -50,7 +50,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="listBoxOfMessages" HorizontalContentAlignment="Stretch"
+        <ListBox x:Name="ListBoxOfMessages" HorizontalContentAlignment="Stretch"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  SelectionMode="Extended" Grid.Column="0" ItemsSource="{Binding Messages}" 
                  IsSynchronizedWithCurrentItem="True" Margin="0,0,15,0"
@@ -72,8 +72,8 @@
 
                         <StackPanel Name="MyStack" Grid.Column="0"  >
                             <CheckBox Margin="2" Name="SelectMessage" Click="SelectMessage_Click" />
-                            <CheckBox Name="CircleCheckBox" Click="CircleCheckBox_Click" Style="{StaticResource styleCustomCheckBoxCircle}"/>
-                            <CheckBox Name="FlagCheckBox" Click="FlagCheckBox_Click"  Style="{StaticResource styleCustomCheckBoxFlag}"  />
+                            <CheckBox Name="CircleCheckBox" Click="CircleCheckBox_Click" Style="{StaticResource StyleCustomCheckBoxCircle}"/>
+                            <CheckBox Name="FlagCheckBox" Click="FlagCheckBox_Click"  Style="{StaticResource StyleCustomCheckBoxFlag}"  />
                         </StackPanel>
                         <StackPanel Grid.Column="1"  >
                             <TextBlock Text="{Binding Author}"  FontWeight="Bold" FontSize="13"/>
@@ -98,8 +98,8 @@
             <!--local:WebBrowserExtentions.Document="{Binding Messages/Text}"-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="22" Grid.Row="1" VerticalAlignment="Top" Width="475">
                 <Button x:Name="Delete" Content="Delete" Width="81" Click="Delete_Click"/>
-                <Button x:Name="button" Content="All select" Width="75"/>
-                <Button x:Name="button1" Content="Seen" Width="75"/>
+                <Button x:Name="Button" Content="All select" Width="75"/>
+                <Button x:Name="Button1" Content="Seen" Width="75"/>
             </StackPanel>
 
             <!--<TextBlock  Grid.Row="1" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">

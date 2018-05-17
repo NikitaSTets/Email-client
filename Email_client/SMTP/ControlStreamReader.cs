@@ -10,15 +10,21 @@ namespace SMTP
     public abstract class ControlStreamReader
     {
         static Regex _multiLineReply = new Regex(@"^(?<code>\d{3})-(?<msg>.+)$");
+
         static Regex _singleLineReply = new Regex(@"^(?<code>\d{3})( (?<msg>.+))?$");
 
         Stream _stream;
+
         byte[] _buffer;
+
         int _bufPos, _bufLen;
+
         List<byte> _line;
 
         public Stopwatch Timer;
+
         public int Timeout;
+
 
         public ControlStreamReader(Stream stream)
         {
@@ -28,6 +34,7 @@ namespace SMTP
             this._bufPos = 0;
             this._bufLen = 0;
         }
+
 
         public void CheckTimeout()
         {
@@ -136,6 +143,8 @@ namespace SMTP
                     throw new InvalidDataException("Incorrect reply format");
             }
         }
+
+
 
         protected class Reply
         {

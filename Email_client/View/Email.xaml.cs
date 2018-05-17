@@ -86,7 +86,7 @@ namespace Email_client.View
         private void Delete_Click(object sender, RoutedEventArgs e)
         {             
                 IList<EmailTemplate> messagesInfo = imap.ListMessages();                           
-                var selectedMessages = listBoxOfMessages.SelectedItems;
+                var selectedMessages = ListBoxOfMessages.SelectedItems;
                 var arrayMessageForDelete = new List<int>();
                 foreach (MessageModel message in selectedMessages)
                 {
@@ -107,7 +107,7 @@ namespace Email_client.View
             var container = FindParentOfType<ListBoxItem>(checkBox);
 
 
-            var messages=listBoxOfMessages.SelectedItems;
+            var messages=ListBoxOfMessages.SelectedItems;
             if (container != null)
             {
                 int i = 0;

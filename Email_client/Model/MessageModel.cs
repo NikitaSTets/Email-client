@@ -17,6 +17,17 @@ namespace Email_client.Model
             Flags.Add(flag);
             return true;
         }
+
+        public bool HasFlag(string flag)
+        {
+            return Flags.Contains(flag);
+        }
+
+        public bool RemoveFlag(string flag)
+        {
+          return  Flags.Remove(flag);
+        }
+
         public string Subject { get; set; }       
         public string Author { get; set; }
         public DateTime DateTime { get; set; }

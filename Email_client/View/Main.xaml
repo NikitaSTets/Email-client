@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Email_client"
     
-        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+        xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
         xmlns:model="clr-namespace:Email_client.Model"
         x:Class="Email_client.Main"
         mc:Ignorable="d"
-        Title="Main"  Height="526.684" Width="720.326">
+        Title="Main"  Height="520.684" Width="1054.326" MaxWidth="1055" MaxHeight="520"  ResizeMode="CanResizeWithGrip">
     <Window.Resources>
         <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
             <Setter Property="Template">
@@ -37,7 +37,7 @@
             </Setter>
         </Style>
 
-        <Style x:Key="styleCustomCheckBoxFlag" TargetType="{x:Type CheckBox}">
+        <Style x:Key="StyleCustomCheckBoxFlag" TargetType="{x:Type CheckBox}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -55,7 +55,7 @@
             </Setter>
         </Style>
 
-        <Style x:Key="styleCustomCheckBoxCircle" TargetType="{x:Type CheckBox}">
+        <Style x:Key="StyleCustomCheckBoxCircle" TargetType="{x:Type CheckBox}">
             <Setter Property="Template">
                 <Setter.Value >
                     <ControlTemplate TargetType="{x:Type CheckBox}" >
@@ -99,11 +99,11 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Themes:ButtonChrome x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" SnapsToDevicePixels="true">
+                        <themes:ButtonChrome x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" SnapsToDevicePixels="true">
                             <Grid HorizontalAlignment="Right" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
                                 <Path x:Name="Arrow" Data="{StaticResource DownArrowGeometry}" Fill="Black" HorizontalAlignment="Center" Margin="3,1,0,0" VerticalAlignment="Center"/>
                             </Grid>
-                        </Themes:ButtonChrome>
+                        </themes:ButtonChrome>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="true">
                                 <Setter Property="RenderPressed" TargetName="Chrome" Value="true"/>
@@ -146,9 +146,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Themes:ButtonChrome x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" RoundCorners="false" SnapsToDevicePixels="true" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
+                        <themes:ButtonChrome x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" RoundCorners="false" SnapsToDevicePixels="true" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
                             <Path x:Name="Arrow" Data="{StaticResource DownArrowGeometry}" Fill="Black" HorizontalAlignment="Center" Margin="0,1,0,0" VerticalAlignment="Center"/>
-                        </Themes:ButtonChrome>
+                        </themes:ButtonChrome>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="true">
                                 <Setter Property="RenderPressed" TargetName="Chrome" Value="true"/>
@@ -168,7 +168,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
-                    <Themes:SystemDropShadowChrome x:Name="Shdw" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=Placement}">
+                    <themes:SystemDropShadowChrome x:Name="Shdw" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=Placement}">
                         <Border x:Name="DropDownBorder" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
                             <ScrollViewer x:Name="DropDownScrollViewer">
                                 <Grid RenderOptions.ClearTypeHint="Enabled">
@@ -179,10 +179,11 @@
                                 </Grid>
                             </ScrollViewer>
                         </Border>
-                    </Themes:SystemDropShadowChrome>
+                    </themes:SystemDropShadowChrome>
                 </Popup>
-                <Themes:ListBoxChrome x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.ColumnSpan="2" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderFocused="{TemplateBinding IsKeyboardFocusWithin}"/>
-                <TextBox x:Name="PART_EditableTextBox" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" Style="{StaticResource ComboBoxEditableTextBox}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                <themes:ListBoxChrome x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.ColumnSpan="2"
+                                      Grid.Column="0" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderFocused="{TemplateBinding IsKeyboardFocusWithin}"/>
+                <TextBox Grid.Column="0" x:Name="PART_EditableTextBox" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" Style="{StaticResource ComboBoxEditableTextBox}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                 <ToggleButton Grid.Column="1" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxToggleButton}"/>
             </Grid>
             <ControlTemplate.Triggers>
@@ -237,7 +238,7 @@
                                 <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
                             </Grid.ColumnDefinitions>
                             <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
-                                <Themes:SystemDropShadowChrome x:Name="Shdw" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
+                                <themes:SystemDropShadowChrome x:Name="Shdw" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
                                     <Border x:Name="DropDownBorder" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
                                         <ScrollViewer x:Name="DropDownScrollViewer">
                                             <Grid RenderOptions.ClearTypeHint="Enabled">
@@ -248,10 +249,12 @@
                                             </Grid>
                                         </ScrollViewer>
                                     </Border>
-                                </Themes:SystemDropShadowChrome>
+                                </themes:SystemDropShadowChrome>
                             </Popup>
-                            <ToggleButton BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Grid.ColumnSpan="1" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxReadonlyToggleButton}" Margin="21,10,31,10"/>
-                            <CheckBox HorizontalAlignment="Center" Width="12" Height="Auto"  RenderTransformOrigin="1,0.317" Margin="38,24,46,29"/>
+                            <ToggleButton BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Grid.ColumnSpan="1"
+                                          Grid.Column="0"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxReadonlyToggleButton}" Margin="21,10,31,10"/>
+                            <CheckBox Grid.Column="0" HorizontalAlignment="Center" Width="12" Height="Auto"  RenderTransformOrigin="1,0.317" Margin="38,24,46,29"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
@@ -311,9 +314,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Themes:ButtonChrome x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" RenderDefaulted="{TemplateBinding IsDefaulted}" SnapsToDevicePixels="true">
+                        <themes:ButtonChrome x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" RenderDefaulted="{TemplateBinding IsDefaulted}" SnapsToDevicePixels="true">
                             <Image x:Name="imageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\update.png" Margin="23,5,41,10" />
-                        </Themes:ButtonChrome>
+                        </themes:ButtonChrome>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsKeyboardFocused" Value="true">
                                 <Setter Property="RenderDefaulted" TargetName="Chrome" Value="true"/>
@@ -350,7 +353,7 @@
                                 <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
                             </Grid.ColumnDefinitions>
                             <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
-                                <Themes:SystemDropShadowChrome x:Name="Shdw" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
+                                <themes:SystemDropShadowChrome x:Name="Shdw" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
                                     <Border x:Name="DropDownBorder" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
                                         <ScrollViewer x:Name="DropDownScrollViewer">
                                             <Grid RenderOptions.ClearTypeHint="Enabled">
@@ -361,10 +364,12 @@
                                             </Grid>
                                         </ScrollViewer>
                                     </Border>
-                                </Themes:SystemDropShadowChrome>
+                                </themes:SystemDropShadowChrome>
                             </Popup>
-                            <ToggleButton BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxReadonlyToggleButton}"/>
-                            <Label Content="Еще" FontSize="20" HorizontalAlignment="Center" RenderTransformOrigin="0.44,0.5" Margin="20,1,0,10" Width="58" >
+                            <ToggleButton BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Grid.ColumnSpan="2"
+                                          Grid.Column="0"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxReadonlyToggleButton}"/>
+                            <Label Grid.Column="0" Content="Еще" FontSize="20" HorizontalAlignment="Center" RenderTransformOrigin="0.44,0.5" Margin="20,1,0,10" Width="58" >
                             </Label>
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -407,24 +412,28 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="41*" />
-            <ColumnDefinition Width="137*" />
+            <ColumnDefinition Width="237*" />
+            <ColumnDefinition Width="455*" />
+            <ColumnDefinition Width="354*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="45*" />
             <RowDefinition Height="310*" />
         </Grid.RowDefinitions>
-        <Image x:Name="imageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\Logo.png" Margin="23,5,41,10" />
-        <Button x:Name="ButtonForSendMessage" Content="Написать" HorizontalAlignment="Left" Margin="23,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" Height="31" Click="ButtonForSendMessage_Click"/>
-        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="114" Margin="23,60,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120">
+        <Image x:Name="ImageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\Logo.png" Margin="23,0,41,15" />
+        <Button x:Name="ButtonForSendMessage" Content="Написать" HorizontalAlignment="Left" Margin="41,10,0,0" Grid.Row="1"
+                Grid.Column="0" VerticalAlignment="Top" Width="120" Height="31" Click="ButtonForSendMessage_Click"/>
+        <ListBox x:Name="ListBox" HorizontalAlignment="Left" Height="114" Margin="41,70,0,0" Grid.Row="1" Grid.Column="0"
+                 VerticalAlignment="Top" Width="120">
             <Label x:Name="Incoming" Content="Входящие" MouseDown="Incoming_OnMouseDown" Width="110"/>
             <Label x:Name="Starred" Content="Помеченные" MouseDown="FlaggedMessageLabel_OnMouseDown" Width="110"/>
             <Label x:Name="SentedMessagesLabel" Content="Отправленные" MouseDown="SentedMessagesLabel_OnMouseDown" Width="110"/>
             <Label x:Name="DraftsMessagesLabel" Content="Черновики" MouseDown="DraftsMessagesLabel_OnMouseDown"  Width="110"/>
         </ListBox>
-        <StackPanel  Grid.Column="1" Margin="30,0,0,0" Orientation="Horizontal"  Height="68" VerticalAlignment="Top" Grid.RowSpan="2">
+        <StackPanel  Grid.Column="1" Margin="0,0,30,0" Orientation="Horizontal"  Height="68" VerticalAlignment="Top"
+                     Grid.Row="0" Grid.RowSpan="2">
 
-            <ComboBox x:Name="comboBox1"  Width="113"  Margin="30,0,0,0" SelectionChanged="comboBox1_SelectionChanged_1" DataContext="" Style="{DynamicResource ComboBoxStyle1}" >
+            <ComboBox x:Name="ComboBox1"  Width="113"  Margin="30,0,0,0" SelectionChanged="comboBox1_SelectionChanged_1" DataContext="" Style="{DynamicResource ComboBoxStyle1}" >
                 <Label MouseDown="AllLabel_MouseDown" Name="AllLabel"  Content="Все" Width="110"/>
                 <Label Name="NoOneLabel"  MouseDown="NoOneLabel_MouseDown" Content="Ни одного" Width="110"/>
                 <Label Name="ReadMessageLabel" MouseDown="ReadMessageLabel_MouseDown" Content="Прочитанные" Width="110"/>
@@ -433,7 +442,7 @@
                 <Label Name="UnFlaggedMessageLabel" MouseDown="UnFlaggedMessageLabel_OnMouseDown"  Content="Без меток" Width="110"/>
             </ComboBox>
             <Button x:Name="Update" Content="Button" Width="95" Margin="30,10,30,10" Style="{DynamicResource ButtonStyle1}" Click="Update_Click" />
-            <ComboBox x:Name="comboBox"  Width="95"  Margin="30,10,0,10" Style="{DynamicResource ComboBoxStyle2}">
+            <ComboBox x:Name="ComboBox"  Width="95"  Margin="30,10,0,10" Style="{DynamicResource ComboBoxStyle2}">
                 <Label Name="UnreadMessagesLabel"  Content="Отметить как непрочитанные" Width="173" MouseDown="UnreadMessagesLabel_MouseDown" />
                 <Label Name="DeleteMessagesLabel"  Content="Удалить отмеченные" Width="173" MouseDown= "DeleteMessagesLabel_OnMouseDown" />
             </ComboBox>
@@ -463,7 +472,7 @@
                 <DataGridTemplateColumn Header="Отметить">
                     <DataGridTemplateColumn.CellTemplate  >
                         <DataTemplate >
-                            <CheckBox  Name="checkBoxInColumnCircle" Style="{StaticResource styleCustomCheckBoxCircle}" Checked="checkBoxInColumnCircle_Click" Unchecked="checkBoxInColumnCircle_Unchecked"/>
+                            <CheckBox  Name="checkBoxInColumnCircle" Style="{StaticResource StyleCustomCheckBoxCircle}" Checked="checkBoxInColumnCircle_Click" Unchecked="checkBoxInColumnCircle_Unchecked"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -475,12 +484,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-
                 <DataGridTextColumn Header="Дата" Binding="{Binding DateTime}" Width="60" />
             </DataGrid.Columns>
-
         </DataGrid>
-        <WebBrowser HorizontalAlignment="Left" Name="WebBrowserForShowingCurrentMessage" Height="252" Margin="10,172,0,0"   Grid.Row="1"
-                    Grid.Column="0" VerticalAlignment="Top" Width="144"/>
+        <WebBrowser HorizontalAlignment="Left" Name="WebBrowserForShowingCurrentMessage" Height="409" Margin="10,10,0,0"   Grid.Row="1"
+                    Grid.Column="2" VerticalAlignment="Top" Width="334"/>
     </Grid>
 </Window>
