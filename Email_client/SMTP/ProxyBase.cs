@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 
-namespace SMTP
+namespace Email_client.SMTP
 {
     public abstract class ProxyBase
     {

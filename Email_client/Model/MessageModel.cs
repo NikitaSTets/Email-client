@@ -10,10 +10,13 @@ namespace Email_client.Model
 
         public bool AddFlag(string flag)
         {
+            if (flag == "\\Seen")
+                Color = "Aqua";
             if (string.IsNullOrEmpty(flag))
                 return false;
             if (Flags == null)
                 Flags = new List<string>();
+            if(!HasFlag(flag))
             Flags.Add(flag);
             return true;
         }
@@ -25,7 +28,9 @@ namespace Email_client.Model
 
         public bool RemoveFlag(string flag)
         {
-          return  Flags.Remove(flag);
+            if (flag == "\\Seen")
+                Color = "White";
+            return  Flags.Remove(flag);
         }
 
         public string Subject { get; set; }       
@@ -47,6 +52,9 @@ namespace Email_client.Model
             get { return (bool)GetValue(SelectProperty); }
             set { SetValue(SelectProperty, value); }
         }
+
+        public string To { get; internal set; }
+
         public static readonly DependencyProperty SelectProperty =
             DependencyProperty.Register("Select", typeof(bool), typeof(MessageModel), new UIPropertyMetadata(false));
         // public bool Select { get; set; }
@@ -60,6 +68,11 @@ namespace Email_client.Model
             Color = "White";
             Select = false;
             Flags = flags;
+        }
+
+        public MessageModel(string Uid)
+        {
+            this.Uid = Uid;
         }
     }
 }

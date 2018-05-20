@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Net.Security;
 
-namespace SMTP
+namespace Email_client.SMTP
 {
     public class DefaultTlsProvider : ITlsProvider
     {

@@ -1,4 +1,4 @@
-﻿namespace SMTP
+﻿namespace Email_client.SMTP
 {
     public class SmtpServerReply
     {

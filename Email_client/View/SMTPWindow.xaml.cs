@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Windows;
-using Microsoft.Win32;
-using SMTP;
+using Email_client.SMTP;
 
-
-namespace Email_client
+namespace Email_client.View
 {
     public partial class SMTPWindow : Window
     {

@@ -60,11 +60,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="IMap\EmailTemplate.cs" />
     <Compile Include="IMap\ImapControl.cs" />
     <Compile Include="IMap\LoginInfo.cs" />
     <Compile Include="IMap\MessageDecode.cs" />
     <Compile Include="Model\BrowserBehavior.cs" />
+    <Compile Include="Model\ImprovedDictionary.cs" />
     <Compile Include="SMTP\Constants.cs" />
     <Compile Include="SMTP\ControlStreamReader.cs" />
     <Compile Include="SMTP\DefaultTlsProvider.cs" />
@@ -107,9 +107,6 @@
     <Compile Include="View\Authentication.xaml.cs">
       <DependentUpon>Authentication.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Email.xaml.cs">
-      <DependentUpon>Email.xaml</DependentUpon>
-    </Compile>
     <Page Include="View\Main.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -130,10 +127,6 @@
       <DependentUpon>SMTPWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\Email.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

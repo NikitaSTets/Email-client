@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace SMTP
+namespace Email_client.SMTP
 {
     public class SmtpControlStreamReader : ControlStreamReader
     {

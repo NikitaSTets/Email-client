@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace SMTP
+namespace Email_client.SMTP
 {
     public static class PlainMechanism
     {

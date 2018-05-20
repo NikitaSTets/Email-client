@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SMTP
+namespace Email_client.SMTP
 {
     public class SmtpException : Exception
     {

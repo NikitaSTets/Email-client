@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
-using IMAP;
+using Email_client.IMap;
 
 namespace Email_client.ViewModel
 {
@@ -38,13 +38,13 @@ namespace Email_client.ViewModel
         public static void UpdateListOfMessages(ObservableCollection<MessageModel> Messages, ImapControl imap)
         {
             Messages.Clear();
-            IList <EmailTemplate> messageInfoCollection= imap.ListMessages();
-            EmailTemplate currentMessage;
+            IList <MessageModel> messageInfoCollection= imap.ListMessages();
+            MessageModel currentMessage;
             for (int i = 0; i < messageInfoCollection.Count; i++)
             {
-                currentMessage = messageInfoCollection[i];//imap.GetMessage(messageInfoCollection[i].Uid);
-                currentMessage.TextHTML = "<!DOCTYPE HTML><html><head><meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'></head><body>" + currentMessage.TextHTML+"</body></html>";
-                     Messages.Add(new MessageModel(currentMessage.From,DateTime.Now,currentMessage.TextHTML,currentMessage.Body,currentMessage.Uid,currentMessage.Flags));
+                //currentMessage = messageInfoCollection[i];//imap.GetMessage(messageInfoCollection[i].Uid);
+                messageInfoCollection[i].TextHTML = "<!DOCTYPE HTML><html><head><meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'></head><body>" + messageInfoCollection[i].TextHTML +"</body></html>";
+                     Messages.Add(messageInfoCollection[i]);//что-то мне подсказывает,что там уже есть html
             }
         }
     }

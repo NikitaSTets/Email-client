@@ -8,14 +8,12 @@ C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_c
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Main.g.cs
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Authentication.g.cs
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\SMTPWindow.g.cs
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Email.g.cs
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\App.g.cs
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client_MarkupCompile.cache
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client_MarkupCompile.lref
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Main.baml
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Authentication.baml
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\SMTPWindow.baml
-C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\View\Email.baml
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.g.resources
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.Migrations.InitialCreate.resources
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.Migrations.addtypenameforLogin.resources

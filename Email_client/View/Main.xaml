@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Email_client"
+        xmlns:local="clr-namespace:Email_client.View"
     
         xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
         xmlns:model="clr-namespace:Email_client.Model"
-        x:Class="Email_client.Main"
+        x:Class="Email_client.View.Main"
         mc:Ignorable="d"
-        Title="Main"  Height="520.684" Width="1054.326" MaxWidth="1055" MaxHeight="520"  ResizeMode="CanResizeWithGrip">
+        Title="Main"  Height="520.684" Background="#335a75" Width="1054.326" MaxWidth="1055" MaxHeight="520"  ResizeMode="CanResizeWithGrip">
     <Window.Resources>
         <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
             <Setter Property="Template">
@@ -433,7 +433,7 @@
         <StackPanel  Grid.Column="1" Margin="0,0,30,0" Orientation="Horizontal"  Height="68" VerticalAlignment="Top"
                      Grid.Row="0" Grid.RowSpan="2">
 
-            <ComboBox x:Name="ComboBox1"  Width="113"  Margin="30,0,0,0" SelectionChanged="comboBox1_SelectionChanged_1" DataContext="" Style="{DynamicResource ComboBoxStyle1}" >
+            <ComboBox x:Name="ComboBox1"  Width="113"  Margin="30,0,0,0"  DataContext="" Style="{DynamicResource ComboBoxStyle1}" >
                 <Label MouseDown="AllLabel_MouseDown" Name="AllLabel"  Content="Все" Width="110"/>
                 <Label Name="NoOneLabel"  MouseDown="NoOneLabel_MouseDown" Content="Ни одного" Width="110"/>
                 <Label Name="ReadMessageLabel" MouseDown="ReadMessageLabel_MouseDown" Content="Прочитанные" Width="110"/>
@@ -448,7 +448,7 @@
             </ComboBox>
 
         </StackPanel>
-        <DataGrid  x:Name="ShowMessagesDataGrid"  IsReadOnly="False" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
+        <DataGrid  x:Name="ShowMessagesDataGrid"   IsReadOnly="False" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
  Margin="1,0,8,5" RenderTransformOrigin="0.5,0.5" Height="419" VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1">
             <DataGrid.RenderTransform>
                 <TransformGroup>
@@ -472,14 +472,14 @@
                 <DataGridTemplateColumn Header="Отметить">
                     <DataGridTemplateColumn.CellTemplate  >
                         <DataTemplate >
-                            <CheckBox  Name="checkBoxInColumnCircle" Style="{StaticResource StyleCustomCheckBoxCircle}" Checked="checkBoxInColumnCircle_Click" Unchecked="checkBoxInColumnCircle_Unchecked"/>
+                            <CheckBox  Name="checkBoxInColumnCircle"  Style="{StaticResource StyleCustomCheckBoxCircle}" Checked="checkBoxInColumnCircle_Click" Unchecked="checkBoxInColumnCircle_Unchecked"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="Текст" Width="300*" >
                     <DataGridTemplateColumn.CellTemplate >
                         <DataTemplate>
-                            <Label Name="DataGridLabelShowCurrentMessageMessage"  Background="{Binding Color}" MouseDown="DataGridLabelShowCurrentMessageMessage_OnMouseDown" Content="{Binding Text}" >
+                            <Label Name="DataGridLabelShowCurrentMessageMessage"  Background="{Binding Color}" MouseLeftButtonDown="DataGridLabelShowCurrentMessageMessage_OnMouseDown" Content="{Binding Text}" >
                             </Label>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -489,5 +489,7 @@
         </DataGrid>
         <WebBrowser HorizontalAlignment="Left" Name="WebBrowserForShowingCurrentMessage" Height="409" Margin="10,10,0,0"   Grid.Row="1"
                     Grid.Column="2" VerticalAlignment="Top" Width="334"/>
+        <Label x:Name="SelectMessageLabel" FontSize="30" Background="White" Padding="3,0,0,0" Content="Выбранное сообщение" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" Margin="10,10,10,0" VerticalAlignment="Top" Width="334" Height="44"/>
+        <Button x:Name="button" Click="Button_OnClick"  Grid.ColumnSpan="2" Content="Button" HorizontalAlignment="Left" Margin="184,28,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
 </Window>

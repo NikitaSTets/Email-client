@@ -5,8 +5,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 
-
-namespace SMTP
+namespace Email_client.SMTP
 {
     public class SmtpConnection
     {

@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SMTP
+namespace Email_client.SMTP
 {
     public abstract class ControlStreamReader
     {
