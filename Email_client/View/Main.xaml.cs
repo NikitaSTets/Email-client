@@ -12,34 +12,35 @@ namespace Email_client.View
 {
     public partial class Main : Window
     {
+
+        readonly ImprovedDictionary<string, string> _comandsForAddingToTheServer;
+        readonly ImprovedDictionary<string, string> _comandsForDeletingToTheServer;
+
         ImapControl _imap;
 
         SMTPWindow _smtpWindow;
-        ImprovedDictionary <string,string> comandsForAddingToTheServer;
-        ImprovedDictionary<string, string> comandsForDeletingToTheServer;
 
         private string Login { get; set; }
-
         private string Password { get; set; }
 
         public ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
-
         public ObservableCollection<MessageModel> MessagesTemp { get; set; } = new ObservableCollection<MessageModel>();
-        private LoginInfo user;
+
+        private LoginInfo _user;
 
         public  void CreateSmtpWindowAndConnectToServer(string userName, string password)
         {
             _smtpWindow = new SMTPWindow();
-            user = new LoginInfo();
-            user.ImapAddress = "imap.gmail.com";
-            user.Username = userName;
-            user.Password = password;
+            _user = new LoginInfo();
+            _user.ImapAddress = "imap.gmail.com";
+            _user.Username = userName;
+            _user.Password = password;
             Login = userName;
             Password = password;
             _imap = new ImapControl(993);
             try
             {
-                _imap.Connect(user);
+                _imap.Connect(_user);
 
             }
             catch (Exception)
@@ -48,18 +49,33 @@ namespace Email_client.View
             }
             ViewModel.ViewModel.UpdateListOfMessages(Messages, _imap);
             ShowMessagesDataGrid.ItemsSource = Messages;
+            SetCheckedForUnreadMessage();
            // BrowserBehavior.SetBody(WebBrowserForShowingCurrentMessage, Messages[0].TextHTML); ;
         }
 
-
+        
         public  Main()
         {
             InitializeComponent();
-            comandsForAddingToTheServer = new ImprovedDictionary<string, string>();
-            comandsForDeletingToTheServer=new ImprovedDictionary<string, string>();
-            CreateSmtpWindowAndConnectToServer("login", "password");
+            _comandsForAddingToTheServer = new ImprovedDictionary<string, string>();
+            _comandsForDeletingToTheServer=new ImprovedDictionary<string, string>();
+            CreateSmtpWindowAndConnectToServer("nikit.stets@gmail.com", "Minsk1.1.ru");
         }
 
+
+        public void SetCheckedForUnreadMessage()
+      {
+            for (int i = 0; i <Messages.Count; i++)
+            {
+                if (!Messages[i].HasFlag("\\Seen"))
+                {
+                   // ShowMessagesDataGrid.Columns[1].
+                   // var findName = ShowMessagesDataGrid.FindName("checkBoxInColumnCircle");
+                   // ((CheckBox) findName).IsChecked = true;
+                }
+            }
+          
+        }
 
         private void ButtonForSendMessage_Click(object sender, RoutedEventArgs e)
         {           
@@ -75,7 +91,7 @@ namespace Email_client.View
             
             Messages.Clear();
             _imap.Logout();
-            _imap.Connect(user);
+            _imap.Connect(_user);
             var col = _imap.UpdateListMessages();
             foreach (var email in col)
             {
@@ -121,8 +137,8 @@ namespace Email_client.View
             {
                // _imap.RemoveMessageFlags(((MessageModel)element).Uid, ImapMessageFlags.Seen);
                 ((MessageModel) element).RemoveFlag("\\Seen");
-                ((MessageModel)element).Color = "Aqua";
-                comandsForDeletingToTheServer.Add(((MessageModel)element).Uid, "\\Seen");
+                if (!_comandsForAddingToTheServer.Remove(((MessageModel)element).Uid, "\\Seen"))
+                    _comandsForDeletingToTheServer.Add(((MessageModel)element).Uid, "\\Seen");
             }
 
 
@@ -142,10 +158,10 @@ namespace Email_client.View
             var element = ShowMessagesDataGrid.CurrentItem;
             if (element is MessageModel)
             {
-                //_imap.AddMessageFlags(((MessageModel)element).Uid, ImapMessageFlags.Seen);
-                ((MessageModel)element).Color = "White";
+                if (!_comandsForDeletingToTheServer.Remove(((MessageModel)element).Uid, "\\Seen"))               
+                     _comandsForAddingToTheServer.Add(((MessageModel)element).Uid, "\\Seen");
                 ((MessageModel)element).AddFlag("\\Seen");
-                comandsForAddingToTheServer.Add(((MessageModel)element).Uid, "\\Seen");
+               
             }
         }
 
@@ -156,12 +172,26 @@ namespace Email_client.View
             {
                 if (item.Select == true)
                 {                    
+                   if( !_comandsForAddingToTheServer.Remove(item.Uid, "\\Seen"))               
+                       _comandsForDeletingToTheServer.Add(item.Uid, "\\Seen");
+                   
                     item.RemoveFlag("\\Seen");
-                    comandsForDeletingToTheServer.Add(item.Uid, "\\Seen");
                 }
             }
         }
-
+        private void ReadMessagesLabel_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var selectedMessages = ShowMessagesDataGrid.Items;
+            foreach (MessageModel item in selectedMessages)
+            {
+                if (item.Select == true)
+                {
+                    if (!_comandsForDeletingToTheServer.Remove(item.Uid, "\\Seen"))
+                        _comandsForAddingToTheServer.Add(item.Uid, "\\Seen");
+                    item.AddFlag("\\Seen");
+                }
+            }
+        }
         private void NoOneLabel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             foreach (var item in Messages)
@@ -244,7 +274,7 @@ namespace Email_client.View
                 if (message.Select)
                 {
                     message.AddFlag("\\Deleted");
-                    comandsForAddingToTheServer.Add(message.Uid, "\\Deleted");
+                    _comandsForAddingToTheServer.Add(message.Uid, "\\Deleted");
                     continue;
                 }
                 MessagesTemp.Add(message);
@@ -297,14 +327,14 @@ namespace Email_client.View
 
         private void SendToServerCommands()
         {
-            foreach (var command in comandsForAddingToTheServer)
+            foreach (var command in _comandsForAddingToTheServer)
             {
                 foreach (var value in command.Value)
                 {
                     _imap.ModificateMessageFlagOnTheServer(command.Key, value,'+');
                 }       
             }
-            foreach (var command in comandsForDeletingToTheServer)
+            foreach (var command in _comandsForDeletingToTheServer)
             {
                 foreach (var value in command.Value)
                 {
@@ -317,5 +347,7 @@ namespace Email_client.View
         {
            SendToServerCommands();
         }
+
+       
     }
 }

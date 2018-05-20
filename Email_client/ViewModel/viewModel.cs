@@ -1,6 +1,4 @@
 ﻿using Email_client.Model;
-//using GemBox.Email;
-//using GemBox.Email.Imap;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,8 +24,7 @@ namespace Email_client.ViewModel
             imap = new ImapControl(993);                
             try
             {
-                imap.Connect(user);
-                
+                imap.Connect(user);                
             }
             catch (Exception)
             { 
@@ -39,10 +36,8 @@ namespace Email_client.ViewModel
         {
             Messages.Clear();
             IList <MessageModel> messageInfoCollection= imap.ListMessages();
-            MessageModel currentMessage;
             for (int i = 0; i < messageInfoCollection.Count; i++)
-            {
-                //currentMessage = messageInfoCollection[i];//imap.GetMessage(messageInfoCollection[i].Uid);
+            {                
                 messageInfoCollection[i].TextHTML = "<!DOCTYPE HTML><html><head><meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'></head><body>" + messageInfoCollection[i].TextHTML +"</body></html>";
                      Messages.Add(messageInfoCollection[i]);//что-то мне подсказывает,что там уже есть html
             }

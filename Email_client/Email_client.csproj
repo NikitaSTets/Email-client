@@ -70,7 +70,6 @@
     <Compile Include="SMTP\DefaultTlsProvider.cs" />
     <Compile Include="SMTP\EmailFormatter.cs" />
     <Compile Include="SMTP\ITlsProvider.cs" />
-    <Compile Include="SMTP\Mechanism.cs" />
     <Compile Include="Migrations\201805011231308_InitialCreate.cs" />
     <Compile Include="Migrations\201805011231308_InitialCreate.Designer.cs">
       <DependentUpon>201805011231308_InitialCreate.cs</DependentUpon>

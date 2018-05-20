@@ -2,9 +2,7 @@
 {
     public static class SmtpCommands
     {
-        /// <summary>
-        /// Extended Hello
-        /// </summary>
+
         public const string EHLO = "EHLO";
 
         public const string MAIL = "MAIL";

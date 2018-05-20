@@ -60,7 +60,7 @@
                 <Setter.Value >
                     <ControlTemplate TargetType="{x:Type CheckBox}" >
                         <StackPanel Orientation="Horizontal">
-                            <Image  x:Name="imageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\check-mark.png" Width="15" Height="15" Margin="2" />
+                            <Image  x:Name="imageCheckBox"  Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\check-mark.png" Width="15" Height="15" Margin="2" />
                             <ContentPresenter VerticalAlignment="Center" />
                         </StackPanel>
                         <ControlTemplate.Triggers>
@@ -444,12 +444,13 @@
             <Button x:Name="Update" Content="Button" Width="95" Margin="30,10,30,10" Style="{DynamicResource ButtonStyle1}" Click="Update_Click" />
             <ComboBox x:Name="ComboBox"  Width="95"  Margin="30,10,0,10" Style="{DynamicResource ComboBoxStyle2}">
                 <Label Name="UnreadMessagesLabel"  Content="Отметить как непрочитанные" Width="173" MouseDown="UnreadMessagesLabel_MouseDown" />
+                <Label Name="ReadMessagesLabel"  Content="Отметить как прочитанные" Width="173" MouseDown="ReadMessagesLabel_OnMouseDown" />
                 <Label Name="DeleteMessagesLabel"  Content="Удалить отмеченные" Width="173" MouseDown= "DeleteMessagesLabel_OnMouseDown" />
             </ComboBox>
 
         </StackPanel>
         <DataGrid  x:Name="ShowMessagesDataGrid"   IsReadOnly="False" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
- Margin="1,0,8,5" RenderTransformOrigin="0.5,0.5" Height="419" VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1">
+ Margin="1,0,8,1" RenderTransformOrigin="0.5,0.5" Height="419" VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1">
             <DataGrid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -472,7 +473,7 @@
                 <DataGridTemplateColumn Header="Отметить">
                     <DataGridTemplateColumn.CellTemplate  >
                         <DataTemplate >
-                            <CheckBox  Name="checkBoxInColumnCircle"  Style="{StaticResource StyleCustomCheckBoxCircle}" Checked="checkBoxInColumnCircle_Click" Unchecked="checkBoxInColumnCircle_Unchecked"/>
+                            <CheckBox  Name="checkBoxInColumnCircle"  Style="{StaticResource StyleCustomCheckBoxCircle}" IsChecked="{Binding Unread}" Checked="checkBoxInColumnCircle_Click" Unchecked="checkBoxInColumnCircle_Unchecked"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

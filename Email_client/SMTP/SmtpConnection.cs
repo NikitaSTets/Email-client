@@ -29,9 +29,6 @@ namespace Email_client.SMTP
         public int WriteTimeout { get; set; } = -1;
         public int CommandTimeout { get; set; } = -1;
 
-        /// <summary>
-        /// All comunication via control connection will be logged here
-        /// </summary>
         public TextWriter Log { get; set; }
 
         public string Greeting { get; private set; }
@@ -181,17 +178,6 @@ namespace Email_client.SMTP
                 throw new SmtpException();
         }
 
-        public void Quit()
-        {
-            SetupCommandTimeout();
-
-            var reply = SendCommand(SmtpCommands.QUIT);
-            if (reply.Code != SmtpReplyCode.ChannelClosing)
-                throw new SmtpException();
-
-            _stream.Close();
-            _tcpClient.Close();
-        }
 
         #endregion
 

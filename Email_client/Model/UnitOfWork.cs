@@ -2,21 +2,21 @@
 
 namespace Email_client.Model
 {
-   public class UnitOfWork:IDisposable
+    public class UnitOfWork : IDisposable
     {
         UsersContext db = new UsersContext();
-        UsersInfoRepository usersInfoRepository;
+        UsersInfoRepository _usersInfoRepository;
 
         public UsersInfoRepository Users
+        {
+            get
             {
-                get
-                 {
-                if (usersInfoRepository == null)
-                        usersInfoRepository = new UsersInfoRepository(db);
-                    
-                      return usersInfoRepository;
-                 }   
+                if (_usersInfoRepository == null)
+                    _usersInfoRepository = new UsersInfoRepository(db);
+
+                return _usersInfoRepository;
             }
+        }
 
         public void Save()
         {
@@ -39,6 +39,6 @@ namespace Email_client.Model
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }      
+        }
     }
 }

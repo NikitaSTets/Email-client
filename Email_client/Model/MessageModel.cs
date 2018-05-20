@@ -1,21 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Windows;
 
 namespace Email_client.Model
 {
     public class MessageModel:DependencyObject
     {
-        public List<string> Flags { get; set;}
+        private List<string> _flags;
+        public List<string> Flags
+        {
+            get { return _flags;}
+            set
+            {
+                _flags=value;
+                if(!HasFlag("\\Seen"))
+                    {
+                        Color = "Aqua";
+                        Unread = true;
+                    }
+                else
+                {
+                    Color = "White";
+                    Unread = false;
+                }
+            }
+
+        }
 
         public bool AddFlag(string flag)
         {
             if (flag == "\\Seen")
-                Color = "Aqua";
-            if (string.IsNullOrEmpty(flag))
-                return false;
-            if (Flags == null)
-                Flags = new List<string>();
+            {           
+               Color = "White";
+               Unread = false;
+            }
             if(!HasFlag(flag))
             Flags.Add(flag);
             return true;
@@ -29,7 +48,10 @@ namespace Email_client.Model
         public bool RemoveFlag(string flag)
         {
             if (flag == "\\Seen")
-                Color = "White";
+            {          
+               Color = "Aqua";
+               Unread = true;
+            }
             return  Flags.Remove(flag);
         }
 
@@ -38,7 +60,8 @@ namespace Email_client.Model
         public DateTime DateTime { get; set; }
         public string Text { get; set; }
         public string TextHTML { get; set; }
-       // public string Color { get; set; }
+        
+        public  bool Unread { get;set;}
         public string Uid { get; }
         public string Color
         {
@@ -57,11 +80,12 @@ namespace Email_client.Model
 
         public static readonly DependencyProperty SelectProperty =
             DependencyProperty.Register("Select", typeof(bool), typeof(MessageModel), new UIPropertyMetadata(false));
-        // public bool Select { get; set; }
+
         public MessageModel(string author,DateTime date,string textHTML,string text,string Uid,List<string> flags)
         {
             Author = author;
             DateTime = date;
+            Unread = true;
             TextHTML = textHTML;
             Text = text;
             this.Uid = Uid;
@@ -70,9 +94,10 @@ namespace Email_client.Model
             Flags = flags;
         }
 
-        public MessageModel(string Uid)
+        public MessageModel(string uid)
         {
-            this.Uid = Uid;
+            Uid = uid;
+            Flags = new List<string>();
         }
     }
 }
