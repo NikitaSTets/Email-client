@@ -9,7 +9,7 @@ namespace Email_client.SMTP
 {
     public class SmtpConnection
     {
-        private static readonly string _endOfMailData = Constants.TelnetEndOfLine + "." + Constants.TelnetEndOfLine;
+        private static readonly string EndOfMailData = Constants.TelnetEndOfLine + "." + Constants.TelnetEndOfLine;
 
         #region Private fields
 
@@ -50,12 +50,11 @@ namespace Email_client.SMTP
             if (tlsProvider == null)
                 throw new ArgumentNullException(nameof(tlsProvider));
 
-            this._tlsProvider = tlsProvider;
+            _tlsProvider = tlsProvider;
         }
 
         #endregion
 
-        #region Public methods
 
         public void Connect(string host, int port)
         {
@@ -94,8 +93,8 @@ namespace Email_client.SMTP
         {
             SetupCommandTimeout();
 
-            var reply = SendCommand(SmtpCommands.EHLO, domain);
-            if (reply.Code != SmtpReplyCode.OK)
+            var reply = SendCommand(SmtpCommands.Ehlo, domain);
+            if (reply.Code != SmtpReplyCode.Ok)
                 throw new SmtpException();
 
             ExtendedHelloResponse = reply.Message;
@@ -106,10 +105,10 @@ namespace Email_client.SMTP
         {
             SetupCommandTimeout();
 
-            if (!SupportedCommands.Contains(SmtpCommands.STARTTLS))
+            if (!SupportedCommands.Contains(SmtpCommands.Starttls))
                 throw new SmtpException("Not supported");
 
-            var reply = SendCommand(SmtpCommands.STARTTLS);
+            var reply = SendCommand(SmtpCommands.Starttls);
             if (reply.Code != SmtpReplyCode.ServiceReady)
                 throw new SmtpException();
 
@@ -122,10 +121,10 @@ namespace Email_client.SMTP
         {
             SetupCommandTimeout();
 
-            if (!SupportedCommands.Contains(SmtpCommands.AUTH + " PLAIN"))
+            if (!SupportedCommands.Contains(SmtpCommands.Auth + " PLAIN"))
                 throw new SmtpException("Not supported");
 
-            var reply = SendCommand(SmtpCommands.AUTH, "PLAIN " + PlainMechanism.Encode(null, user, password));
+            var reply = SendCommand(SmtpCommands.Auth, "PLAIN " + PlainMechanism.Encode(null, user, password));
 
             switch (reply.Code)
             {
@@ -144,8 +143,8 @@ namespace Email_client.SMTP
         {
             SetupCommandTimeout();
 
-            var reply = SendCommand(SmtpCommands.MAIL, $"FROM:<{path}>");
-            if (reply.Code != SmtpReplyCode.OK)
+            var reply = SendCommand(SmtpCommands.Mail, $"FROM:<{path}>");
+            if (reply.Code != SmtpReplyCode.Ok)
                 throw new SmtpException();
         }
 
@@ -153,8 +152,8 @@ namespace Email_client.SMTP
         {
             SetupCommandTimeout();
 
-            var reply = SendCommand(SmtpCommands.RCPT, $"TO:<{path}>");
-            if (reply.Code != SmtpReplyCode.OK)
+            var reply = SendCommand(SmtpCommands.Rcpt, $"TO:<{path}>");
+            if (reply.Code != SmtpReplyCode.Ok)
                 throw new SmtpException();
         }
 
@@ -162,24 +161,22 @@ namespace Email_client.SMTP
         {
             SetupCommandTimeout();
 
-            var reply = SendCommand(SmtpCommands.DATA);
+            var reply = SendCommand(SmtpCommands.Data);
             if (reply.Code != SmtpReplyCode.StartInput)
                 throw new SmtpException();
 
-            if (mail.Contains(_endOfMailData))
+            if (mail.Contains(EndOfMailData))
                 throw new SmtpException("Mail data cannot contain terminator");
 
-            mail += _endOfMailData;
+            mail += EndOfMailData;
             byte[] buffer = Encoding.UTF8.GetBytes(mail);
             _stream.Write(buffer, 0, buffer.Length);
 
             reply = _reader.ReadServerReply();
-            if (reply.Code != SmtpReplyCode.OK)
+            if (reply.Code != SmtpReplyCode.Ok)
                 throw new SmtpException();
         }
 
-
-        #endregion
 
         #region Private methods
 
@@ -215,9 +212,9 @@ namespace Email_client.SMTP
             var commands = new List<string>();
             foreach (var line in lines.Skip(1))
             {
-                if (line == SmtpCommands.STARTTLS)
+                if (line == SmtpCommands.Starttls)
                 {
-                    commands.Add(SmtpCommands.STARTTLS);
+                    commands.Add(SmtpCommands.Starttls);
                     continue;
                 }
 
@@ -225,10 +222,10 @@ namespace Email_client.SMTP
                 if (words.Length == 0)
                     continue;
 
-                if (words[0] == SmtpCommands.AUTH)
+                if (words[0] == SmtpCommands.Auth)
                 {
                     foreach (var type in words.Skip(1))
-                        commands.Add(SmtpCommands.AUTH + " " + type);
+                        commands.Add(SmtpCommands.Auth + " " + type);
                 }
             }
 

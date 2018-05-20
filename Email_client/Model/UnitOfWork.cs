@@ -4,7 +4,7 @@ namespace Email_client.Model
 {
     public class UnitOfWork : IDisposable
     {
-        UsersContext db = new UsersContext();
+        UsersContext _db = new UsersContext();
         UsersInfoRepository _usersInfoRepository;
 
         public UsersInfoRepository Users
@@ -12,7 +12,7 @@ namespace Email_client.Model
             get
             {
                 if (_usersInfoRepository == null)
-                    _usersInfoRepository = new UsersInfoRepository(db);
+                    _usersInfoRepository = new UsersInfoRepository(_db);
 
                 return _usersInfoRepository;
             }
@@ -20,7 +20,7 @@ namespace Email_client.Model
 
         public void Save()
         {
-            db.SaveChanges();
+            _db.SaveChanges();
         }
         private bool _disposed = false;
 
@@ -30,7 +30,7 @@ namespace Email_client.Model
             {
                 if (disposing)
                 {
-                    db.Dispose();
+                    _db.Dispose();
                 }
                 _disposed = true;
             }

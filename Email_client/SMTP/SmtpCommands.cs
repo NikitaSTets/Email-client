@@ -3,15 +3,15 @@
     public static class SmtpCommands
     {
 
-        public const string EHLO = "EHLO";
+        public const string Ehlo = "EHLO";
 
-        public const string MAIL = "MAIL";
-        public const string RCPT = "RCPT";
-        public const string DATA = "DATA";
+        public const string Mail = "MAIL";
+        public const string Rcpt = "RCPT";
+        public const string Data = "DATA";
 
-        public const string QUIT = "QUIT";
+        public const string Quit = "QUIT";
 
-        public const string STARTTLS = "STARTTLS";
-        public const string AUTH = "AUTH";
+        public const string Starttls = "STARTTLS";
+        public const string Auth = "AUTH";
     }
 }

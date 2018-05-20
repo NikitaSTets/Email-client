@@ -5,19 +5,19 @@ namespace Email_client.View
 {
     public partial class Authentication : Window
     {
-        readonly UnitOfWork unitOfWork;
+        readonly UnitOfWork _unitOfWork;
 
-        Main mainWindow;
+        Main _mainWindow;
 
-        dynamic users;
+        dynamic _users;
 
 
         public Authentication()
         {
             InitializeComponent();
-            unitOfWork = new UnitOfWork();
-            mainWindow = new Main();
-            users = unitOfWork.Users.GetAll();
+            _unitOfWork = new UnitOfWork();
+            _mainWindow = new Main();
+            _users = _unitOfWork.Users.GetAll();
         }
 
 
@@ -25,7 +25,7 @@ namespace Email_client.View
         {
             UsersInfo result=null;
 
-            foreach (var user in users)
+            foreach (var user in _users)
             {
                 if (user.Login == LoginTextBox.Text && user.Password == PasswordBox.Password)
                 {
@@ -35,8 +35,8 @@ namespace Email_client.View
             }
             if (result!=null)
             {
-                mainWindow.Show();
-                mainWindow.CreateSmtpWindowAndConnectToServer(result.Login,result.Password);
+                _mainWindow.Show();
+                _mainWindow.CreateSmtpWindowAndConnectToServer(result.Login,result.Password);
                 this.Close();
             }
         }

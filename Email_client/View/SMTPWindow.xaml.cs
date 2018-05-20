@@ -4,7 +4,7 @@ using Email_client.SMTP;
 
 namespace Email_client.View
 {
-    public partial class SMTPWindow : Window
+    public partial class SmtpWindow : Window
     {
         private SmtpConnection _smtp;
 
@@ -12,10 +12,10 @@ namespace Email_client.View
 
         internal string Password { get; set; }
 
-        private string _smtpHost { get; set; }
+        private string SmtpHost { get; set; }
 
 
-        public SMTPWindow()
+        public SmtpWindow()
         {
             InitializeComponent();
             _smtp = new SmtpConnection();
@@ -27,23 +27,21 @@ namespace Email_client.View
         {
             try
             {
-                //Smtp client details
-                //gmail>>smtp server :smtp.gmail.com,port 587,ssl required
                 var userInfo = Login.Split('@');
                 var login = userInfo[0];
-                _smtpHost = userInfo[1];
-                _smtp.Connect("smtp." + _smtpHost, 587);
+                SmtpHost = userInfo[1];
+                _smtp.Connect("smtp." + SmtpHost, 587);
 
 
                 _smtp.ExtendedHello("bla-bla");
-                _smtp.StartTls("smtp." + _smtpHost);
+                _smtp.StartTls("smtp." + SmtpHost);
 
                 _smtp.ExtendedHello("bla-bla");
                 _smtp.AuthPlain(login, Password);
 
-                _smtp.Mail(Login + "@" + _smtpHost);
+                _smtp.Mail(Login + "@" + SmtpHost);
                 _smtp.Recipient(ToEmailTextBox.Text);
-                _smtp.Data(EmailFormatter.GetText(Login + "@" + _smtpHost, TopicTextBox.Text, ToEmailTextBox.Text, null, ContentOfMessageSubHeaderText.Text));
+                _smtp.Data(EmailFormatter.GetText(Login + "@" + SmtpHost, TopicTextBox.Text, ToEmailTextBox.Text, null, ContentOfMessageSubHeaderText.Text));
             }
             catch (Exception ex)
             {

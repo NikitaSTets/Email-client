@@ -8,10 +8,8 @@ namespace Email_client.SMTP
         public Stream AuthenticateAsClient(Stream innerStream, string host)
         {
             var ssl = new SslStream(innerStream, true);
-            //ssl.AuthenticateAsClient();
             ssl.AuthenticateAsClient(host);
-            //ssl.AuthenticateAsClient(host, null, System.Security.Authentication.SslProtocols.Ssl2,true);//true->false
-
+        
             return ssl;
         }
     }

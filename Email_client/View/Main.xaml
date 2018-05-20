@@ -42,12 +42,18 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type CheckBox}">
                         <StackPanel Orientation="Horizontal">
-                            <Image x:Name="imageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\flag(blue) (1).png" Width="15" Height="15" Margin="2" />
-                            <ContentPresenter VerticalAlignment="Center" />
+                            <Image x:Name="imageCheckBox"  Width="15" Height="15" Margin="2" >
+                                <Image.Source>
+                                    <BitmapImage UriSource="../Resources/Images/flag(blue) (1).png" />
+                                </Image.Source>
+                            </Image>
+                           <ContentPresenter VerticalAlignment="Center" />
                         </StackPanel>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="False">
-                                <Setter TargetName="imageCheckBox" Property="Source" Value="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\flag(white) (1).png" />
+                                <Setter TargetName="imageCheckBox" Property="Source" Value="../Resources/Images/flag(white) (1).png" >
+                                  
+                                </Setter>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -60,12 +66,16 @@
                 <Setter.Value >
                     <ControlTemplate TargetType="{x:Type CheckBox}" >
                         <StackPanel Orientation="Horizontal">
-                            <Image  x:Name="imageCheckBox"  Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\check-mark.png" Width="15" Height="15" Margin="2" />
-                            <ContentPresenter VerticalAlignment="Center" />
+                            <Image  x:Name="imageCheckBox"  Width="15" Height="15" Margin="2" >
+                            <Image.Source>
+                                    <BitmapImage UriSource="../Resources/Images/check-mark.png" />
+                            </Image.Source>
+                            </Image>
+                                <ContentPresenter VerticalAlignment="Center" />
                         </StackPanel>
                         <ControlTemplate.Triggers>
                             <Trigger  Property="IsChecked" Value="False">
-                                <Setter TargetName="imageCheckBox" Property="Source" Value="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\circle-shape-outline.png" />
+                                <Setter TargetName="imageCheckBox" Property="Source" Value="../Resources/Images/circle-shape-outline.png" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -315,7 +325,11 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <themes:ButtonChrome x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" RenderDefaulted="{TemplateBinding IsDefaulted}" SnapsToDevicePixels="true">
-                            <Image x:Name="imageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\update.png" Margin="23,5,41,10" />
+                            <Image x:Name="imageCheckBox" Margin="23,5,41,10" >
+                                <Image.Source>
+                                    <BitmapImage UriSource="../Resources/Images/update.png" />
+                                </Image.Source>
+                            </Image>
                         </themes:ButtonChrome>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsKeyboardFocused" Value="true">
@@ -420,20 +434,24 @@
             <RowDefinition Height="45*" />
             <RowDefinition Height="310*" />
         </Grid.RowDefinitions>
-        <Image x:Name="ImageCheckBox" Source="C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\Resources\Images\Logo.png" Margin="23,0,41,15" />
-        <Button x:Name="ButtonForSendMessage" Content="Написать" HorizontalAlignment="Left" Margin="41,10,0,0" Grid.Row="1"
+        <Image x:Name="ImageCheckBox" Margin="10,10,54,5" >
+        <Image.Source>
+            <BitmapImage UriSource="../Resources/Images/Logo.png" />
+        </Image.Source>
+        </Image>
+            <Button x:Name="ButtonForSendMessage" Content="Написать" HorizontalAlignment="Left" Margin="41,10,0,0" Grid.Row="1"
                 Grid.Column="0" VerticalAlignment="Top" Width="120" Height="31" Click="ButtonForSendMessage_Click"/>
-        <ListBox x:Name="ListBox" HorizontalAlignment="Left" Height="114" Margin="41,70,0,0" Grid.Row="1" Grid.Column="0"
-                 VerticalAlignment="Top" Width="120">
-            <Label x:Name="Incoming" Content="Входящие" MouseDown="Incoming_OnMouseDown" Width="110"/>
-            <Label x:Name="Starred" Content="Помеченные" MouseDown="FlaggedMessageLabel_OnMouseDown" Width="110"/>
-            <Label x:Name="SentedMessagesLabel" Content="Отправленные" MouseDown="SentedMessagesLabel_OnMouseDown" Width="110"/>
-            <Label x:Name="DraftsMessagesLabel" Content="Черновики" MouseDown="DraftsMessagesLabel_OnMouseDown"  Width="110"/>
+        <ListBox BorderBrush="White" BorderThickness="2" x:Name="ListBox" HorizontalAlignment="Left" Height="114" Margin="41,70,0,0" Grid.Row="1" Grid.Column="0"
+                 VerticalAlignment="Top" Width="120" Background="#335a75">
+            <Label x:Name="Incoming" Content="Входящие" Foreground="White" MouseDown="Incoming_OnMouseDown" Width="110"/>
+            <Label x:Name="Starred" Content="Помеченные" Foreground="White" MouseDown="FlaggedMessageLabel_OnMouseDown" Width="110"/>
+            <Label x:Name="SentedMessagesLabel" Content= "Отправленные" Foreground="White" MouseDown="SentedMessagesLabel_OnMouseDown" Width="110"/>
+            <Label x:Name="DraftsMessagesLabel" Content="Черновики" Foreground="White" MouseDown="DraftsMessagesLabel_OnMouseDown"  Width="110"/>
         </ListBox>
-        <StackPanel  Grid.Column="1" Margin="0,0,30,0" Orientation="Horizontal"  Height="68" VerticalAlignment="Top"
+        <StackPanel  Grid.Column="1" Margin="10,0,0,0" Orientation="Horizontal"  Height="68" VerticalAlignment="Top"
                      Grid.Row="0" Grid.RowSpan="2">
 
-            <ComboBox x:Name="ComboBox1"  Width="113"  Margin="30,0,0,0"  DataContext="" Style="{DynamicResource ComboBoxStyle1}" >
+            <ComboBox x:Name="ComboBox1"  Width="95"  Margin="20,10,0,10"  DataContext="" >
                 <Label MouseDown="AllLabel_MouseDown" Name="AllLabel"  Content="Все" Width="110"/>
                 <Label Name="NoOneLabel"  MouseDown="NoOneLabel_MouseDown" Content="Ни одного" Width="110"/>
                 <Label Name="ReadMessageLabel" MouseDown="ReadMessageLabel_MouseDown" Content="Прочитанные" Width="110"/>
@@ -441,7 +459,7 @@
                 <Label Name="FlaggedMessageLabel" MouseDown="FlaggedMessageLabel_OnMouseDown" Content="Помеченные" Width="110"/>
                 <Label Name="UnFlaggedMessageLabel" MouseDown="UnFlaggedMessageLabel_OnMouseDown"  Content="Без меток" Width="110"/>
             </ComboBox>
-            <Button x:Name="Update" Content="Button" Width="95" Margin="30,10,30,10" Style="{DynamicResource ButtonStyle1}" Click="Update_Click" />
+            <Button x:Name="Update" Content="Button" Width="95" Margin="45,10,15,10" Style="{DynamicResource ButtonStyle1}" Click="Update_Click" />
             <ComboBox x:Name="ComboBox"  Width="95"  Margin="30,10,0,10" Style="{DynamicResource ComboBoxStyle2}">
                 <Label Name="UnreadMessagesLabel"  Content="Отметить как непрочитанные" Width="173" MouseDown="UnreadMessagesLabel_MouseDown" />
                 <Label Name="ReadMessagesLabel"  Content="Отметить как прочитанные" Width="173" MouseDown="ReadMessagesLabel_OnMouseDown" />
@@ -490,7 +508,7 @@
         </DataGrid>
         <WebBrowser HorizontalAlignment="Left" Name="WebBrowserForShowingCurrentMessage" Height="409" Margin="10,10,0,0"   Grid.Row="1"
                     Grid.Column="2" VerticalAlignment="Top" Width="334"/>
-        <Label x:Name="SelectMessageLabel" FontSize="30" Background="White" Padding="3,0,0,0" Content="Выбранное сообщение" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" Margin="10,10,10,0" VerticalAlignment="Top" Width="334" Height="44"/>
-        <Button x:Name="button" Click="Button_OnClick"  Grid.ColumnSpan="2" Content="Button" HorizontalAlignment="Left" Margin="184,28,0,0" VerticalAlignment="Top" Width="75"/>
+        <Label x:Name="SelectMessageLabel" Foreground="White" FontSize="30"  Padding="3,0,0,0" Content="Выбранное сообщение" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" Margin="10,10,10,0" VerticalAlignment="Top" Width="334" Height="44"/>
+       
     </Grid>
 </Window>

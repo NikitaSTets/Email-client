@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Email_client.Model
 {
@@ -14,14 +15,43 @@ namespace Email_client.Model
             else             
                 Add(key, new List<TValue> { value });
         }
+
         public bool Remove(TKey key, TValue value)
         {
+            bool result = false;
             if (ContainsKey(key))
-            {             
-              return this[key].Remove(value);
+            {
+                result = this[key].Remove(value);
+                if (this[key].Count == 0)
+                    Remove(key);
             }
 
-            return false;
+           
+            return result;
+        }
+
+        public bool RemoveAll()
+        {
+            var itemsToRemove = this.ToArray();
+            foreach (var item in itemsToRemove)
+               Remove(item.Key);                
+            return true;
+        }
+
+        public ImprovedDictionary<TKey, TValue> GetCopy()
+        {
+            var answer=new ImprovedDictionary<TKey, TValue>();
+            foreach (var key in Keys)
+            {
+
+                var values = new List<string>();
+                foreach (var value in this[key])
+                {
+                   answer.Add(key, value);
+                }
+            }
+
+            return answer;
         }
     }
 }

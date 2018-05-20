@@ -1,10 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.CodeDom;
 using System.Collections.ObjectModel;
+using System.Linq;
+using  System.IO;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using Email_client.IMap;
 using Email_client.Model;
 
@@ -18,7 +23,7 @@ namespace Email_client.View
 
         ImapControl _imap;
 
-        SMTPWindow _smtpWindow;
+        SmtpWindow _smtpWindow;
 
         private string Login { get; set; }
         private string Password { get; set; }
@@ -28,9 +33,26 @@ namespace Email_client.View
 
         private LoginInfo _user;
 
-        public  void CreateSmtpWindowAndConnectToServer(string userName, string password)
+        Timer _timer;
+
+        private TimerCallback _tm;
+
+
+        public Main()
         {
-            _smtpWindow = new SMTPWindow();
+            InitializeComponent();
+            _comandsForAddingToTheServer = new ImprovedDictionary<string, string>();
+            _comandsForDeletingToTheServer = new ImprovedDictionary<string, string>();
+            CreateSmtpWindowAndConnectToServer("nikit.stets@gmail.com", "Minsk1.1.ru");
+            int num = 0;
+            _tm = new TimerCallback(SendToServerCommands);
+            _timer = new Timer(_tm, num, 60000, 60000);
+        }
+
+
+        public void CreateSmtpWindowAndConnectToServer(string userName, string password)
+        {
+            _smtpWindow = new SmtpWindow();
             _user = new LoginInfo();
             _user.ImapAddress = "imap.gmail.com";
             _user.Username = userName;
@@ -41,63 +63,70 @@ namespace Email_client.View
             try
             {
                 _imap.Connect(_user);
-
             }
             catch (Exception)
             {
                 MessageBox.Show("Error.Connect to server");
             }
             ViewModel.ViewModel.UpdateListOfMessages(Messages, _imap);
-            ShowMessagesDataGrid.ItemsSource = Messages;
+            ShowMessagesDataGrid.ItemsSource = Messages.OrderByDescending(m => m.Unread);
             SetCheckedForUnreadMessage();
-           // BrowserBehavior.SetBody(WebBrowserForShowingCurrentMessage, Messages[0].TextHTML); ;
+            //int num = 0;
+            //var a=new object();
+            //TimerCallback tm = new TimerCallback(SendToServerCommands);
+            // timer = new Timer(tm, num, 20000, 20000);
         }
-
-        
-        public  Main()
-        {
-            InitializeComponent();
-            _comandsForAddingToTheServer = new ImprovedDictionary<string, string>();
-            _comandsForDeletingToTheServer=new ImprovedDictionary<string, string>();
-            CreateSmtpWindowAndConnectToServer("nikit.stets@gmail.com", "Minsk1.1.ru");
-        }
-
 
         public void SetCheckedForUnreadMessage()
-      {
-            for (int i = 0; i <Messages.Count; i++)
+        {
+            for (int i = 0; i < Messages.Count; i++)
             {
                 if (!Messages[i].HasFlag("\\Seen"))
                 {
-                   // ShowMessagesDataGrid.Columns[1].
-                   // var findName = ShowMessagesDataGrid.FindName("checkBoxInColumnCircle");
-                   // ((CheckBox) findName).IsChecked = true;
+                    // ShowMessagesDataGrid.Columns[1].
+                    // var findName = ShowMessagesDataGrid.FindName("checkBoxInColumnCircle");
+                    // ((CheckBox) findName).IsChecked = true;
                 }
             }
-          
+
         }
 
         private void ButtonForSendMessage_Click(object sender, RoutedEventArgs e)
-        {           
-            _smtpWindow=new SMTPWindow();
+        {
+            _smtpWindow = new SmtpWindow();
             _smtpWindow.Login = Login;
             _smtpWindow.Password = Password;
             _smtpWindow.Show();
         }
 
-        private void Update_Click(object sender, RoutedEventArgs e)
+        ObservableCollection<MessageModel> M()
         {
+            var message = new ObservableCollection<MessageModel>();
             _imap.GetUids();
-            
-            Messages.Clear();
+
             _imap.Logout();
             _imap.Connect(_user);
             var col = _imap.UpdateListMessages();
             foreach (var email in col)
             {
-                email.TextHTML = "<!DOCTYPE HTML><html><head><meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'></head><body>" + email.TextHTML + "</body></html>";
-                Messages.Add(email);               
+                email.TextHtml = "<!DOCTYPE HTML><html><head><meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'></head><body>" + email.TextHtml + "</body></html>";
+                message.Add(email);
             }
+
+            return message;
+        }
+
+        private async void Update_Click(object sender, RoutedEventArgs e)
+        {
+            var newMessages = await Task.Run(() => M());
+            var messages = new ObservableCollection<MessageModel>();
+            foreach (var message in newMessages)
+            {
+                messages.Add(new MessageModel(message.Author, message.DateTime, message.TextHtml, message.Text, message.Uid, message.Flags));
+            }
+
+            Messages = messages;
+            ShowMessagesDataGrid.ItemsSource = Messages.OrderByDescending(s => s.Unread);
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -117,15 +146,15 @@ namespace Email_client.View
         }
 
         private void AllLabel_MouseDown(object sender, MouseButtonEventArgs e)
-        {          
+        {
             MessagesTemp.Clear();
             foreach (var message in Messages)
             {
-                if(!message.HasFlag("\\Deleted"))
-                   MessagesTemp.Add(message);
+                if (!message.HasFlag("\\Deleted"))
+                    MessagesTemp.Add(message);
                 message.Select = true;
             }
-            ShowMessagesDataGrid.ItemsSource = Messages;
+            ShowMessagesDataGrid.ItemsSource = Messages.OrderByDescending(m => m.Unread);
 
         }
 
@@ -135,8 +164,8 @@ namespace Email_client.View
             var element = ShowMessagesDataGrid.CurrentItem;
             if (element is MessageModel)
             {
-               // _imap.RemoveMessageFlags(((MessageModel)element).Uid, ImapMessageFlags.Seen);
-                ((MessageModel) element).RemoveFlag("\\Seen");
+                // _imap.RemoveMessageFlags(((MessageModel)element).Uid, ImapMessageFlags.Seen);
+                ((MessageModel)element).RemoveFlag("\\Seen");
                 if (!_comandsForAddingToTheServer.Remove(((MessageModel)element).Uid, "\\Seen"))
                     _comandsForDeletingToTheServer.Add(((MessageModel)element).Uid, "\\Seen");
             }
@@ -158,10 +187,9 @@ namespace Email_client.View
             var element = ShowMessagesDataGrid.CurrentItem;
             if (element is MessageModel)
             {
-                if (!_comandsForDeletingToTheServer.Remove(((MessageModel)element).Uid, "\\Seen"))               
-                     _comandsForAddingToTheServer.Add(((MessageModel)element).Uid, "\\Seen");
+                if (!_comandsForDeletingToTheServer.Remove(((MessageModel)element).Uid, "\\Seen"))
+                    _comandsForAddingToTheServer.Add(((MessageModel)element).Uid, "\\Seen");
                 ((MessageModel)element).AddFlag("\\Seen");
-               
             }
         }
 
@@ -171,10 +199,10 @@ namespace Email_client.View
             foreach (MessageModel item in selectedMessages)
             {
                 if (item.Select == true)
-                {                    
-                   if( !_comandsForAddingToTheServer.Remove(item.Uid, "\\Seen"))               
-                       _comandsForDeletingToTheServer.Add(item.Uid, "\\Seen");
-                   
+                {
+                    if (!_comandsForAddingToTheServer.Remove(item.Uid, "\\Seen"))
+                        _comandsForDeletingToTheServer.Add(item.Uid, "\\Seen");
+
                     item.RemoveFlag("\\Seen");
                 }
             }
@@ -210,15 +238,15 @@ namespace Email_client.View
                     MessagesTemp.Add(message);
                 }
             }
-            ShowMessagesDataGrid.ItemsSource = MessagesTemp;
+            ShowMessagesDataGrid.ItemsSource = MessagesTemp.OrderByDescending(m => m.Unread);
         }
 
         private void UnreadMessageLabel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             MessagesTemp.Clear();
             foreach (var message in Messages)
-            { 
-                
+            {
+
                 if (!message.HasFlag("\\Seen"))
                 {
                     MessagesTemp.Add(message);
@@ -238,21 +266,21 @@ namespace Email_client.View
                     MessagesTemp.Add(message);
                 }
             }
-            ShowMessagesDataGrid.ItemsSource = MessagesTemp;
+            ShowMessagesDataGrid.ItemsSource = MessagesTemp.OrderByDescending(m => m.Unread);
         }
 
         private void UnFlaggedMessageLabel_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             MessagesTemp.Clear();
             foreach (var message in Messages)
-            { 
-                
+            {
+
                 if (!message.HasFlag("\\Flagged"))
                 {
                     MessagesTemp.Add(message);
                 }
             }
-            ShowMessagesDataGrid.ItemsSource = MessagesTemp;
+            ShowMessagesDataGrid.ItemsSource = MessagesTemp.OrderByDescending(m => m.Unread);
         }
 
         private void Incoming_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -263,10 +291,10 @@ namespace Email_client.View
                 if (!message.HasFlag("\\Deleted"))
                     MessagesTemp.Add(message);
             }
-            ShowMessagesDataGrid.ItemsSource = MessagesTemp;
+            ShowMessagesDataGrid.ItemsSource = MessagesTemp.OrderByDescending(m => m.Unread);
         }
 
-        private  void DeleteMessagesLabel_OnMouseDown(object sender, MouseButtonEventArgs e)//добавить флаг,что удалено,а потом отправлять запросы на сервер,что удалено и не отображать сообщения с флагом deleted
+        private void DeleteMessagesLabel_OnMouseDown(object sender, MouseButtonEventArgs e)//добавить флаг,что удалено,а потом отправлять запросы на сервер,что удалено и не отображать сообщения с флагом deleted
         {
             MessagesTemp.Clear();
             foreach (var message in Messages)
@@ -274,12 +302,13 @@ namespace Email_client.View
                 if (message.Select)
                 {
                     message.AddFlag("\\Deleted");
-                    _comandsForAddingToTheServer.Add(message.Uid, "\\Deleted");
+                    if (!_comandsForDeletingToTheServer.Remove("\\Deleted"))
+                        _comandsForAddingToTheServer.Add(message.Uid, "\\Deleted");
                     continue;
                 }
                 MessagesTemp.Add(message);
             }
-            ShowMessagesDataGrid.ItemsSource = MessagesTemp;
+            ShowMessagesDataGrid.ItemsSource = MessagesTemp.OrderByDescending(m => m.Unread);
         }
 
         private void SentedMessagesLabel_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -297,7 +326,7 @@ namespace Email_client.View
                     MessagesTemp.Add(message);
                 }
             }
-            ShowMessagesDataGrid.ItemsSource = MessagesTemp;
+            ShowMessagesDataGrid.ItemsSource = MessagesTemp.OrderByDescending(m => m.Unread);
         }
 
         private void DataGridLabelShowCurrentMessageMessage_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -307,7 +336,7 @@ namespace Email_client.View
             {
                 if (content == message.Text)
                 {
-                    BrowserBehavior.SetBody(WebBrowserForShowingCurrentMessage, message.TextHTML);
+                    BrowserBehavior.SetBody(WebBrowserForShowingCurrentMessage, message.TextHtml);
                     break;
                 }
             }
@@ -315,39 +344,39 @@ namespace Email_client.View
 
         private void DraftedMessagesLabel_OnMouse(object sender, MouseButtonEventArgs e)
         {
-           MessagesTemp.Clear();
+            MessagesTemp.Clear();
             foreach (var message in Messages)
             {
-                if(message.HasFlag("\\Drafted"))
+                if (message.HasFlag("\\Drafted"))
                     MessagesTemp.Add(message);
             }
 
-            ShowMessagesDataGrid.ItemsSource = MessagesTemp;
+            ShowMessagesDataGrid.ItemsSource = MessagesTemp.OrderByDescending(m => m.Unread);
         }
-
-        private void SendToServerCommands()
+       
+        private async void SendToServerCommands(object obj)
         {
-            foreach (var command in _comandsForAddingToTheServer)
+            var commandForDeleting = _comandsForDeletingToTheServer.GetCopy();
+            var commandForAdding = _comandsForAddingToTheServer.GetCopy();
+            _comandsForAddingToTheServer.RemoveAll();
+            _comandsForDeletingToTheServer.RemoveAll();
+            await Task.Run(() => {
+                foreach (var key in commandForAdding.Keys)
             {
-                foreach (var value in command.Value)
+                foreach (var value in commandForAdding[key])
                 {
-                    _imap.ModificateMessageFlagOnTheServer(command.Key, value,'+');
-                }       
-            }
-            foreach (var command in _comandsForDeletingToTheServer)
-            {
-                foreach (var value in command.Value)
-                {
-                    _imap.ModificateMessageFlagOnTheServer(command.Key, value, '-');
+                    _imap.ModificateMessageFlagOnTheServer(key, value, '+');                     
                 }
             }
+            foreach (var key in commandForDeleting.Keys)
+            {
+                foreach (var value in commandForDeleting[key])
+                {
+                    _imap.ModificateMessageFlagOnTheServer(key, value, '-'); 
+                }
+            }
+            });
         }
 
-        private void Button_OnClick(object sender, RoutedEventArgs e)
-        {
-           SendToServerCommands();
-        }
-
-       
     }
 }

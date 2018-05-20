@@ -7,9 +7,9 @@ namespace Email_client.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class addtypenameforLogin : IMigrationMetadata
+    public sealed partial class AddtypenameforLogin : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addtypenameforLogin));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddtypenameforLogin));
         
         string IMigrationMetadata.Id
         {

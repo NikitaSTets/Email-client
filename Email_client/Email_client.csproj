@@ -48,6 +48,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -92,7 +93,6 @@
     <Compile Include="SMTP\SmtpException.cs" />
     <Compile Include="SMTP\SmtpReplyCode.cs" />
     <Compile Include="SMTP\SmtpServerReply.cs" />
-    <Compile Include="IMap\ImapMessageFlags.cs" />
     <Compile Include="View\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>

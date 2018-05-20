@@ -5,38 +5,38 @@ namespace Email_client.Model
 {
     public class UsersInfoRepository : IRepository<UsersInfo>
     {
-        UsersContext db;
+        UsersContext _db;
         public UsersInfoRepository(UsersContext context)
         {
-            db = context;
+            _db = context;
         }
         public void Create(UsersInfo user)
         {
-            db.UsersTable.Add(user); 
+            _db.UsersTable.Add(user); 
         }
 
         public void Delete(int id)
         {
-            UsersInfo user = db.UsersTable.Find(id);
+            UsersInfo user = _db.UsersTable.Find(id);
             if (user != null)
             {
-                db.UsersTable.Remove(user);
+                _db.UsersTable.Remove(user);
             }
         }
 
         public UsersInfo Get(int id)
         {
-            return db.UsersTable.Find(id);
+            return _db.UsersTable.Find(id);
         }
 
         public IEnumerable<UsersInfo> GetAll()
         {
-          return  db.UsersTable;
+          return  _db.UsersTable;
         }
 
         public void Update(UsersInfo user)
         {
-            db.Entry(user).State = EntityState.Modified;
+            _db.Entry(user).State = EntityState.Modified;
         }
     }
 }

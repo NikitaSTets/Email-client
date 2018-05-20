@@ -21,3 +21,4 @@ C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_c
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.csproj.GenerateResource.Cache
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.exe
 C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.pdb
+C:\Users\Никита\Documents\Visual Studio 2015\Projects\Email_client\Email_client\obj\Debug\Email_client.csprojResolveAssemblyReference.cache

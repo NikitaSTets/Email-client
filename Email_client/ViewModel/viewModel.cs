@@ -32,14 +32,13 @@ namespace Email_client.ViewModel
             }
            
         }
-        public static void UpdateListOfMessages(ObservableCollection<MessageModel> Messages, ImapControl imap)
+        public static void UpdateListOfMessages(ObservableCollection<MessageModel> messages, ImapControl imap)
         {
-            Messages.Clear();
+            messages.Clear();
             IList <MessageModel> messageInfoCollection= imap.ListMessages();
             for (int i = 0; i < messageInfoCollection.Count; i++)
-            {                
-                messageInfoCollection[i].TextHTML = "<!DOCTYPE HTML><html><head><meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'></head><body>" + messageInfoCollection[i].TextHTML +"</body></html>";
-                     Messages.Add(messageInfoCollection[i]);//что-то мне подсказывает,что там уже есть html
+            {                              
+                   messages.Add(messageInfoCollection[i]);
             }
         }
     }

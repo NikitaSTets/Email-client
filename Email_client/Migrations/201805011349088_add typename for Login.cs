@@ -3,7 +3,7 @@ namespace Email_client.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class addtypenameforLogin : DbMigration
+    public partial class AddtypenameforLogin : DbMigration
     {
         public override void Up()
         {

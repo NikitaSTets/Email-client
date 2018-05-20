@@ -1,8 +1,7 @@
-﻿namespace Email_client.Model
+﻿using System.Data.Entity;
+namespace Email_client.Model
 {
-    using System;
-    using System.Data.Entity;
-    using System.Linq;
+    
 
     public class UsersContext : DbContext
     {

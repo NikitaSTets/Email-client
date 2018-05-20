@@ -59,7 +59,7 @@ namespace Email_client.Model
         public string Author { get; set; }
         public DateTime DateTime { get; set; }
         public string Text { get; set; }
-        public string TextHTML { get; set; }
+        public string TextHtml { get; set; }
         
         public  bool Unread { get;set;}
         public string Uid { get; }
@@ -81,14 +81,14 @@ namespace Email_client.Model
         public static readonly DependencyProperty SelectProperty =
             DependencyProperty.Register("Select", typeof(bool), typeof(MessageModel), new UIPropertyMetadata(false));
 
-        public MessageModel(string author,DateTime date,string textHTML,string text,string Uid,List<string> flags)
+        public MessageModel(string author,DateTime date,string textHtml,string text,string uid,List<string> flags)
         {
             Author = author;
             DateTime = date;
             Unread = true;
-            TextHTML = textHTML;
+            TextHtml = textHtml;
             Text = text;
-            this.Uid = Uid;
+            this.Uid = uid;
             Color = "White";
             Select = false;
             Flags = flags;

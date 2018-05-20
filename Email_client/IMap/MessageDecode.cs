@@ -7,7 +7,7 @@ namespace Email_client.IMap
 {
     class MessageDecoder
     {
-        public static string DecodeQP(string text, string bodycharset)
+        public static string DecodeQp(string text, string bodycharset)
         {
             var i = 0;
             var output = new List<byte>();
@@ -49,13 +49,9 @@ namespace Email_client.IMap
 
             if (String.IsNullOrEmpty(bodycharset))
                 return Encoding.UTF8.GetString(output.ToArray());
-            else
-            {
-                if (String.Compare(bodycharset, "ISO-2022-JP", true) == 0)
-                    return Encoding.GetEncoding("Shift_JIS").GetString(output.ToArray());
-                else
-                    return Encoding.GetEncoding(bodycharset).GetString(output.ToArray());
-            }
+            if (String.Compare(bodycharset, "ISO-2022-JP", true) == 0)
+                return Encoding.GetEncoding("Shift_JIS").GetString(output.ToArray());
+            return Encoding.GetEncoding(bodycharset).GetString(output.ToArray());
         }
 
         public static string DecodeEncodedLine(string text)
@@ -83,7 +79,7 @@ namespace Email_client.IMap
                     else if (encoding.Equals("Q"))
                     {
                         Regex reg = new Regex(@"(\=([0-9A-F][0-9A-F]))", RegexOptions.IgnoreCase);
-                        decoded += reg.Replace(value, new MatchEvaluator(m =>
+                        decoded += reg.Replace(value, m =>
                         {
                             byte[] bytes = new byte[m.Value.Length / 3];
                             for (int i = 0; i < bytes.Length; i++)
@@ -93,7 +89,7 @@ namespace Email_client.IMap
                                 bytes[i] = Convert.ToByte(iHex);
                             }
                             return Encoding.GetEncoding(charset).GetString(bytes);
-                        })).Replace('_', ' ');
+                        }).Replace('_', ' ');
                     }
                     else
                     {
