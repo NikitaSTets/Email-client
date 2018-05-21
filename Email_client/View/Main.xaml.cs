@@ -82,26 +82,20 @@ namespace Email_client.View
             _smtpWindow.Show();
         }
 
-        ObservableCollection<MessageModel> M()
+        ObservableCollection<MessageModel> UpdateMessages()
         {
             var message = new ObservableCollection<MessageModel>();
             _imap.GetUids();
 
             _imap.Logout();
             _imap.Connect(_user);
-            var col = _imap.UpdateListMessages();
-            foreach (var email in col)
-            {
-                email.TextHtml = "<!DOCTYPE HTML><html><head><meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'></head><body>" + email.TextHtml + "</body></html>";
-                message.Add(email);
-            }
 
-            return message;
+            return _imap.UpdateListMessages();;
         }
 
         private async void Update_Click(object sender, RoutedEventArgs e)
         {
-            var newMessages = await Task.Run(() => M());
+            var newMessages = await Task.Run(() => UpdateMessages());
             var messages = new ObservableCollection<MessageModel>();
             foreach (var message in newMessages)
             {
