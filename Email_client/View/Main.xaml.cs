@@ -43,7 +43,7 @@ namespace Email_client.View
             InitializeComponent();
             _comandsForAddingToTheServer = new ImprovedDictionary<string, string>();
             _comandsForDeletingToTheServer = new ImprovedDictionary<string, string>();
-            CreateSmtpWindowAndConnectToServer("nikit.stets@gmail.com", "Minsk1.1.ru");
+            CreateSmtpWindowAndConnectToServer("login", "password");
             int num = 0;
             _tm = new TimerCallback(SendToServerCommands);
             _timer = new Timer(_tm, num, 60000, 60000);
@@ -73,25 +73,13 @@ namespace Email_client.View
             ShowMessagesDataGrid.ItemsSource = Messages.OrderByDescending(m => m.Unread);
             SetCheckedForUnreadMessage();
             return true;
-            //int num = 0;
-            //var a=new object();
-            //TimerCallback tm = new TimerCallback(SendToServerCommands);
-            // timer = new Timer(tm, num, 20000, 20000);
-        }
-
-        public void SetCheckedForUnreadMessage()
-        {
-            for (int i = 0; i < Messages.Count; i++)
-            {
-                if (!Messages[i].HasFlag("\\Seen"))
-                {
-                    // ShowMessagesDataGrid.Columns[1].
-                    // var findName = ShowMessagesDataGrid.FindName("checkBoxInColumnCircle");
-                    // ((CheckBox) findName).IsChecked = true;
-                }
-            }
+            int num = 0;
+            var a=new object();
+            TimerCallback tm = new TimerCallback(SendToServerCommands);
+             timer = new Timer(tm, num, 20000, 20000);
 
         }
+
 
         private void ButtonForSendMessage_Click(object sender, RoutedEventArgs e)
         {
@@ -101,26 +89,20 @@ namespace Email_client.View
             _smtpWindow.Show();
         }
 
-        ObservableCollection<MessageModel> M()
+        ObservableCollection<MessageModel> UpdateMessages()
         {
             var message = new ObservableCollection<MessageModel>();
             _imap.GetUids();
 
             _imap.Logout();
             _imap.Connect(_user);
-            var col = _imap.UpdateListMessages();
-            foreach (var email in col)
-            {
-                email.TextHtml = "<!DOCTYPE HTML><html><head><meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'></head><body>" + email.TextHtml + "</body></html>";
-                message.Add(email);
-            }
 
-            return message;
+            return _imap.UpdateListMessages();;
         }
 
         private async void Update_Click(object sender, RoutedEventArgs e)
         {
-            var newMessages = await Task.Run(() => M());
+            var newMessages = await Task.Run(() => UpdateMessages());
             var messages = new ObservableCollection<MessageModel>();
             foreach (var message in newMessages)
             {
@@ -166,7 +148,6 @@ namespace Email_client.View
             var element = ShowMessagesDataGrid.CurrentItem;
             if (element is MessageModel)
             {
-                // _imap.RemoveMessageFlags(((MessageModel)element).Uid, ImapMessageFlags.Seen);
                 ((MessageModel)element).RemoveFlag("\\Seen");
                 if (!_comandsForAddingToTheServer.Remove(((MessageModel)element).Uid, "\\Seen"))
                     _comandsForDeletingToTheServer.Add(((MessageModel)element).Uid, "\\Seen");
