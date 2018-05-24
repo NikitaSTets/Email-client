@@ -22,7 +22,7 @@ namespace Email_client.Model
         {
             _db.SaveChanges();
         }
-        private bool _disposed = false;
+        private bool _disposed;
 
         public virtual void Dispose(bool disposing)
         {

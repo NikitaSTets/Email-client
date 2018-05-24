@@ -29,7 +29,7 @@ namespace Email_client.View
             {
                 if (user.Login == LoginTextBox.Text && user.Password == PasswordBox.Password)
                 {
-                    result = user;
+                    result = new UsersInfo() {Login = LoginTextBox.Text,Password = PasswordBox.Password};
                     break;
                 }
             }

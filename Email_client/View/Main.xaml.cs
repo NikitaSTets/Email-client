@@ -50,7 +50,7 @@ namespace Email_client.View
         }
 
 
-        public void CreateSmtpWindowAndConnectToServer(string userName, string password)
+        public bool CreateSmtpWindowAndConnectToServer(string userName, string password)
         {
             _smtpWindow = new SmtpWindow();
             _user = new LoginInfo();
@@ -62,7 +62,8 @@ namespace Email_client.View
             _imap = new ImapControl(993);
             try
             {
-                _imap.Connect(_user);
+                if (!_imap.Connect(_user))
+                    return false;
             }
             catch (Exception)
             {
@@ -71,6 +72,7 @@ namespace Email_client.View
             ViewModel.ViewModel.UpdateListOfMessages(Messages, _imap);
             ShowMessagesDataGrid.ItemsSource = Messages.OrderByDescending(m => m.Unread);
             SetCheckedForUnreadMessage();
+            return true;
             //int num = 0;
             //var a=new object();
             //TimerCallback tm = new TimerCallback(SendToServerCommands);
@@ -195,15 +197,14 @@ namespace Email_client.View
 
         private void UnreadMessagesLabel_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var selectedMessages = ShowMessagesDataGrid.Items;
+            var selectedMessages = ShowMessagesDataGrid.Items;//получаем массив всех элементов DataGrid
             foreach (MessageModel item in selectedMessages)
             {
-                if (item.Select == true)
+                if (item.Select == true)//проевряем выбран ли данный элемент
                 {
-                    if (!_comandsForAddingToTheServer.Remove(item.Uid, "\\Seen"))
-                        _comandsForDeletingToTheServer.Add(item.Uid, "\\Seen");
-
-                    item.RemoveFlag("\\Seen");
+                    if (!_comandsForAddingToTheServer.Remove(item.Uid, "\\Seen"))//если да,то проверяем ,были ли произведена ранее операция обратная данной(добавление флага)
+                        _comandsForDeletingToTheServer.Add(item.Uid, "\\Seen");//если не было,до добавляем в список флагов на удаление
+                    item.RemoveFlag("\\Seen");//удаляем этот флаг
                 }
             }
         }

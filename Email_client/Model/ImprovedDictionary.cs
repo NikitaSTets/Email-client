@@ -42,9 +42,7 @@ namespace Email_client.Model
         {
             var answer=new ImprovedDictionary<TKey, TValue>();
             foreach (var key in Keys)
-            {
-
-                var values = new List<string>();
+            {              
                 foreach (var value in this[key])
                 {
                    answer.Add(key, value);

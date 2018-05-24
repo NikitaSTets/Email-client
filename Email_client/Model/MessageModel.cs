@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Windows;
 
 namespace Email_client.Model
@@ -88,7 +87,7 @@ namespace Email_client.Model
             Unread = true;
             TextHtml = textHtml;
             Text = text;
-            this.Uid = uid;
+            Uid = uid;
             Color = "White";
             Select = false;
             Flags = flags;

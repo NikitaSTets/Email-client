@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Email_client.View"
         mc:Ignorable="d"
-        Title="Authentication" Height="300" Width="300">
+        Title="Authentication" Height="300" Width="300"  Background="#335a75" >
     <Window.Resources>
         <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
             <Setter Property="Template">
@@ -45,9 +45,9 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="1" x:Name="Label" Foreground="Blue" FontSize="40" FontFamily="Brodway" FontStyle="Italic" FontWeight="UltraBold" Content="Вход" HorizontalAlignment="Left" Margin="21,10,0,0" VerticalAlignment="Top" Width="136" Height="58"/>
+        <Label Grid.Column="1" x:Name="Label" Foreground="White" FontSize="40" FontFamily="Brodway" FontStyle="Italic" FontWeight="UltraBold" Content="Вход" HorizontalAlignment="Left" Margin="31,10,0,0" VerticalAlignment="Top" Width="136" Height="58"/>
         <TextBox  x:Name="LoginTextBox"  Style="{StaticResource MyWaterMarkStyle}" Tag="Login" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,34,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="147"/>
-        <PasswordBox x:Name="PasswordBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,21,0,0" Grid.Row="2" VerticalAlignment="Top" Width="147"/>
+        <PasswordBox x:Name="PasswordBox" Password="password" Grid.Column="1" HorizontalAlignment="Left" Margin="10,21,0,0" Grid.Row="2" VerticalAlignment="Top" Width="147"/>
         <Button x:Name="AuthetnticationButton" Click="AuthetnticationButton_Click" Content="Войти" Grid.Column="1" HorizontalAlignment="Left" Margin="36,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="92" Height="37"/>
         <Label x:Name="ResultOfAuthenticationLabel" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="10,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="147"/>
 

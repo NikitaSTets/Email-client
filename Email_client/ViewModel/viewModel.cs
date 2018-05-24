@@ -35,7 +35,7 @@ namespace Email_client.ViewModel
         public static void UpdateListOfMessages(ObservableCollection<MessageModel> messages, ImapControl imap)
         {
             messages.Clear();
-            IList <MessageModel> messageInfoCollection= imap.ListMessages();
+            IList <MessageModel> messageInfoCollection= imap.GetListOfMessages();
             for (int i = 0; i < messageInfoCollection.Count; i++)
             {                              
                    messages.Add(messageInfoCollection[i]);
