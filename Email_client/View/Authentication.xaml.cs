@@ -23,22 +23,31 @@ namespace Email_client.View
 
         private void AuthetnticationButton_Click(object sender, RoutedEventArgs e)
         {
-            UsersInfo result=null;
+            UsersInfo result = null;
 
-            foreach (var user in _users)
-            {
-                if (user.Login == LoginTextBox.Text && user.Password == PasswordBox.Password)
-                {
-                    result = new UsersInfo() {Login = LoginTextBox.Text,Password = PasswordBox.Password};
-                    break;
-                }
-            }
-            if (result!=null)
+            //foreach (var user in _users)
+            //{
+            //    if (user.Login == LoginTextBox.Text && user.Password == PasswordBox.Password)
+            //    {
+            //        result = new UsersInfo() {Login = LoginTextBox.Text,Password = PasswordBox.Password};
+            //        break;
+            //    }
+            //}
+            //if (result!=null)
+            //{
+            if (_mainWindow.CreateSmtpWindowAndConnectToServer(LoginTextBox.Text, PasswordBox.Password))
             {
                 _mainWindow.Show();
-                _mainWindow.CreateSmtpWindowAndConnectToServer(result.Login,result.Password);
-                this.Close();
+                Close();
             }
+
+            //}
+            else
+
+            {
+                MessageBox.Show("Login or Password Error");
+            }
+            //_mainWindow.Show();
         }
 
     }

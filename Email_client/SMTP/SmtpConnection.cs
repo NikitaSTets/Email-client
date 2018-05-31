@@ -48,7 +48,7 @@ namespace Email_client.SMTP
         public SmtpConnection(ITlsProvider tlsProvider)
         {
             if (tlsProvider == null)
-                throw new ArgumentNullException(nameof(tlsProvider));
+                return;
 
             _tlsProvider = tlsProvider;
         }

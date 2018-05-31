@@ -5,6 +5,8 @@ using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows;
 using Email_client.Model;
 
 namespace Email_client.IMap
@@ -18,15 +20,15 @@ namespace Email_client.IMap
 
 
         private byte[] _dummy;
-        private byte[] _byffer;
 
         private int _bytes = -1;
 
         private StringBuilder _sb;
 
         private List<string> _uids;
+        public int CountOfUid { get; private set; }
         private List<MessageModel> _emails;
-
+        private byte[] _buffer;
 
         public ImapControl(int port)
         {
@@ -43,12 +45,16 @@ namespace Email_client.IMap
                 _ssl.AuthenticateAsClient(user.ImapAddress);
                 string login = SendCommandToImapServer("$ LOGIN " + user.Username + " " + user.Password + "  \r\n");
 
-                if (!login.ToLower().Contains("ok"))
+                if (!login.ToLower().Contains("ok") || login.ToLower().Contains("no"))
                 {
                     return false;
                 }
-                SendCommandToImapServer("$ SELECT INBOX\r\n");
-                SendCommandToImapServer("$ STATUS Inbox (MESSAGES)\r\n");
+                login = SendCommandToImapServer("$ SELECT inbox\r\n");
+                if (login.ToLower().Contains("bad")|| (login.ToLower().Contains("no")))
+                    return false;
+                login=SendCommandToImapServer("$ STATUS inbox (MESSAGES)\r\n");
+                if (login.ToLower().Contains("bad"))
+                    return false;
                 SendCommandToImapServer("");
                 if (_tcpClient.Connected)
                     return true;
@@ -57,7 +63,7 @@ namespace Email_client.IMap
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.StackTrace);
+                MessageBox.Show("Internet connection Error.");
 
                 return false;
             }
@@ -75,65 +81,82 @@ namespace Email_client.IMap
             SendCommandToImapServer("$ EXPUNGE" + "\r\n");
         }
 
-        public List<MessageModel> UpdateListMessages()
+        public List<MessageModel> UpdateListMessages(string i)
         {
-            _emails.Clear();
-            _uids = GetUids();
-            foreach (var uid in _uids)
+            
+            CountOfUid = GetUids().Count;
+            if (Convert.ToInt32(i) < _uids.Count)
             {
-                string body = SendCommandToImapServer("$ FETCH " + uid + " body.peek[header]\r\n").Replace("\0", "");
-                if (body == "$ OK Success\r\n" || body == string.Format(" * {0} FETCH(BODY[TEXT] ", uid))
-                {
-                    body = SendCommandToImapServer("$ FETCH " + uid + " (BODY[])\r\n").Replace("\0", "");
-                }
 
-                var email = GetEmailTemplate(body, uid);
-                email.Text = GetBody(uid);
-                email.TextHtml = GetBodyHtml(uid);
-                email.Flags = GetMessageFlags(uid);
-                _emails.Add(email);
+                foreach (var uid in _uids.GetRange(Convert.ToInt32(i),1))
+                {
+                    string body = SendCommandToImapServer("$ FETCH " + uid + " body.peek[text]\r\n")
+                        .Replace("\0", "");
+                    if (body == "$ OK Success\r\n" || body == string.Format(" * {0} FETCH(BODY[TEXT] ", uid))
+                    {
+                        body = SendCommandToImapServer("$ FETCH " + uid + " (BODY[])\r\n").Replace("\0", "");
+                    }
+
+                    var email = GetEmailTemplate(body, uid);
+                    email.Text = GetBody(body);
+                    email.TextHtml = GetBodyHtml(body).Result;
+                    email.Flags = GetMessageFlags(uid);
+                    _emails.Add(email);
+                }
             }
 
             return _emails;
         }
-        public List<MessageModel> GetListOfMessages()
+        public Task<List<MessageModel>> GetListOfMessages()
         {
             if (_emails != null)//проверка,на то получали ли мы сообщения с почты
-                return _emails;
+                return Task.Run(() => _emails);
             _emails = new List<MessageModel>();//если нет,то инициализируем список 
 
             if (_uids == null) //проверка,получали ли мы uid ,если нет то получаем 
                 GetUids();
-
+            string body;
             foreach (var uid in _uids)//получаем сообщения с почты 
             {
-                string body = SendCommandToImapServer("$ FETCH " + uid + " body.peek[header]\r\n").Replace("\0", "");//получаем тело ответа с сервера
-                if (body == "$ OK Success\r\n" || body == $" * {uid} FETCH(BODY[TEXT] ")//Если не получили,то чего ожидали используем другой вариант запроса
+                body = SendCommandToImapServer("$ FETCH " + uid + " body.peek[text]\r\n").Replace("\0", "");
+                if (body == "$ OK Success\r\n")
                 {
                     body = SendCommandToImapServer("$ FETCH " + uid + " (BODY[])\r\n").Replace("\0", "");
                 }
 
                 var email = GetEmailTemplate(body, uid);
-                email.TextHtml = GetBodyHtml(uid);//полуаем текст в виде HTML
-                email.Text = GetBody(uid);//получем тело в виде простого текста
+                email.TextHtml = GetBodyHtml(body).Result;//полуаем текст в виде HTML
+                email.Text = GetBody(body);//получем тело в виде простого текста
                 email.Flags = GetMessageFlags(uid);//получаем список флагов сообщения
                 _emails.Add(email);//добовляем в список сообщение
             }
 
-            return _emails;
+            return Task.Run(() => _emails);
         }
 
-        public string GetBodyHtml(string uid)
+        public Task<MessageModel> GetMessageById(string uid)
         {
-            string body = SendCommandToImapServer("$ FETCH " + uid + " body.peek[text]\r\n").Replace("\0", "");
-            if (body == "$ OK Success\r\n")
-            {
-                body = SendCommandToImapServer("$ FETCH " + uid + " (BODY[])\r\n").Replace("\0", "");
-            }
+           return  Task.Run(() =>
+                {
+                    string body = SendCommandToImapServer("$ FETCH " + uid + " body.peek[text]\r\n").Replace("\0", "");
+                    if (body == "$ OK Success\r\n")
+                    {
+                        body = SendCommandToImapServer("$ FETCH " + uid + " (BODY[])\r\n").Replace("\0", "");
+                    }
 
+                    var email = GetEmailTemplate(body, uid);
+                    email.TextHtml = GetBodyHtml(body).Result; //полуаем текст в виде HTML
+                    email.Text = GetBody(body); //получем тело в виде простого текста
+                    email.Flags = GetMessageFlags(uid); //получаем список флагов сообщения
+
+                    return email;
+                }
+            );
+        }
+
+        public Task<string> GetBodyHtml(string body)
+        {
             Regex regexEncoding = new Regex(@"(?<=\r\nContent-Transfer-Encoding: )([\s\S]*?)(?=(\r\n))");
-
-            var encoding = "utf-8";
 
             int index = body.IndexOf("Content-Type: text/html");
             if (index == -1)
@@ -148,29 +171,25 @@ namespace Email_client.IMap
             }
             catch (Exception)
             {
-                return "empty";
+                return Task.Run(() => String.Empty);
             }
-            int endIndex = body.IndexOf("\r\n--", startIndex);
+            int endIndex = body.IndexOf("\r\n--", startIndex, StringComparison.Ordinal);
             var sbstr = body.Substring(startIndex, endIndex - startIndex);
-            encoding = regexEncoding.Match(sbstr).Value;
-            if (sbstr.Length > sbstr.IndexOf("\r\n", 2))
-                sbstr = sbstr.Substring(sbstr.IndexOf("\r\n", 2));
-            body = sbstr.Substring(sbstr.IndexOf("\r\n") + "\r\n".Length);
-            return "<!DOCTYPE HTML><html><head><meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'></head><body>" + DecodeBody(body, encoding, "utf-8") + "</body></html>";
+            var encoding = regexEncoding.Match(sbstr).Value;
+            if (sbstr.Length > sbstr.IndexOf("\r\n", 2, StringComparison.Ordinal))
+                sbstr = sbstr.Substring(sbstr.IndexOf("\r\n", 2, StringComparison.Ordinal));
+            body = sbstr.Substring(sbstr.IndexOf("\r\n", StringComparison.Ordinal) + "\r\n".Length);
+
+            return Task.Run(() => "<!DOCTYPE HTML><html><head><meta http-equiv = 'Content-Type' content = 'text/html;charset=UTF-8'></head><body>" + DecodeBody(body, encoding, "utf-8") + "</body></html>");
         }
 
-        public string GetBody(string uid)
+        public string GetBody(string body)
         {
-            string body = SendCommandToImapServer("$ FETCH " + uid + " body.peek[text]\r\n").Replace("\0", "");
-            if (body == "$ OK Success\r\n")
-            {
-                body = SendCommandToImapServer("$ FETCH " + uid + " (BODY[])\r\n").Replace("\0", "");
-            }
+
             Regex regexEncoding = new Regex(@"(?<=\r\nContent-Transfer-Encoding: )([\s\S]*?)(?=(\r\n))");
             Regex regexType = new Regex(@"(?<=\r\nContent-Type: )(.*?)(?=(;))");
 
             var typeMatch = regexType.Match(body).Value;
-            string encoding;
 
             if (typeMatch == "text/html" || typeMatch == "text/plain")
             {
@@ -198,11 +217,11 @@ namespace Email_client.IMap
             }
             catch (Exception)
             {
-                return "empty";
+                return string.Empty;
             }
             int endIndex = body.IndexOf("\r\n--", startIndex);
             var sbstr = body.Substring(startIndex, endIndex - startIndex);
-            encoding = regexEncoding.Match(sbstr).Value;
+            var encoding = regexEncoding.Match(sbstr).Value;
             sbstr = sbstr.Substring(sbstr.IndexOf("\r\n", 2));
             body = sbstr.Substring(sbstr.IndexOf("\r\n") + "\r\n".Length);
 
@@ -279,6 +298,8 @@ namespace Email_client.IMap
             {
                 _uids.Add(j.ToString());
             }
+            CountOfUid = answer.Length;
+
             return _uids;
         }
 
@@ -328,15 +349,22 @@ namespace Email_client.IMap
 
         private static string DecodeBody(string body, string encoding, string charset)
         {
-            switch (encoding)
+            try
             {
-                case "quoted-printable":
-                    return MessageDecoder.DecodeQp(body, "utf-8");
-                case "base64":
-                    var bytes = Convert.FromBase64String(body);
-                    return Encoding.GetEncoding(charset).GetString(bytes);
-                default:
-                    return body;
+                switch (encoding)
+                {
+                    case "quoted-printable":
+                        return MessageDecoder.DecodeQp(body, "utf-8");
+                    case "base64":
+                        var bytes = Convert.FromBase64String(body);
+                        return Encoding.GetEncoding(charset).GetString(bytes);
+                    default:
+                        return body;
+                }
+            }
+            catch (Exception)
+            {
+                return string.Empty;
             }
         }
 

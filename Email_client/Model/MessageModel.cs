@@ -97,6 +97,8 @@ namespace Email_client.Model
         {
             Uid = uid;
             Flags = new List<string>();
+            Color = "White";
+            Select = false;
         }
     }
 }

@@ -35,21 +35,25 @@ namespace Email_client.IMap
                         {
 
                         }
+
                         i += 3;
                     }
                     else
                     {
-                        output.Add((byte)text[i]);
+                        output.Add((byte) text[i]);
                         i++;
                     }
                 }
-                catch { }
+                catch
+                {
+                    i++;
+                }
             }
 
 
-            if (String.IsNullOrEmpty(bodycharset))
+            if (string.IsNullOrEmpty(bodycharset))
                 return Encoding.UTF8.GetString(output.ToArray());
-            if (String.Compare(bodycharset, "ISO-2022-JP", true) == 0)
+            if (string.Compare(bodycharset, "ISO-2022-JP", StringComparison.OrdinalIgnoreCase) == 0)
                 return Encoding.GetEncoding("Shift_JIS").GetString(output.ToArray());
             return Encoding.GetEncoding(bodycharset).GetString(output.ToArray());
         }

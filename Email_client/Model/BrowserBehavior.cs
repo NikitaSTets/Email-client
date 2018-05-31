@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Email_client.Model
@@ -20,8 +21,16 @@ namespace Email_client.Model
             dependencyObject.SetValue(BodyProperty, body);
         }
 
-        private static void OnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
-            ((WebBrowser)d).NavigateToString((string)e.NewValue);
-
+        private static void OnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            try
+            {
+               ((WebBrowser)d).NavigateToString((string)e.NewValue);
+            }
+            catch (Exception )
+            {
+            
+            }          
+        }
     }
 }

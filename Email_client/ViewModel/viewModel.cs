@@ -1,5 +1,6 @@
 ﻿using Email_client.Model;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -15,7 +16,7 @@ namespace Email_client.ViewModel
             for (int intCounter = App.Current.Windows.Count - 1; intCounter >= 0; intCounter--)
                 App.Current.Windows[intCounter].Close();
         }
-        public static void ConnectToServer(ref ImapControl imap, string userName, string password)
+        public static bool ConnectToServer(ref ImapControl imap, string userName, string password)
         {
             LoginInfo user = new LoginInfo();
             user.ImapAddress = "imap.gmail.com";
@@ -24,18 +25,19 @@ namespace Email_client.ViewModel
             imap = new ImapControl(993);                
             try
             {
-                imap.Connect(user);                
+                return imap.Connect(user);
             }
             catch (Exception)
             { 
                 MessageBox.Show("Error.Connect to server");
             }
-           
+
+            return false;
         }
-        public static void UpdateListOfMessages(ObservableCollection<MessageModel> messages, ImapControl imap)
+        public static async void UpdateListOfMessages(ObservableCollection<MessageModel> messages, ImapControl imap)
         {
             messages.Clear();
-            IList <MessageModel> messageInfoCollection= imap.GetListOfMessages();
+          IList <MessageModel> messageInfoCollection=await imap.GetListOfMessages();
             for (int i = 0; i < messageInfoCollection.Count; i++)
             {                              
                    messages.Add(messageInfoCollection[i]);

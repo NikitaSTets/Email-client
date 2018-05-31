@@ -33,10 +33,13 @@ namespace Email_client.View
                 _smtp.Connect("smtp." + SmtpHost, 587);
 
 
-                _smtp.ExtendedHello("bla-bla");
+                _smtp.ExtendedHello("Hello");
+                // переходим в защищенное соединение
+                // параметр отвечает за адрес домена, по которому будет проверяется SSL-сертификат 
                 _smtp.StartTls("smtp." + SmtpHost);
-
-                _smtp.ExtendedHello("bla-bla");
+                // снова отправляем extended hello, таковы требования протокола
+                _smtp.ExtendedHello("Hello");
+                // авторизуемся
                 _smtp.AuthPlain(login, Password);
 
                 _smtp.Mail(Login + "@" + SmtpHost);
@@ -45,9 +48,10 @@ namespace Email_client.View
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Введите правильно почту получателя");
+                return;             
             }
-
+            
             Close();
         }
 
