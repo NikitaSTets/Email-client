@@ -4,7 +4,6 @@ namespace Email_client.SMTP
 {
     public abstract class ProxyBase
     {
-
         public int ConnectTimeout { get; set; } = -1;
         public int ReadTimeout { get; set; } = -1;
         public int WriteTimeout { get; set; } = -1;

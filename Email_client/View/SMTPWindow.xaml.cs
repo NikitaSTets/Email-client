@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows;
+using Email_client.Model;
 using Email_client.SMTP;
 
 namespace Email_client.View
@@ -41,6 +44,14 @@ namespace Email_client.View
                 _smtp.ExtendedHello("Hello");
                 // авторизуемся
                 _smtp.AuthPlain(login, Password);
+                string email = ToEmailTextBox.Text;
+                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                Match match = regex.Match(email);
+                if (!match.Success)
+                {
+                    MessageBox.Show(email + " is incorrect");
+                    return;
+                }
 
                 _smtp.Mail(Login + "@" + SmtpHost);
                 _smtp.Recipient(ToEmailTextBox.Text);
@@ -55,5 +66,9 @@ namespace Email_client.View
             Close();
         }
 
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

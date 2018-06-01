@@ -426,6 +426,5 @@ namespace Email_client.View
             //    // ignored
             //}
         }
-
     }
 }

@@ -144,8 +144,6 @@ namespace Email_client.SMTP
             }
         }
 
-
-
         protected class Reply
         {
             public int Code;

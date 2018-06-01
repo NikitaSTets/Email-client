@@ -67,11 +67,11 @@ namespace Email_client.SMTP
             }
             else
             {
-                _tcpClient = new TcpClient(AddressFamily.InterNetwork);
-                _tcpClient.Connect(host, port);//
+                _tcpClient = new TcpClient(AddressFamily.InterNetwork);//создание подключения по схеме адресации IP-адрес версии 4.
+                _tcpClient.Connect(host, port);
             }
 
-            _stream = _tcpClient.GetStream();
+            _stream = _tcpClient.GetStream();//получаем ответ с сервера
 
             if (ReadTimeout >= 0)
                 _tcpClient.ReceiveTimeout = ReadTimeout;
@@ -83,13 +83,13 @@ namespace Email_client.SMTP
             SetupCommandTimeout();
 
             var greetingReply = _reader.ReadServerReply();
-            if (greetingReply.Code != SmtpReplyCode.ServiceReady)
+            if (greetingReply.Code != SmtpReplyCode.ServiceReady)//если отчет положительный ,то продолжаем работу
                 throw new SmtpException();
 
             Greeting = greetingReply.Message;
         }
 
-        public void ExtendedHello(string domain)
+        public void ExtendedHello(string domain)//функция приветствия с сервером
         {
             SetupCommandTimeout();
 
@@ -105,7 +105,7 @@ namespace Email_client.SMTP
         {
             SetupCommandTimeout();
 
-            if (!SupportedCommands.Contains(SmtpCommands.Starttls))
+            if (!SupportedCommands.Contains(SmtpCommands.Starttls))//если возможно передача данных по защищенному протоколу
                 throw new SmtpException("Not supported");
 
             var reply = SendCommand(SmtpCommands.Starttls);

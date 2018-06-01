@@ -61,6 +61,6 @@
                     />
         </StackPanel>
         <Button x:Name="SendButton" Content="Send" HorizontalAlignment="Left" Margin="30,399,0,0" VerticalAlignment="Top" Width="120" Height="56" Click="sendButton_Click"/>
-        <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="203,399,0,0" VerticalAlignment="Top" Width="120" Height="56"/>
+        <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="203,399,0,0" VerticalAlignment="Top" Width="120" Height="56" Click="CancelButton_Click"/>
     </Grid>
 </Window>

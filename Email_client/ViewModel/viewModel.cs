@@ -34,6 +34,7 @@ namespace Email_client.ViewModel
 
             return false;
         }
+
         public static async void UpdateListOfMessages(ObservableCollection<MessageModel> messages, ImapControl imap)
         {
             messages.Clear();

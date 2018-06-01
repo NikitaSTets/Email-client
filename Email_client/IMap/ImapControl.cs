@@ -30,6 +30,7 @@ namespace Email_client.IMap
         private List<MessageModel> _emails;
         private byte[] _buffer;
 
+
         public ImapControl(int port)
         {
             _port = port;
@@ -50,12 +51,12 @@ namespace Email_client.IMap
                     return false;
                 }
                 login = SendCommandToImapServer("$ SELECT inbox\r\n");
-                if (login.ToLower().Contains("bad")|| (login.ToLower().Contains("no")))
+                if (login.ToLower().Contains("bad"))
                     return false;
                 login=SendCommandToImapServer("$ STATUS inbox (MESSAGES)\r\n");
                 if (login.ToLower().Contains("bad"))
                     return false;
-                SendCommandToImapServer("");
+                //SendCommandToImapServer("");
                 if (_tcpClient.Connected)
                     return true;
 
@@ -82,12 +83,10 @@ namespace Email_client.IMap
         }
 
         public List<MessageModel> UpdateListMessages(string i)
-        {
-            
+        {          
             CountOfUid = GetUids().Count;
             if (Convert.ToInt32(i) < _uids.Count)
             {
-
                 foreach (var uid in _uids.GetRange(Convert.ToInt32(i),1))
                 {
                     string body = SendCommandToImapServer("$ FETCH " + uid + " body.peek[text]\r\n")
@@ -107,6 +106,7 @@ namespace Email_client.IMap
 
             return _emails;
         }
+
         public Task<List<MessageModel>> GetListOfMessages()
         {
             if (_emails != null)//проверка,на то получали ли мы сообщения с почты
@@ -185,7 +185,6 @@ namespace Email_client.IMap
 
         public string GetBody(string body)
         {
-
             Regex regexEncoding = new Regex(@"(?<=\r\nContent-Transfer-Encoding: )([\s\S]*?)(?=(\r\n))");
             Regex regexType = new Regex(@"(?<=\r\nContent-Type: )(.*?)(?=(;))");
 
@@ -292,8 +291,6 @@ namespace Email_client.IMap
             var uidswithSearch = SendCommandToImapServer("$ uid search all\r\n");
             Regex regex = new Regex(@"( SEARCH )((\d*) )*(\d*)");
             var answer = regex.Match(uidswithSearch).Value.Split(' ');
-
-
             for (int j = 1; j < answer.Length - 1; j++)
             {
                 _uids.Add(j.ToString());
@@ -370,11 +367,7 @@ namespace Email_client.IMap
 
         private bool LookForEndOfMessage(string str)
         {
-            return str.Contains("$ OK")
-                   || str.Contains("$ NO")
-                   || str.Contains("$ BAD")
-                   || str.Contains("Gimap")
-                   || str.Contains("* BAD");
+            return str.Contains("$ OK")|| str.Contains("$ NO")|| str.Contains("$ BAD")|| str.Contains("* BAD");
         }
     }
 }
